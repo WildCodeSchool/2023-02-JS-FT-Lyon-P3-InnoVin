@@ -34,6 +34,27 @@ const ItemManager = require("./ItemManager");
 models.item = new ItemManager();
 models.item.setDatabase(pool);
 
+const GrapeVarietyManager = require("./GrapeVarietyManager");
+
+models.grape_variety = new GrapeVarietyManager();
+models.grape_variety.setDatabase(pool);
+
+const SessionManager = require("./SessionManager");
+
+models.session = new SessionManager();
+models.session.setDatabase(pool);
+
+const UserManager = require("./UserManager");
+
+models.user = new UserManager();
+models.user.setDatabase(pool);
+
+const WineManager = require("./WineManager");
+
+models.wine = new WineManager();
+models.wine.setDatabase(pool);
+
+
 // bonus: use a proxy to personalize error message,
 // when asking for a non existing model
 
