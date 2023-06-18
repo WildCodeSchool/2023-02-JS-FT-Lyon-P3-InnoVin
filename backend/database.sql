@@ -46,7 +46,6 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`User` (
   `id` INT NOT NULL,
   `aroma_id` INT NOT NULL,
   `flavour_id` INT NOT NULL,
-  `grape_variety_type_id` INT NULL,
   `firstname` VARCHAR(45) NOT NULL,
   `lastname` VARCHAR(45) NOT NULL,
   `birthdate` DATE NOT NULL,
@@ -54,6 +53,7 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`User` (
   `hashed_password` VARCHAR(255) NOT NULL,
   `address` VARCHAR(80) NULL,
   `city` VARCHAR(45) NULL,
+  `grape_variety_type_id` INT NULL,
   `role` VARCHAR(45) NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_User_Aroma1_idx` (`aroma_id` ASC) VISIBLE,
@@ -128,7 +128,6 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `Inovin`.`Wine` (
   `id` INT NOT NULL,
   `name` VARCHAR(80) NOT NULL,
-  `picture` VARCHAR(255) NULL,
   `vintage` INT NULL,
   `country_id` INT NOT NULL,
   `region_id` INT NOT NULL,
@@ -170,33 +169,36 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Inovin`.`Receipt`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Inovin`.`Receipt` (
-  `id` INT NOT NULL,
-  `user_id` INT NOT NULL,
-  `name` VARCHAR(80) NULL,
-  `first_wine_name` VARCHAR(80) NULL,
-  `second_wine_name` VARCHAR(80) NULL,
-  `third_wine_name` VARCHAR(80) NULL,
-  PRIMARY KEY (`id`, `user_id`),
-  INDEX `fk_Receipt_User1_idx` (`user_id` ASC) VISIBLE,
-  CONSTRAINT `fk_Receipt_User1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `Inovin`.`User` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `Inovin`.`Session`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Inovin`.`Session` (
   `Id` INT NOT NULL,
   `date` DATE NOT NULL,
-  `time` TIME NOT NULL,
   PRIMARY KEY (`Id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Inovin`.`Receipt`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `Inovin`.`Receipt` (
+  `id` INT NOT NULL,
+  `user_id` INT NOT NULL,
+  `session_Id` INT NOT NULL,
+  `name` VARCHAR(80) NULL,
+  PRIMARY KEY (`id`, `user_id`, `session_Id`),
+  INDEX `fk_Receipt_User1_idx` (`user_id` ASC) VISIBLE,
+  INDEX `fk_Receipt_Session1_idx` (`session_Id` ASC) VISIBLE,
+  CONSTRAINT `fk_Receipt_User1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `Inovin`.`User` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Receipt_Session1`
+    FOREIGN KEY (`session_Id`)
+    REFERENCES `Inovin`.`Session` (`Id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -273,9 +275,11 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`Tasting_note` (
   `user_id` INT NOT NULL,
   `wine_id` INT NOT NULL,
   `note` INT NOT NULL,
-  PRIMARY KEY (`user_id`, `wine_id`),
+  `Session_Id` INT NOT NULL,
+  PRIMARY KEY (`user_id`, `wine_id`, `Session_Id`),
   INDEX `fk_User_has_Wine_Wine1_idx` (`wine_id` ASC) VISIBLE,
   INDEX `fk_User_has_Wine_User1_idx` (`user_id` ASC) VISIBLE,
+  INDEX `fk_Tasting_note_Session1_idx` (`Session_Id` ASC) VISIBLE,
   CONSTRAINT `fk_User_has_Wine_User1`
     FOREIGN KEY (`user_id`)
     REFERENCES `Inovin`.`User` (`id`)
@@ -284,6 +288,11 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`Tasting_note` (
   CONSTRAINT `fk_User_has_Wine_Wine1`
     FOREIGN KEY (`wine_id`)
     REFERENCES `Inovin`.`Wine` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Tasting_note_Session1`
+    FOREIGN KEY (`Session_Id`)
+    REFERENCES `Inovin`.`Session` (`Id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -294,15 +303,14 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Inovin`.`Receipt_has_Wine` (
   `receipt_id` INT NOT NULL,
-  `receipt_user_id` INT NOT NULL,
   `wine_id` INT NOT NULL,
   `dosage` INT NOT NULL,
-  PRIMARY KEY (`receipt_id`, `receipt_user_id`, `wine_id`),
+  PRIMARY KEY (`receipt_id`, `wine_id`),
   INDEX `fk_Receipt_has_Wine_Wine1_idx` (`wine_id` ASC) VISIBLE,
-  INDEX `fk_Receipt_has_Wine_Receipt1_idx` (`receipt_id` ASC, `receipt_user_id` ASC) VISIBLE,
+  INDEX `fk_Receipt_has_Wine_Receipt1_idx` (`receipt_id` ASC) VISIBLE,
   CONSTRAINT `fk_Receipt_has_Wine_Receipt1`
-    FOREIGN KEY (`receipt_id` , `receipt_user_id`)
-    REFERENCES `Inovin`.`Receipt` (`id` , `user_id`)
+    FOREIGN KEY (`receipt_id`)
+    REFERENCES `Inovin`.`Receipt` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Receipt_has_Wine_Wine1`
