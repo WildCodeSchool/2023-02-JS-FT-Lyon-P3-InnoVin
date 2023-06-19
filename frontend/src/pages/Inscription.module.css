@@ -1,0 +1,19 @@
+* {
+  margin: 0;
+  padding: 0;
+  background-color: #202020;
+}
+
+h1 {
+  position: absolute;
+  width: 205px;
+  height: 57px;
+  left: 290px;
+  top: 31px;
+  font-family: "Playfair Display";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 53px;
+  color: #d8b024;
+}
