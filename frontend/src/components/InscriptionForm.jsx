@@ -1,7 +1,40 @@
 import { useFormik } from "formik";
+import * as Yup from "yup";
 import styles from "./InscriptionForm.module.css";
 
 export default function InscriptionForm() {
+  Yup.object({
+    firstName: Yup.string()
+      .max(15, "Must be 15 characters or less")
+      .required("Required"),
+    lastName: Yup.string()
+      .max(20, "Must be 20 characters or less")
+      .required("Required"),
+    email: Yup.string().email("Invalname email address").required("Required"),
+    password: Yup.string()
+      .max(20, "Must be 20 characters or less")
+      .required("Required"),
+    confirmPassword: Yup.string()
+      .max(20, "Must be 20 characters or less")
+      .required("Required"),
+    birthday: Yup.date().required("Required"),
+    street: Yup.string()
+      .max(20, "Must be 20 characters or less")
+      .required("Required"),
+    postcode: Yup.number()
+      .max(20, "Must be 20 characters or less")
+      .required("Required"),
+    city: Yup.string()
+      .max(20, "Must be 20 characters or less")
+      .required("Required"),
+    flavor: Yup.string()
+      .max(20, "Must be 20 characters or less")
+      .required("Required"),
+    aroma: Yup.string()
+      .max(20, "Must be 20 characters or less")
+      .required("Required"),
+  });
+
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -13,11 +46,15 @@ export default function InscriptionForm() {
       street: "",
       postcode: "",
       city: "",
-      saveur: "",
-      arôme: "",
+      flavor: "",
+      aroma: "",
     },
-    onSubmit:values =>
+
+    onSubmit: (values) => {
+      alert(values);
+    },
   });
+
   return (
     <div>
       <form onSubmit={formik.handleSubmit}>
@@ -25,18 +62,20 @@ export default function InscriptionForm() {
           <div className={styles.inputContainer}>
             <label htmlFor="firstName">Prénom</label>
             <input
-              id="firstName"
               name="firstName"
+              type="text"
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               value={formik.values.firstName}
             />
           </div>
           <div className={styles.inputContainer}>
             <label htmlFor="lastName">Nom</label>
             <input
-              id="lastName"
               name="lastName"
+              type="text"
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               value={formik.values.lastName}
             />
           </div>
@@ -44,28 +83,30 @@ export default function InscriptionForm() {
         <div className={styles.inputContainer}>
           <label htmlFor="email">Email</label>
           <input
-            id="email"
             name="email"
             type="email"
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             value={formik.values.email}
           />
         </div>
         <div className={styles.inputContainer}>
           <label htmlFor="password">Mot de passe</label>
           <input
-            id="password"
             name="password"
+            type="password"
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             value={formik.values.password}
           />
         </div>
         <div className={styles.inputContainer}>
           <label htmlFor="confrimPassword">Confirmation mot de passe</label>
           <input
-            id="confirmPassword"
             name="confirmPassword"
+            type="confirmPassword"
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             value={formik.values.confirmPassword}
           />
         </div>
@@ -73,80 +114,88 @@ export default function InscriptionForm() {
           <div className={styles.inputContainer}>
             <label htmlFor="birthday">Date de naissance</label>
             <input
-              id="birthday"
               name="birthday"
+              type="date"
               onChange={formik.handleChange}
-              value={formik.values.birthday}
+              value={formik.date}
             />
           </div>
         </div>
         <div className={styles.inputContainer}>
           <label htmlFor="street">Numéro et rue</label>
           <input
-            id="street"
             name="street"
+            type="street"
             onChange={formik.handleChange}
-            value={formik.values.street}
+            onBlur={formik.handleBlur}
+            value={formik.values.date}
           />
         </div>
         <div className={styles.streetContainer}>
           <div className={styles.inputContainer}>
             <label htmlFor="postcode">Code Postal</label>
             <input
-              id="postcode"
               name="postcode"
+              type="postcode"
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               value={formik.values.postcode}
             />
           </div>
           <div className={styles.inputContainer}>
             <label htmlFor="city">Ville</label>
             <input
-              id="city"
               name="city"
+              type="city"
               onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               value={formik.values.city}
             />
           </div>
         </div>
+        {/*      <div id="checkbox-group">Checked</div>
+          <div role="group" aria-labelledby="checkbox-group">
+            <label>
+              <Field type="checkbox" name="checked" value="One" />
+              One
+            </label>
+            <label>
+              <Field type="checkbox" name="checked" value="Two" />
+              Two
+            </label>
+            <label>
+              <Field type="checkbox" name="checked" value="Three" />
+              Three
+            </label>
+  </div> */}
 
         <div className={styles.preferContainer}>
           <h2>Vos préférences</h2>
-          <div className={styles.buttonContainer}>
-            <button className={styles.rouge} type="submit">
-              Rouge
-            </button>
-            <button className={styles.rose} type="submit">
-              {" "}
-              Rosé
-            </button>
-            <button className={styles.white} type="submit">
-              {" "}
-              Blanc
-            </button>
-          </div>
+          <div className={styles.buttonContainer} />
         </div>
 
         <div className={styles.inputContainer}>
-          <label htmlFor="saveur">Saveur</label>
+          <label htmlFor="flavor">Saveur</label>
           <input
-            id="saveur"
-            name="saveur"
+            name="flavor"
+            type="select"
             onChange={formik.handleChange}
-            value={formik.values.saveur}
+            onBlur={formik.handleBlur}
+            value={formik.values.flavor}
           />
         </div>
         <div className={styles.inputContainer}>
           <label htmlFor="arôme">Arôme</label>
           <input
-            id="arôme"
-            name="arôme"
+            name="aroma"
+            type="aroma"
             onChange={formik.handleChange}
-            value={formik.values.arôme}
+            onBlur={formik.handleBlur}
+            value={formik.values.aroma}
           />
         </div>
         <button className={styles.submitButton} type="submit">
-          Valider
+          Valider{" "}
         </button>
       </form>
     </div>
