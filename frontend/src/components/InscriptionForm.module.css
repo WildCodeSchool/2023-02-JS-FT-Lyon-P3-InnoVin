@@ -23,7 +23,7 @@ form {
   flex-direction: column;
   align-items: flex-start;
 }
-.inputContainer input{
+.inputContainer input {
   width: 604px;
   height: 73.58px;
   background: #fffdcc;
@@ -36,7 +36,7 @@ form {
   line-height: 43px;
   color: black;
 }
-.inputContainer select{
+.inputContainer select {
   width: 604px;
   height: 73.58px;
   background: #fffdcc;
@@ -50,7 +50,7 @@ form {
   color: black;
 }
 
-.inputContainer select option{
+.inputContainer select option {
   font-size: 20px;
 }
 /*User informations container*/
@@ -107,13 +107,13 @@ form {
 }
 
 /*buttonswine*/
-.buttonswineContainer{
+.buttonswineContainer {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
 }
-.redwine{
-  background-image: url('https://cdn.pixabay.com/photo/2016/01/14/20/23/grape-1140715_1280.jpg');
+.redwine {
+  background-image: url("https://cdn.pixabay.com/photo/2016/01/14/20/23/grape-1140715_1280.jpg");
   background-size: cover;
   background-position: center;
   display: flex;
@@ -122,34 +122,31 @@ form {
 
   width: 190px;
   height: 100px;
-  color: #FFFDCC;
-
+  color: #fffdcc;
 }
 
-.redwine input{
+.redwine input {
   display: none;
 }
-.rosewine{
-  background-image: url('https://cdn.pixabay.com/photo/2018/10/12/11/43/grapes-3741999_1280.jpg');
+.rosewine {
+  background-image: url("https://cdn.pixabay.com/photo/2018/10/12/11/43/grapes-3741999_1280.jpg");
   background-size: cover;
   background-position: center;
   display: flex;
   justify-content: center;
   align-items: center;
- text-align: center;
+  text-align: center;
   width: 190px;
   height: 100px;
-  color: #FFFDCC;
-
+  color: #fffdcc;
 }
 
-.rosewine input{
+.rosewine input {
   display: none;
-  
 }
 
-.whitewine{
-  background-image: url('https://cdn.pixabay.com/photo/2016/09/22/23/50/grape-1688607_1280.jpg');
+.whitewine {
+  background-image: url("https://cdn.pixabay.com/photo/2016/09/22/23/50/grape-1688607_1280.jpg");
   background-size: cover;
   background-position: center;
   display: flex;
@@ -157,10 +154,10 @@ form {
   align-items: center;
   width: 190px;
   height: 100px;
-  color: #FFFDCC;
+  color: #fffdcc;
 }
 
-.whitewine input{
+.whitewine input {
   display: none;
 }
 
@@ -173,7 +170,10 @@ form {
   margin-top: 20px;
   margin-bottom: 20px;
   font-style: normal;
-font-weight: 400;
-font-size: 32px;
-line-height: 43px;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 43px;
+}
+.error {
+  color: #c42727;
 }

@@ -1,5 +1,6 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { differenceInYears, parse } from "date-fns";
 
 import styles from "./InscriptionForm.module.css";
 
@@ -51,6 +52,22 @@ export default function InscriptionForm() {
       aroma: "",
     },
 
+    validate: (values) => {
+      const errors = {};
+
+      if (values.birthday) {
+        const currentDate = new Date();
+        const selectedDate = parse(values.birthday, "yyyy-MM-dd", new Date());
+
+        const age = differenceInYears(currentDate, selectedDate);
+
+        if (age < 18) {
+          errors.birthday = "Vous devez avoir au moins 18 ans";
+        }
+      }
+
+      return errors;
+    },
     onSubmit: (values) => {
       alert(values);
     },
@@ -114,8 +131,11 @@ export default function InscriptionForm() {
               name="birthday"
               type="date"
               onChange={formik.handleChange}
-              value={formik.date}
+              value={formik.values.birthday}
             />
+            {formik.errors.birthday && (
+              <div className={styles.error}>{formik.errors.birthday}</div>
+            )}
           </div>
         </div>
         <div className={styles.inputContainer}>
