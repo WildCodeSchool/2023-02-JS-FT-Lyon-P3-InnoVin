@@ -23,7 +23,20 @@ form {
   flex-direction: column;
   align-items: flex-start;
 }
-.inputContainer input {
+.inputContainer input{
+  width: 604px;
+  height: 73.58px;
+  background: #fffdcc;
+  border: 1px solid #5f5353;
+  border-radius: 10px;
+  padding-left: 5px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 43px;
+  color: black;
+}
+.inputContainer select{
   width: 604px;
   height: 73.58px;
   background: #fffdcc;
@@ -37,6 +50,9 @@ form {
   color: black;
 }
 
+.inputContainer select option{
+  font-size: 20px;
+}
 /*User informations container*/
 
 /*firstname + lastname container*/
@@ -90,24 +106,62 @@ form {
   color: #d8b024;
 }
 
-.buttonContainer {
+/*buttonswine*/
+.buttonswineContainer{
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  width: 618px;
-  height: 100px;
-  margin-bottom: 20px;
+  justify-content: space-around;
 }
+.redwine{
+  background-image: url('https://cdn.pixabay.com/photo/2016/01/14/20/23/grape-1140715_1280.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-button {
   width: 190px;
   height: 100px;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 32px;
-  line-height: 43px;
-  text-align: center;
-  color: #fffdcc;
+  color: #FFFDCC;
+
+}
+
+.redwine input{
+  display: none;
+}
+.rosewine{
+  background-image: url('https://cdn.pixabay.com/photo/2018/10/12/11/43/grapes-3741999_1280.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ text-align: center;
+  width: 190px;
+  height: 100px;
+  color: #FFFDCC;
+
+}
+
+.rosewine input{
+  display: none;
+  
+}
+
+.whitewine{
+  background-image: url('https://cdn.pixabay.com/photo/2016/09/22/23/50/grape-1688607_1280.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 190px;
+  height: 100px;
+  color: #FFFDCC;
+}
+
+.whitewine input{
+  display: none;
 }
 
 /*submit button*/
@@ -118,4 +172,8 @@ button {
   border-radius: 10px;
   margin-top: 20px;
   margin-bottom: 20px;
+  font-style: normal;
+font-weight: 400;
+font-size: 32px;
+line-height: 43px;
 }

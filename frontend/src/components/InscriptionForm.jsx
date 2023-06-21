@@ -1,7 +1,6 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import Radiogroup from "@components/Radiogroup";
-import { MenuItem, TextField } from "@mui/material";
+
 import styles from "./InscriptionForm.module.css";
 
 export default function InscriptionForm() {
@@ -48,7 +47,6 @@ export default function InscriptionForm() {
       street: "",
       postcode: "",
       city: "",
-      buttons: "",
       flavor: "",
       aroma: "",
     },
@@ -64,11 +62,10 @@ export default function InscriptionForm() {
         <div className={styles.nameContainer}>
           <div className={styles.inputContainer}>
             <label htmlFor="firstName">Prénom</label>
-            <TextField
+            <input
               name="firstName"
               type="text"
               onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
               value={formik.values.firstName}
             />
           </div>
@@ -78,7 +75,6 @@ export default function InscriptionForm() {
               name="lastName"
               type="text"
               onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
               value={formik.values.lastName}
             />
           </div>
@@ -99,7 +95,6 @@ export default function InscriptionForm() {
             name="password"
             type="password"
             onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
             value={formik.values.password}
           />
         </div>
@@ -109,7 +104,6 @@ export default function InscriptionForm() {
             name="confirmPassword"
             type="confirmPassword"
             onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
             value={formik.values.confirmPassword}
           />
         </div>
@@ -130,7 +124,6 @@ export default function InscriptionForm() {
             name="street"
             type="street"
             onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
             value={formik.values.date}
           />
         </div>
@@ -141,7 +134,6 @@ export default function InscriptionForm() {
               name="postcode"
               type="postcode"
               onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
               value={formik.values.postcode}
             />
           </div>
@@ -151,7 +143,6 @@ export default function InscriptionForm() {
               name="city"
               type="city"
               onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
               value={formik.values.city}
             />
           </div>
@@ -159,36 +150,75 @@ export default function InscriptionForm() {
 
         <div className={styles.preferContainer}>
           <h2>Vos préférences</h2>
-          <div className={styles.buttonContainer} />
+          <div className={styles.buttonswineContainer}>
+            <div className={styles.redwine}>
+              <label>
+                <input
+                  type="radio"
+                  name="wine"
+                  value="rouge"
+                  checked={formik.values.wine === "rouge"}
+                  onChange={formik.handleChange}
+                />
+                Rouge
+              </label>
+            </div>
+            <div className={styles.rosewine}>
+              <label>
+                <input
+                  type="radio"
+                  name="wine"
+                  value="rosé"
+                  checked={formik.values.wine === "rosé"}
+                  onChange={formik.handleChange}
+                />
+                Rosé
+              </label>
+            </div>
+            <div className={styles.whitewine}>
+              <label>
+                <input
+                  type="radio"
+                  name="wine"
+                  value="blanc"
+                  checked={formik.values.wine === "blanc"}
+                  onChange={formik.handleChange}
+                />
+                Blanc
+              </label>
+            </div>
+          </div>
+          <div className={styles.inputContainer}>
+            <label htmlFor="flavor">Saveur</label>
+            <select
+              name="flavor"
+              onChange={formik.handleChange}
+              value={formik.values.flavor}
+              type="select"
+            >
+              <option value="">Sélectionner une saveur </option>
+              <option value="choix1">choix1 </option>
+              <option value="choix2">choix2 </option>
+              <option value="choix3">choix3 </option>
+              <option value="choix4">choix4 </option>
+            </select>
+          </div>
+          <div className={styles.inputContainer}>
+            <label htmlFor="arôme">Arôme</label>
+            <select
+              name="aroma"
+              onChange={formik.handleChange}
+              value={formik.values.aroma}
+              type="select"
+            >
+              <option value="">Sélectionner un arôme </option>
+              <option value="choix1">choix1 </option>
+              <option value="choix2">choix2 </option>
+              <option value="choix3">choix3 </option>
+              <option value="choix4">choix4 </option>
+            </select>
+          </div>
         </div>
-        <Radiogroup
-          value={formik.values.buttons}
-          onChange={formik.handleChange}
-        />
-
-        <div className={styles.inputContainer}>
-          <label htmlFor="flavor">Saveur</label>
-          <TextField
-            name="flavor"
-            onChange={formik.handleChange}
-            value={formik.values.flavor}
-            select
-          >
-            <MenuItem value="">Sélectionner un arôme </MenuItem>
-            <MenuItem value="choix1">choix1 </MenuItem>
-          </TextField>
-        </div>
-        <div className={styles.inputContainer}>
-          <label htmlFor="arôme">Arôme</label>
-          <input
-            name="aroma"
-            type="aroma"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.aroma}
-          />
-        </div>
-
         <button className={styles.submitButton} type="submit">
           Valider{" "}
         </button>
