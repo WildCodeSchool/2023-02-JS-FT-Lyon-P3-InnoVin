@@ -1,5 +1,7 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import Radiogroup from "@components/Radiogroup";
+import { MenuItem, TextField } from "@mui/material";
 import styles from "./InscriptionForm.module.css";
 
 export default function InscriptionForm() {
@@ -46,6 +48,7 @@ export default function InscriptionForm() {
       street: "",
       postcode: "",
       city: "",
+      buttons: "",
       flavor: "",
       aroma: "",
     },
@@ -61,7 +64,7 @@ export default function InscriptionForm() {
         <div className={styles.nameContainer}>
           <div className={styles.inputContainer}>
             <label htmlFor="firstName">Prénom</label>
-            <input
+            <TextField
               name="firstName"
               type="text"
               onChange={formik.handleChange}
@@ -153,36 +156,27 @@ export default function InscriptionForm() {
             />
           </div>
         </div>
-        {/*      <div id="checkbox-group">Checked</div>
-          <div role="group" aria-labelledby="checkbox-group">
-            <label>
-              <Field type="checkbox" name="checked" value="One" />
-              One
-            </label>
-            <label>
-              <Field type="checkbox" name="checked" value="Two" />
-              Two
-            </label>
-            <label>
-              <Field type="checkbox" name="checked" value="Three" />
-              Three
-            </label>
-  </div> */}
 
         <div className={styles.preferContainer}>
           <h2>Vos préférences</h2>
           <div className={styles.buttonContainer} />
         </div>
+        <Radiogroup
+          value={formik.values.buttons}
+          onChange={formik.handleChange}
+        />
 
         <div className={styles.inputContainer}>
           <label htmlFor="flavor">Saveur</label>
-          <input
+          <TextField
             name="flavor"
-            type="select"
             onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
             value={formik.values.flavor}
-          />
+            select
+          >
+            <MenuItem value="">Sélectionner un arôme </MenuItem>
+            <MenuItem value="choix1">choix1 </MenuItem>
+          </TextField>
         </div>
         <div className={styles.inputContainer}>
           <label htmlFor="arôme">Arôme</label>
@@ -194,6 +188,7 @@ export default function InscriptionForm() {
             value={formik.values.aroma}
           />
         </div>
+
         <button className={styles.submitButton} type="submit">
           Valider{" "}
         </button>
