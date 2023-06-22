@@ -5,12 +5,12 @@ h1 {
   font-size: 40px;
   line-height: 53px;
   color: #d8b024;
+  margin-right: 200px;
 }
 .inscriptionTitle {
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
   width: 100vw;
 }
 .inscriptionFormContainer {

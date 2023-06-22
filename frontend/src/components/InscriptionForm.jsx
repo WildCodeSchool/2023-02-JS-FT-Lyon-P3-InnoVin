@@ -20,6 +20,7 @@ export default function InscriptionForm() {
       .required("Obligatoire"),
     confirmPassword: Yup.string()
       .max(20, "Must be 20 characters or less")
+      .oneOf([Yup.ref("password"), null], "Le mot de passe doit être identique")
       .required("Obligatoire"),
     birthday: Yup.date().required("Obligatoire"),
     street: Yup.string()
@@ -29,8 +30,8 @@ export default function InscriptionForm() {
     city: Yup.string()
       .max(40, "Must be 40 characters or less")
       .required("Obligatoire"),
-    flavor: Yup.boolean(),
-    aroma: Yup.boolean(),
+    flavor: Yup.string(),
+    aroma: Yup.string(),
     wine: Yup.string().required("Obligatoire"),
   });
 
@@ -66,10 +67,10 @@ export default function InscriptionForm() {
 
       return errors;
     },
+
     onSubmit: (values) => {
       alert(values);
     },
-
     validationSchema,
   });
 
@@ -132,7 +133,7 @@ export default function InscriptionForm() {
             <label htmlFor="confrimPassword">Confirmation mot de passe</label>
             <input
               name="confirmPassword"
-              type="confirmPassword"
+              type="password"
               onChange={formik.handleChange}
               value={formik.values.confirmPassword}
             />
@@ -200,7 +201,11 @@ export default function InscriptionForm() {
           <div className={styles.preferContainer}>
             <h2>Vos préférences</h2>
             <div className={styles.buttonswineContainer}>
-              <div className={styles.redwine}>
+              <div
+                className={`${styles.redwine} ${
+                  formik.values.wine === "rouge" ? styles.checked : ""
+                }`}
+              >
                 <label>
                   <input
                     type="radio"
@@ -212,7 +217,11 @@ export default function InscriptionForm() {
                   Rouge
                 </label>
               </div>
-              <div className={styles.rosewine}>
+              <div
+                className={`${styles.rosewine} ${
+                  formik.values.wine === "rosé" ? styles.checked : ""
+                }`}
+              >
                 <label>
                   <input
                     type="radio"
@@ -224,7 +233,11 @@ export default function InscriptionForm() {
                   Rosé
                 </label>
               </div>
-              <div className={styles.whitewine}>
+              <div
+                className={`${styles.whitewine} ${
+                  formik.values.wine === "blanc" ? styles.checked : ""
+                }`}
+              >
                 <label>
                   <input
                     type="radio"
@@ -271,6 +284,7 @@ export default function InscriptionForm() {
               </select>
             </div>
           </div>
+
           <button className={styles.submitButton} type="submit">
             Valider{" "}
           </button>
