@@ -9,7 +9,13 @@ export default function Presentation() {
   const navigate = useNavigate();
 
   const style = {
-    button: { p: 2, width: 0.3, borderRadius: 2 },
+    button: {
+      p: 2,
+      width: 0.3,
+      minWidth: "140px",
+      maxWidth: "350px",
+      borderRadius: 2,
+    },
   };
 
   return (
@@ -26,10 +32,24 @@ export default function Presentation() {
         spacing={2}
         sx={{ width: 1, height: 0.75 }}
       >
-        <Typography variant="h2" sx={{ color: "secondary.main" }}>
+        <Typography
+          variant="h2"
+          sx={{
+            color: "secondary.main",
+            fontSize: "calc(2rem + 1vmin)",
+            textAlign: "center",
+          }}
+        >
           Bienvenue à l'atelier Inovin
         </Typography>
-        <Typography variant="body1" fontSize={24} sx={{ width: 0.7 }}>
+        <Typography
+          variant="body1"
+          sx={{
+            width: 0.7,
+            fontSize: "calc(0.75rem + 1vmin)",
+            overflow: "auto",
+          }}
+        >
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras auctor
           lobortis dolor nec interdum. Duis non porttitor nibh, nec malesuada
           justo. Aliquam placerat consectetur ullamcorper. Vestibulum ultrices
@@ -52,7 +72,10 @@ export default function Presentation() {
             sx={style.button}
             onClick={() => navigate("/register")}
           >
-            <Typography variant="button" fontSize={24}>
+            <Typography
+              variant="button"
+              sx={{ fontSize: "calc(10px + 1vmin)" }}
+            >
               S'inscrire
             </Typography>
           </Button>
@@ -62,7 +85,10 @@ export default function Presentation() {
             sx={style.button}
             onClick={() => navigate("/login")}
           >
-            <Typography variant="button" fontSize={24}>
+            <Typography
+              variant="button"
+              sx={{ fontSize: "calc(10px + 1vmin)" }}
+            >
               Se connecter
             </Typography>
           </Button>

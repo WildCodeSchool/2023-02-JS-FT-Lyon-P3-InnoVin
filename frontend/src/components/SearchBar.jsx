@@ -17,6 +17,7 @@ export default function SearchBar() {
         alignItems: "center",
         width: 0.5,
         backgroundColor: "text.primary",
+        marginBlock: "10px",
       }}
     >
       <InputBase
