@@ -1,38 +1,40 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { differenceInYears, parse } from "date-fns";
+import { toast } from "react-toastify";
+import { Typography, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import rouge from "../assets/redwinepicture.png";
+import rose from "../assets/rosewinepicture.png";
+import blanc from "../assets/whitewinepicture.png";
 
 import styles from "./InscriptionForm.module.css";
 
 export default function InscriptionForm() {
+  const navigate = useNavigate();
+
   const validationSchema = Yup.object({
     firstName: Yup.string()
       .max(15, "Must be 15 characters or less")
-      .required("Obligatoire"),
+      .required("*"),
     lastName: Yup.string()
       .max(20, "Must be 20 characters or less")
-      .required("Obligatoire"),
-    email: Yup.string()
-      .email("Invalname email address")
-      .required("Obligatoire"),
+      .required("*"),
+    email: Yup.string().email("Invalname email address").required("*"),
     password: Yup.string()
       .max(20, "Must be 20 characters or less")
-      .required("Obligatoire"),
+      .required("*"),
     confirmPassword: Yup.string()
       .max(20, "Must be 20 characters or less")
       .oneOf([Yup.ref("password"), null], "Le mot de passe doit être identique")
-      .required("Obligatoire"),
-    birthday: Yup.date().required("Obligatoire"),
-    street: Yup.string()
-      .max(20, "Must be 20 characters or less")
-      .required("Obligatoire"),
-    postcode: Yup.number().integer().required("Obligatoire"),
-    city: Yup.string()
-      .max(40, "Must be 40 characters or less")
-      .required("Obligatoire"),
-    flavor: Yup.string(),
-    aroma: Yup.string(),
-    wine: Yup.string().required("Obligatoire"),
+      .required("*"),
+    birthday: Yup.date().required("*"),
+    street: Yup.string().max(20, "Must be 20 characters or less").required("*"),
+    postcode: Yup.number().integer().required("*"),
+    city: Yup.string().max(40, "Must be 40 characters or less").required("*"),
+    flavor: Yup.string().required("*"),
+    aroma: Yup.string().required("*"),
+    wine: Yup.string().required("*"),
   });
 
   const formik = useFormik({
@@ -50,7 +52,7 @@ export default function InscriptionForm() {
       aroma: "",
       wine: "",
     },
-
+    validationSchema,
     validate: (values) => {
       const errors = {};
 
@@ -67,45 +69,71 @@ export default function InscriptionForm() {
 
       return errors;
     },
-
     onSubmit: (values) => {
       alert(values);
+      navigate("/tasting");
     },
-    validationSchema,
   });
 
+  const style = {
+    button: { p: 2, width: 0.9, borderRadius: 2 },
+  };
+  const handleClick = () => {
+    if (formik.errors) {
+      toast.error("Champ manquant", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    }
+  };
   return (
     <div>
       <form onSubmit={formik.handleSubmit}>
         <div className={styles.informationsContainer}>
           <div className={styles.nameContainer}>
             <div className={styles.inputContainer}>
-              <label htmlFor="firstName">Prénom</label>
+              <div className={styles.labelErroContainer}>
+                <label htmlFor="firstName">Prénom</label>
+                {formik.touched.firstName && formik.errors.firstName && (
+                  <div className={styles.error}>{formik.errors.firstName}</div>
+                )}
+              </div>
               <input
                 name="firstName"
                 type="text"
                 onChange={formik.handleChange}
                 value={formik.values.firstName}
               />
-              {formik.touched.firstName && formik.errors.firstName && (
-                <div className={styles.error}>{formik.errors.firstName}</div>
-              )}
             </div>
             <div className={styles.inputContainer}>
-              <label htmlFor="lastName">Nom</label>
+              <div className={styles.labelErroContainer}>
+                <label htmlFor="lastName">Nom</label>
+                {formik.touched.firstName && formik.errors.lastName && (
+                  <div className={styles.error}>{formik.errors.lastName}</div>
+                )}
+              </div>
+
               <input
                 name="lastName"
                 type="text"
                 onChange={formik.handleChange}
                 value={formik.values.lastName}
               />
-              {formik.touched.firstName && formik.errors.lastName && (
-                <div className={styles.error}>{formik.errors.lastName}</div>
-              )}
             </div>
           </div>
           <div className={styles.inputContainer}>
-            <label htmlFor="email">Email</label>
+            <div className={styles.labelErroContainer}>
+              <label htmlFor="email">Email</label>
+              {formik.touched.email && formik.errors.email && (
+                <div className={styles.error}>{formik.errors.email}</div>
+              )}{" "}
+            </div>
             <input
               name="email"
               type="email"
@@ -113,148 +141,177 @@ export default function InscriptionForm() {
               onBlur={formik.handleBlur}
               value={formik.values.email}
             />
-            {formik.touched.email && formik.errors.email && (
-              <div className={styles.error}>{formik.errors.email}</div>
-            )}
           </div>
           <div className={styles.inputContainer}>
-            <label htmlFor="password">Mot de passe</label>
+            <div className={styles.labelErroContainer}>
+              <label htmlFor="password">Mot de passe</label>
+              {formik.touched.password && formik.errors.password && (
+                <div className={styles.error}>{formik.errors.password}</div>
+              )}{" "}
+            </div>
             <input
               name="password"
               type="password"
               onChange={formik.handleChange}
               value={formik.values.password}
             />
-            {formik.touched.password && formik.errors.password && (
-              <div className={styles.error}>{formik.errors.password}</div>
-            )}
-          </div>
-          <div className={styles.inputContainer}>
-            <label htmlFor="confrimPassword">Confirmation mot de passe</label>
-            <input
-              name="confirmPassword"
-              type="password"
-              onChange={formik.handleChange}
-              value={formik.values.confirmPassword}
-            />
-            {formik.touched.confirmPassword &&
-              formik.errors.confirmPassword && (
-                <div className={styles.error}>
-                  {formik.errors.confirmPassword}
+
+            <div className={styles.inputContainer}>
+              <div className={styles.labelErroContainer}>
+                <label htmlFor="confrimPassword">
+                  Confirmation mot de passe
+                </label>
+                {formik.touched.confirmPassword &&
+                  formik.errors.confirmPassword && (
+                    <div className={styles.error}>
+                      {formik.errors.confirmPassword}
+                    </div>
+                  )}{" "}
+              </div>
+              <input
+                name="confirmPassword"
+                type="password"
+                onChange={formik.handleChange}
+                value={formik.values.confirmPassword}
+              />
+            </div>
+
+            <div className={styles.birthdayContainer}>
+              <div className={styles.inputContainer}>
+                <div className={styles.labelErroContainer}>
+                  <label htmlFor="birthday">Date de naissance</label>
+                  {formik.errors.birthday && (
+                    <div className={styles.error}>{formik.errors.birthday}</div>
+                  )}{" "}
                 </div>
-              )}
-          </div>
-          <div className={styles.birthdayContainer}>
-            <div className={styles.inputContainer}>
-              <label htmlFor="birthday">Date de naissance</label>
-              <input
-                name="birthday"
-                type="date"
-                onChange={formik.handleChange}
-                value={formik.values.birthday}
-              />
-              {formik.errors.birthday && (
-                <div className={styles.error}>{formik.errors.birthday}</div>
-              )}
-            </div>
-          </div>
-          <div className={styles.inputContainer}>
-            <label htmlFor="street">Numéro et rue</label>
-            <input
-              name="street"
-              type="street"
-              onChange={formik.handleChange}
-              value={formik.values.date}
-            />
-            {formik.touched.street && formik.errors.street && (
-              <div className={styles.error}>{formik.errors.street}</div>
-            )}
-          </div>
-          <div className={styles.streetContainer}>
-            <div className={styles.inputContainer}>
-              <label htmlFor="postcode">Code Postal</label>
-              <input
-                name="postcode"
-                type="postcode"
-                onChange={formik.handleChange}
-                value={formik.values.postcode}
-              />
-              {formik.touched.postcode && formik.errors.postcode && (
-                <div className={styles.error}>{formik.errors.postcode}</div>
-              )}
+                <input
+                  name="birthday"
+                  type="date"
+                  onChange={formik.handleChange}
+                  value={formik.values.birthday}
+                />
+              </div>
             </div>
             <div className={styles.inputContainer}>
-              <label htmlFor="city">Ville</label>
+              <div className={styles.labelErroContainer}>
+                <label htmlFor="street">Numéro et rue</label>
+                {formik.touched.street && formik.errors.street && (
+                  <div className={styles.error}>{formik.errors.street}</div>
+                )}{" "}
+              </div>
               <input
-                name="city"
-                type="city"
+                name="street"
+                type="street"
                 onChange={formik.handleChange}
-                value={formik.values.city}
+                value={formik.values.date}
               />
-              {formik.touched.city && formik.errors.city && (
-                <div className={styles.error}>{formik.errors.city}</div>
-              )}
+            </div>
+            <div className={styles.streetContainer}>
+              <div className={styles.inputContainer}>
+                <div className={styles.labelErroContainer}>
+                  <label htmlFor="postcode">Code Postal</label>
+                  {formik.touched.postcode && formik.errors.postcode && (
+                    <div className={styles.error}>{formik.errors.postcode}</div>
+                  )}{" "}
+                </div>
+                <input
+                  name="postcode"
+                  type="postcode"
+                  onChange={formik.handleChange}
+                  value={formik.values.postcode}
+                />
+              </div>
+              <div className={styles.inputContainer}>
+                <div className={styles.labelErroContainer}>
+                  <label htmlFor="city">Ville</label>
+                  {formik.touched.city && formik.errors.city && (
+                    <div className={styles.error}>{formik.errors.city}</div>
+                  )}{" "}
+                </div>
+                <input
+                  name="city"
+                  type="city"
+                  onChange={formik.handleChange}
+                  value={formik.values.city}
+                />
+              </div>
             </div>
           </div>
         </div>
         <div className={styles.bottomFormContainer}>
           <div className={styles.preferContainer}>
             <h2>Vos préférences</h2>
-            <div className={styles.buttonswineContainer}>
-              <div
-                className={`${styles.redwine} ${
-                  formik.values.wine === "rouge" ? styles.checked : ""
-                }`}
-              >
-                <label>
-                  <input
-                    type="radio"
-                    name="wine"
-                    value="rouge"
-                    checked={formik.values.wine === "rouge"}
-                    onChange={formik.handleChange}
-                  />
-                  Rouge
-                </label>
-              </div>
-              <div
-                className={`${styles.rosewine} ${
-                  formik.values.wine === "rosé" ? styles.checked : ""
-                }`}
-              >
-                <label>
-                  <input
-                    type="radio"
-                    name="wine"
-                    value="rosé"
-                    checked={formik.values.wine === "rosé"}
-                    onChange={formik.handleChange}
-                  />
-                  Rosé
-                </label>
-              </div>
-              <div
-                className={`${styles.whitewine} ${
-                  formik.values.wine === "blanc" ? styles.checked : ""
-                }`}
-              >
-                <label>
-                  <input
-                    type="radio"
-                    name="wine"
-                    value="blanc"
-                    checked={formik.values.wine === "blanc"}
-                    onChange={formik.handleChange}
-                  />
-                  Blanc
-                </label>
+            <div className={styles.winelabelError}>
+              {formik.touched.wine && formik.errors.wine && (
+                <div className={styles.error}>{formik.errors.wine}</div>
+              )}
+              <div className={styles.buttonswineContainer}>
+                <div
+                  className={`${styles.redwine} ${
+                    formik.values.wine === "rouge"
+                      ? styles.checked
+                      : styles.disabled
+                  }`}
+                  style={{ backgroundImage: `url(${rouge})` }}
+                >
+                  <label>
+                    <input
+                      type="radio"
+                      name="wine"
+                      value="rouge"
+                      checked={formik.values.wine === "rouge"}
+                      onChange={formik.handleChange}
+                    />
+                    Rouge
+                  </label>
+                </div>
+                <div
+                  className={`${styles.rosewine} ${
+                    formik.values.wine === "rosé"
+                      ? styles.checked
+                      : styles.disabled
+                  }`}
+                  style={{ backgroundImage: `url(${rose})` }}
+                >
+                  <label>
+                    <input
+                      type="radio"
+                      name="wine"
+                      value="rosé"
+                      checked={formik.values.wine === "rosé"}
+                      onChange={formik.handleChange}
+                    />
+                    Rosé
+                  </label>
+                </div>
+                <div
+                  className={`${styles.whitewine} ${
+                    formik.values.wine === "blanc"
+                      ? styles.checked
+                      : styles.disabled
+                  }`}
+                  style={{ backgroundImage: `url(${blanc})` }}
+                >
+                  <label>
+                    <input
+                      type="radio"
+                      name="wine"
+                      value="blanc"
+                      checked={formik.values.wine === "blanc"}
+                      onChange={formik.handleChange}
+                    />
+                    Blanc
+                  </label>
+                </div>
               </div>
             </div>
-            {formik.touched.wine && formik.errors.wine && (
-              <div className={styles.error}>{formik.errors.wine}</div>
-            )}
             <div className={styles.inputContainer}>
-              <label htmlFor="flavor">Saveur</label>
+              <div className={styles.labelErroContainer}>
+                <label htmlFor="flavor">Saveur</label>
+                {formik.touched.flavor && formik.errors.flavor && (
+                  <div className={styles.error}>{formik.errors.flavor}</div>
+                )}{" "}
+              </div>
               <select
                 name="flavor"
                 onChange={formik.handleChange}
@@ -269,7 +326,12 @@ export default function InscriptionForm() {
               </select>
             </div>
             <div className={styles.inputContainer}>
-              <label htmlFor="arôme">Arôme</label>
+              <div className={styles.labelErroContainer}>
+                <label htmlFor="arôme">Arôme</label>
+                {formik.touched.aroma && formik.errors.aroma && (
+                  <div className={styles.error}>{formik.errors.aroma}</div>
+                )}
+              </div>
               <select
                 name="aroma"
                 onChange={formik.handleChange}
@@ -284,10 +346,19 @@ export default function InscriptionForm() {
               </select>
             </div>
           </div>
-
-          <button className={styles.submitButton} type="submit">
-            Valider{" "}
-          </button>
+        </div>
+        <div className={styles.submitButton}>
+          <Button
+            type="submit"
+            variant="contained"
+            size="large"
+            sx={style.button}
+            onClick={handleClick}
+          >
+            <Typography variant="button" fontSize={24}>
+              Valider{" "}
+            </Typography>
+          </Button>
         </div>
       </form>
     </div>

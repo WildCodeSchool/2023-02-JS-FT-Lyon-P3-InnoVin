@@ -8,7 +8,7 @@
 form {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   font-style: normal;
   font-weight: 400;
@@ -16,11 +16,15 @@ form {
   line-height: 43px;
   color: #d8b024;
 }
-
+.labelErroContainer {
+  display: flex;
+  flex-direction: row;
+}
 .inputContainer {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  margin-block: 10px;
 }
 .inputContainer input {
   width: 604px;
@@ -28,7 +32,8 @@ form {
   background: #fffdcc;
   border: 1px solid #5f5353;
   border-radius: 10px;
-  padding-left: 5px;
+  padding-inline: 10px;
+  margin-top: 5px;
   font-style: normal;
   font-weight: 400;
   font-size: 32px;
@@ -66,18 +71,18 @@ form {
 .nameContainer input {
   width: 285.94px;
   height: 73.58px;
-  padding-left: 5px;
+  padding-inline: 10px;
 }
 
 /*size birthday input*/
 .birthdayContainer input {
   width: 285.94px;
   height: 73.58px;
+  padding-inline: 10px;
 }
 
 .birthdayContainer {
   width: 604px;
-  padding-left: 5px;
 }
 
 /*CP + street container*/
@@ -91,7 +96,7 @@ form {
 .streetContainer input {
   width: 285.94px;
   height: 73.58px;
-  padding-left: 5px;
+  padding-inline: 10px;
 }
 /*Preferences container*/
 
@@ -105,7 +110,9 @@ form {
   text-align: center;
   color: #d8b024;
 }
-
+.inputContainer select {
+  padding-inline: 10px;
+}
 /*buttonswine*/
 .buttonswineContainer {
   display: flex;
@@ -113,13 +120,12 @@ form {
   justify-content: space-around;
 }
 .redwine {
-  background-image: url("https://cdn.pixabay.com/photo/2016/01/14/20/23/grape-1140715_1280.jpg");
   background-size: cover;
   background-position: center;
   display: flex;
   justify-content: center;
   align-items: center;
-
+  border-radius: 5px;
   width: 190px;
   height: 100px;
   color: #fffdcc;
@@ -131,7 +137,19 @@ form {
 .redwine label:hover {
   cursor: pointer;
 }
-
+.redwine label::before {
+  background-color: black;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  filter: blur(15px);
+}
+.redwine label {
+  position: relative;
+  z-index: 1;
+}
 .rosewine {
   background-image: url("https://cdn.pixabay.com/photo/2018/10/12/11/43/grapes-3741999_1280.jpg");
   background-size: cover;
@@ -143,8 +161,21 @@ form {
   width: 190px;
   height: 100px;
   color: #fffdcc;
+  border-radius: 5px;
 }
-
+.rosewine label::before {
+  background-color: black;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  filter: blur(15px);
+}
+.rosewine label {
+  position: relative;
+  z-index: 1;
+}
 .rosewine input {
   display: none;
 }
@@ -162,8 +193,21 @@ form {
   width: 190px;
   height: 100px;
   color: #fffdcc;
+  border-radius: 5px;
 }
-
+.whitewine label::before {
+  background-color: black;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  filter: blur(15px);
+}
+.whitewine label {
+  position: relative;
+  z-index: 1;
+}
 .whitewine input {
   display: none;
 }
@@ -175,7 +219,6 @@ form {
 .submitButton {
   width: 263px;
   height: 73px;
-  background: #c42727;
   border-radius: 10px;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -193,32 +236,43 @@ form {
   flex-direction: column;
   align-items: center;
 }
-.checked {
-  box-shadow: 10px 5px 5px #fffdcc;
+
+.disabled {
+  filter: grayscale(100%);
 }
 
-@media screen and (min-width: 1240px) {
+@media screen and (min-width: 1477px) {
   form {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    width: 80vw;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 250px;
     height: 80vh;
   }
   .informationsContainer {
-    height: 80vh;
+    height: 50vh;
+  }
+  .middleFormContainer {
+    height: 50vh;
   }
   .bottomFormContainer {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    height: 80vh;
+    height: 50vh;
   }
+
   .preferContainer h2 {
     margin-top: 0;
   }
   .submitButton {
-    margin-top: 100px;
+    grid-column-start: 2;
+    grid-column-end: 3;
+    align-self: center;
+    justify-self: center;
+  }
+  .bottomFormContainer {
+    grid-column-start: 2;
+    grid-column-end: 3;
   }
 }
