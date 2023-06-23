@@ -69,8 +69,7 @@ export default function InscriptionForm() {
 
       return errors;
     },
-    onSubmit: (values) => {
-      alert(values);
+    onSubmit: () => {
       navigate("/tasting");
     },
   });
