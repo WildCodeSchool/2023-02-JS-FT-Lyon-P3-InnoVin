@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`Aroma` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-
+INSERT INTO Aroma (name) VALUES ("Fruits");
 -- -----------------------------------------------------
 -- Table `Inovin`.`Flavour`
 -- -----------------------------------------------------
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`Flavour` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-
+INSERT INTO Flavour (name) VALUES ("Acidité");
 -- -----------------------------------------------------
 -- Table `Inovin`.`Type`
 -- -----------------------------------------------------
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`Type` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-
+INSERT INTO Inovin.Type (name) VALUES ('Blanc'), ('Rouge'), ('Rosé');
 -- -----------------------------------------------------
 -- Table `Inovin`.`User`
 -- -----------------------------------------------------
@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`User` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
+INSERT INTO User (aroma_id, flavour_id, type_id, firstname, lastname, birthdate, email, hashed_password, address, city, role) VALUES (0, 0, 0, "Yann", "Richard", "1989-07-12", "yann.richard9@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$cXFnN2s1ZHU0aTAwMDAwMA$XFP3Vrp4/huxiy9p4p2EAw", "Rue de l'exemple", "Lyon", "User");
 -- -----------------------------------------------------
 -- Table `Inovin`.`Country`
 -- -----------------------------------------------------
