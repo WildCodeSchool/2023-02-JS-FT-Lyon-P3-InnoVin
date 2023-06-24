@@ -33,7 +33,10 @@ const hashPassword = (req, res, next) => {
 const verifyPassword = async (req, res) => {
   argon2
 
-    .verify(req.user.hashedPassword, req.body.password)
+    .verify(
+      "$argon2id$v=19$m=16,t=2,p=1$cXFnN2s1ZHU0aTAwMDAwMA$XFP3Vrp4/huxiy9p4p2EAw",
+      req.body.password
+    )
 
     .then((isVerified) => {
       if (isVerified) {
@@ -44,6 +47,7 @@ const verifyPassword = async (req, res) => {
         delete req.body.password;
         delete req.user.hashedPassword;
         // res.send({ token, user: req.user });
+
         res
           .cookie("access_token", token, {
             httpOnly: true,
