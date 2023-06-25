@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 const mysql = require("mysql2/promise");
 
 // create a connection pool to the database
@@ -38,7 +36,6 @@ const UserManager = require("./UserManager");
 
 models.user = new UserManager();
 models.user.setDatabase(pool);
-
 // bonus: use a proxy to personalize error message,
 // when asking for a non existing model
 
