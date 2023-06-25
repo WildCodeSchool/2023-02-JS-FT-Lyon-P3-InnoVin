@@ -2,6 +2,14 @@ const express = require("express");
 
 const router = express.Router();
 
+const { verifyPassword } = require("./services/auth");
+
+const { getUserByEmailMiddleWare } = require("./controllers/authControllers");
+
+// Public routes
+// Auth
+router.post("/login", getUserByEmailMiddleWare, verifyPassword);
+
 const itemControllers = require("./controllers/itemControllers");
 
 router.get("/items", itemControllers.browse);

@@ -5,43 +5,43 @@ class UserManager extends AbstractManager {
     super({ table: "User" });
   }
 
+  // Override
+  find(id) {
+    return this.database.query(
+      `select id, firstname, lastname, email, birthdate, address, city, role, aroma_id, flavour_id from  ${this.table} where id = ?`,
+      [id]
+    );
+  }
+
+  // Override
+  findAll() {
+    return this.database.query(
+      `select id, firstname, lastname, email, birthdate, address, city, role, aroma_id, flavour_id, type_id  from  ${this.table}`
+    );
+  }
+
   insert(user) {
     return this.database.query(
-      `INSERT INTO ${this.table} (aroma, flavour_id, type_id, firstname,lastname, birthdate, email, hashed_password, address,
-        city, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `insert into ${this.table} (firstname, lastname, email, birthdate, address, city, hashed_password, aroma_id, flavour_id, type_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
-        user.aroma,
-        user.flavourId,
-        user.typeId,
         user.firstname,
         user.lastname,
-        user.birthdate,
         user.email,
-        user.hashedPassword,
-        user.adress,
+        user.birthdate,
+        user.address,
         user.city,
-        user.role,
+        user.hashed_password,
+        user.aroma_id,
+        user.flavour_id,
+        user.type_id,
       ]
     );
   }
 
-  update(user) {
-    return this.database.query(
-      `update ${this.table} set aroma_id = ?, flavour_id = ?, type_id = ?, firstname = ?, lastname = ?, birthdate = ?, email = ?, hashed_password = ?, address = ?, city = ?, role = ? where id = ?`,
-      [
-        user.aromaId,
-        user.flavourId,
-        user.typeId,
-        user.firstname,
-        user.lastname,
-        user.birthdate,
-        user.email,
-        user.hashedPassword,
-        user.address,
-        user.city,
-        user.role,
-      ]
-    );
+  findByEmailWithPassword(email) {
+    return this.database.query(`SELECT * FROM ${this.table} WHERE email = ?`, [
+      email,
+    ]);
   }
 }
 
