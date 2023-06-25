@@ -1,7 +1,7 @@
-import React from "react";
+import { React, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Typography,
-  Stack,
   Box,
   Button,
   FormLabel,
@@ -13,23 +13,11 @@ import {
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { toast } from "react-toastify";
+import { useUserContext } from "../contexts/UserContext";
+import APIService from "../services/APIService";
 import "react-toastify/dist/ReactToastify.css";
 import logo from "../assets/logo.svg";
 import styles from "./Login.module.css";
-
-const validationSchema = yup.object({
-  email: yup
-    .string("Entrez votre adresse mail")
-    .email("Entrez une adresse mail valide")
-    .required("Une adresse mail est requise"),
-  password: yup
-    .string("Entrez votre mot de passe")
-    .min(8, "Le mot de passe doit être de 8 caractères minimum")
-    .max(30, "Le mot de passe ne doit pas dépasser 30 caractères")
-    .required("Le mot de passe est requis"),
-  sessionName: yup.string().required("Un nom de session est requis"),
-  sessionDate: yup.date().required("Une date de session est requise"),
-});
 
 export default function Login() {
   const style = {
@@ -50,6 +38,28 @@ export default function Login() {
     },
   };
 
+  const validationSchema = yup.object({
+    email: yup
+      .string("Entrez votre adresse mail")
+      .email("Entrez une adresse mail valide")
+      .required("Une adresse mail est requise"),
+    password: yup
+      .string("Entrez votre mot de passe")
+      .min(8, "Le mot de passe doit être de 8 caractères minimum")
+      .max(30, "Le mot de passe ne doit pas dépasser 30 caractères")
+      .required("Le mot de passe est requis"),
+    sessionName: yup.string().required("Un nom de session est requis"),
+    sessionDate: yup.date().required("Une date de session est requise"),
+  });
+
+  const { login } = useUserContext();
+
+  const [userInfos, setUserInfos] = useState({
+    email: "",
+    password: "",
+  });
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -58,7 +68,24 @@ export default function Login() {
       sessionDate: "",
     },
     validationSchema,
-    onSubmit: () => {},
+    onSubmit: () => {
+      APIService.post(`/login`, userInfos)
+        .then(({ data: user }) => {
+          login(user);
+          navigate("/");
+        })
+        .catch((error) => {
+          if (error.response?.status === 401) {
+            toast.error("Email et/ou mot de passe incorrect(s)", {
+              position: toast.POSITION.TOP_CENTER,
+            });
+          } else {
+            toast.error("Veuillez réessayer plus tard", {
+              position: toast.POSITION.TOP_CENTER,
+            });
+          }
+        });
+    },
   });
 
   const handleClick = () => {
@@ -82,17 +109,31 @@ export default function Login() {
         position: toast.POSITION.TOP_CENTER,
       });
     }
+    setUserInfos({
+      email: formik.values.email,
+      password: formik.values.password,
+    });
   };
 
   return (
     <div>
-      <Stack direction="row" spacing={20} height="10vh" marginBottom={8}>
+      <Box flexDirection="row" display="flex" marginBottom="5rem">
         <img src={logo} alt="logo" />
-        <Typography variant="h3" sx={{ p: 3, color: "secondary.main" }}>
+        <Typography
+          variant="h3"
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "56vw",
+            color: "secondary.main",
+            fontSize: "calc(2.5rem + 1vmin)",
+          }}
+        >
           {" "}
           Connexion{" "}
         </Typography>
-      </Stack>
+      </Box>
       <form onSubmit={formik.handleSubmit} className={styles.formcontainer}>
         <Box
           width="75vw"
@@ -132,7 +173,15 @@ export default function Login() {
         >
           J'ai oublié mon mot de passe
         </Typography>
-        <Typography variant="h3" sx={{ p: 3, mt: 6, color: "secondary.main" }}>
+        <Typography
+          variant="h3"
+          sx={{
+            p: 3,
+            mt: 6,
+            color: "secondary.main",
+            fontSize: "calc(2.5rem + 1vmin)",
+          }}
+        >
           {" "}
           Session{" "}
         </Typography>

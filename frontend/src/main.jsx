@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import App from "./App";
+import { UserContextProvider } from "./contexts/UserContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -51,7 +52,9 @@ root.render(
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <App />
+        <UserContextProvider>
+          <App />
+        </UserContextProvider>
       </ThemeProvider>
     </BrowserRouter>
   </React.StrictMode>

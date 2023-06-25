@@ -21,6 +21,14 @@ app.use(
     optionsSuccessStatus: 200,
   })
 );
+// Si le port 3000 ne fonctionne pas :
+// app.use(
+//   cors({
+//     origin: process.env.FRONTEND_URL ?? "http://localhost:5173",
+//     optionsSuccessStatus: 200,
+//     credentials: true,
+//   })
+// );
 
 // import and mount the API routes
 
