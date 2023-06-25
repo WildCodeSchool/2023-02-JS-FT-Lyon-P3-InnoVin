@@ -4,6 +4,7 @@ import { differenceInYears, parse } from "date-fns";
 import { toast } from "react-toastify";
 import { Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import rouge from "../assets/redwinepicture.png";
 import rose from "../assets/rosewinepicture.png";
 import blanc from "../assets/whitewinepicture.png";
@@ -12,6 +13,7 @@ import styles from "./InscriptionForm.module.css";
 
 export default function InscriptionForm() {
   const navigate = useNavigate();
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   const validationSchema = Yup.object({
     firstName: Yup.string()
@@ -29,7 +31,7 @@ export default function InscriptionForm() {
       .oneOf([Yup.ref("password"), null], "Le mot de passe doit être identique")
       .required("*"),
     birthday: Yup.date().required("*"),
-    street: Yup.string().max(20, "Must be 20 characters or less").required("*"),
+    street: Yup.string().max(60, "Must be 60 characters or less").required("*"),
     postcode: Yup.number().integer().required("*"),
     city: Yup.string().max(40, "Must be 40 characters or less").required("*"),
     flavor: Yup.string().required("*"),
@@ -69,8 +71,19 @@ export default function InscriptionForm() {
 
       return errors;
     },
+
     onSubmit: () => {
-      navigate("/tasting");
+      if (validationSchema) {
+        axios
+          .post(`${BACKEND_URL}/register`, formik.values)
+          .then(() => {})
+          .then(() => {
+            navigate("/login");
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
     },
   });
 
