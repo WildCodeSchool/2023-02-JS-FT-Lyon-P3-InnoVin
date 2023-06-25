@@ -23,7 +23,7 @@ export function UserContextProvider({ children }) {
       console.error(error);
     }
   };
-  const test = "14";
+
   const login = (_user) => {
     setUser(_user);
   };
@@ -31,7 +31,6 @@ export function UserContextProvider({ children }) {
   const memo = useMemo(() => {
     return {
       user,
-      test,
       logout,
       login,
     };

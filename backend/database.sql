@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`Aroma` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-INSERT INTO Aroma (name) VALUES ("Fruits");
+INSERT INTO Aroma (name) VALUES ('Fruits'), ('Empyreumatiques'), ('Fleurs'), ('Animal'), ('Epices'), ('Défauts'), ('Végétaux');
 -- -----------------------------------------------------
 -- Table `Inovin`.`Flavour`
 -- -----------------------------------------------------
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`Flavour` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-INSERT INTO Flavour (name) VALUES ("Acidité");
+INSERT INTO Flavour (name) VALUES ('Acidité'), ('Gras'), ('Amer'), ('Alcool'), ('Sucre');
 -- -----------------------------------------------------
 -- Table `Inovin`.`Type`
 -- -----------------------------------------------------
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`Country` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-
+INSERT INTO Country (name) VALUES ('France'), ('Suisse');
 -- -----------------------------------------------------
 -- Table `Inovin`.`Region`
 -- -----------------------------------------------------
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`Region` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-
+INSERT INTO Region (name) VALUES ('Bordeaux'), ('Beaujolais'), ('Bourgogne'), ('Sud-Ouest'), ('Vallée du Rhône'), ('Vallée de la Loire'), ('Alsace'), ('Vaud');
 -- -----------------------------------------------------
 -- Table `Inovin`.`Domain`
 -- -----------------------------------------------------
@@ -111,7 +111,50 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`Domain` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-
+INSERT INTO Domain (name)
+VALUES
+    ('Château Margaux'),
+    ('Château Lafite Rothschild'),
+    ('Château Latour'),
+    ("Domaine de la Grand'Cour"),
+    ('Domaine Marcel Lapierre'),
+    ('Domaine Jean Foillard'),
+    ('Domaine de la Romanée-Conti'),
+    ('Domaine Leroy'),
+    ('Domaine Armand Rousseau'),
+    ('Château Pétrus'),
+    ('Château Le Pin'),
+    ('Château Angélus'),
+    ('Domaine Le Roc'),
+    ('Château Boujac'),
+    ('Domaine Ribiera'),
+    ('Domaine Jean-Louis Chave'),
+    ('Guigal'),
+    ('Chapoutier'),
+    ('Domaine Leflaive'),
+    ('Domaine Coche-Dury'),
+    ('Bouchard Père & Fils'),
+    ('Domaine Huet'),
+    ('Domaine des Baumard'),
+    ('François Chidaine'),
+    ('Domaine Didier Dagueneau'),
+    ('Pascal Jolivet'),
+    ('Henri Bourgeois'),
+    ('Château Rayas'),
+    ('Domaine de la Mordorée'),
+    ('Clos des Papes'),
+    ('Trimbach'),
+    ('Domaine Zind-Humbrecht'),
+    ('Albert Mann'),
+    ('Domaine Roulot'),
+    ('Domaine Prieur-Brunet'),
+    ('Domaine Coche-Dury'),
+    ('Domaine Henri Cruchon'),
+    ('Domaine du Daley'), 
+    ('Cave de la Côte'), 
+    ('Château Coutet'), 
+    ('Château de Malle'), 
+    ('Château de Rayne Vigneau');
 -- -----------------------------------------------------
 -- Table `Inovin`.`Grape_variety`
 -- -----------------------------------------------------
@@ -122,7 +165,22 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`Grape_variety` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-
+INSERT INTO Grape_Variety (name, picture) 
+VALUES 
+("Cabernet Sauvignon", "https://upload.wikimedia.org/wikipedia/commons/a/a7/Lithographie_de_Cabernet_Sauvignon.jpg?uselang=fr"),
+("Gamay", "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Gamay_Fr%C3%A9aux_-_Amp%C3%A9lographie.jpg/640px-Gamay_Fr%C3%A9aux_-_Amp%C3%A9lographie.jpg"),
+("Pinot Noir", "https://upload.wikimedia.org/wikipedia/commons/1/12/Lithographie_du_Pinot_noir.jpg?uselang=fr"),
+("Merlot", "https://upload.wikimedia.org/wikipedia/commons/2/26/Merlot_-_Ampl%C3%A9lographie.jpg?uselang=fr"),
+("Négrette", "https://upload.wikimedia.org/wikipedia/commons/d/d6/N%C3%A9grette_-_Amp%C3%A9lographie.jpg?uselang=fr"),
+("Syrah", "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Syrah_-_Amp%C3%A9lographie.jpg/640px-Syrah_-_Amp%C3%A9lographie.jpg"),
+("Chardonnay", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Pinot_blanc_Chardonnay_-_Amp%C3%A9lographie.jpg/600px-Pinot_blanc_Chardonnay_-_Amp%C3%A9lographie.jpg?20191120131539"),
+("Chenin", "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Chenin_blanc_-_Amp%C3%A9lographie.jpg/605px-Chenin_blanc_-_Amp%C3%A9lographie.jpg?20191120151219"),
+("Sauvignon", "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Sauvignon_-_Amp%C3%A9lographie.jpg/605px-Sauvignon_-_Amp%C3%A9lographie.jpg?20191120173240"), 
+("Grenache", "https://upload.wikimedia.org/wikipedia/commons/b/bd/Grenache_N.jpg?uselang=fr"),
+("Riesling", "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Riesling_-_Amp%C3%A9lographie.jpg/605px-Riesling_-_Amp%C3%A9lographie.jpg?20191120145753"),
+("Aligoté", "https://upload.wikimedia.org/wikipedia/commons/b/b3/Aligot%C3%A9_Viala_Vermorel.jpg"),
+("Chasselas", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Chasselas_dor%C3%A9_-_Amp%C3%A9lographie.jpg/605px-Chasselas_dor%C3%A9_-_Amp%C3%A9lographie.jpg?20191120183439"), 
+("Muscadelle", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Muscadelle_-_Amp%C3%A9lographie.jpg/605px-Muscadelle_-_Amp%C3%A9lographie.jpg?20191125103251");
 -- -----------------------------------------------------
 -- Table `Inovin`.`Wine`
 -- -----------------------------------------------------
@@ -168,7 +226,43 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`Wine` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
+INSERT INTO Wine (country_id, region_id, type_id, domain_id, grape_variety_id, name, vintage) VALUES
+	(1, 1, 2, 1, 1, 'Château Margaux', 2015),
+	(1, 1, 2, 2, 1, 'Château Lafite Rothschild', 2012),
+	(1, 1, 2, 3, 1, 'Château Latour', 2010),
+	(1, 2, 2, 4, 2, "Domaine de la Grand'Cour Fleurie", 2018),
+	(1, 2, 2, 5, 2, 'Domaine Marcel Lapierre Morgon', 2019),
+	(1, 2, 2, 6, 2, 'Domaine Jean Foillard Côte du Py Morgon', 2017),
+	(1, 3, 2, 7, 3, 'Domaine de la Romanée-Conti La Tâche', 2016),
+	(1, 3, 2, 8, 3, 'Domaine Leroy Chambolle-Musigny 1er Cru Les Amoureuses', 2015),
+	(1, 3, 2, 9, 3, 'Domaine Armand Rousseau Chambertin Grand Cru', 2014),
+	(1, 1, 2, 10, 4, 'Château Pétrus', 2010),
+	(1, 1, 2, 11, 4, 'Château Le Pin Pomerol', 2015),
+	(1, 1, 2, 12, 4, 'Château Angélus', 2012),
+	(1, 4, 2, 13, 5, 'Domaine Le Roc Fronton', 2018),
+	(1, 4, 2, 14, 5, 'Château Boujac Cuvée Fébus Fronton', 2017),
+	(1, 4, 2, 15, 5, 'Domaine Ribiera Vin de Pays des Côtes du Tarn', 2016),
+	(1, 5, 2, 16, 6, 'Domaine Jean-Louis Chave Hermitage', 2015),
+	(1, 5, 2, 17, 6, 'Guigal Côte-Rôtie La Landonne', 2016),
+	(1, 5, 2, 18, 6, 'Chapoutier Ermitage Le Pavillon', 2014),
+	(1, 3, 1, 19, 7, 'Domaine Leflaive Puligny-Montrachet Les Pucelles', 2017),
+	(1, 3, 1, 20, 7, 'Domaine Coche-Dury Corton-Charlemagne Grand Cru', 2016),
+	(1, 3, 1, 21, 7, 'Bouchard Père & Fils Meursault Genevrières 1er Cru', 2015),
+	(1, 6, 1, 22, 8, 'Domaine Huet Vouvray Clos du Bourg Moelleux Première Trie', 2017),
+	(1, 6, 1, 23, 8, 'Domaine des Baumard Quarts de Chaume', 2016),
+	(1, 6, 1, 24, 8, 'François Chidaine Montlouis-sur-Loire Clos Baudoin', 2019),
+	(1, 6, 1, 25, 9, 'Domaine Didier Dagueneau Pouilly-Fumé Silex', 2017),
+	(1, 6, 1, 26, 9, 'Pascal Jolivet Sancerre Le Chêne Marchand', 2019),
+	(1, 6, 1, 27, 9, 'Henri Bourgeois Sancerre La Bourgeoise', 2018),
+	(1, 5, 2, 28, 10, 'Château Rayas Châteauneuf-du-Pape', 2010),
+	(1, 5, 2, 29, 10, 'Domaine de la Mordorée La Reine des Bois Lirac', 2016),
+	(1, 5, 2, 30, 10, 'Clos des Papes Châteauneuf-du-Pape', 2015),
+	(1, 7, 1, 31, 11, 'Trimbach Clos Ste Hune Riesling', 2014),
+	(1, 7, 1, 32, 11, 'Domaine Zind-Humbrecht Riesling Rangen de Thann Clos Saint Urbain Grand Cru', 2016),
+	(1, 7, 1, 33, 11, 'Albert Mann Riesling Schlossberg Grand Cru', 2015),
+	(1, 3, 1, 34, 12, 'Domaine Roulot Bourgogne Aligoté', 2018),
+	(1, 3, 1, 35, 12, 'Domaine Prieur-Brunet Bourgogne Aligoté', 2019),
+	(1, 3, 1, 36, 12, 'Domaine Coche-Dury Bourgogne Aligoté', 2017);
 -- -----------------------------------------------------
 -- Table `Inovin`.`Session`
 -- -----------------------------------------------------
@@ -369,4 +463,6 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
 
