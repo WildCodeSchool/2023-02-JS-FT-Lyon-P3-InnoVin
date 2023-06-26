@@ -8,7 +8,7 @@ class UserManager extends AbstractManager {
   // Override
   find(id) {
     return this.database.query(
-      `select id, firstname, lastname, email, birthdate, address, city, role, aroma_id, flavour_id from  ${this.table} where id = ?`,
+      `select id, firstname, lastname, email, birthdate, address, postcode, city, role, aroma_id, flavour_id from  ${this.table} where id = ?`,
       [id]
     );
   }
@@ -16,19 +16,20 @@ class UserManager extends AbstractManager {
   // Override
   findAll() {
     return this.database.query(
-      `select id, firstname, lastname, email, birthdate, address, city, role, aroma_id, flavour_id, type_id  from  ${this.table}`
+      `select id, firstname, lastname, email, birthdate, address, postcode,  city, role, aroma_id, flavour_id, type_id  from  ${this.table}`
     );
   }
 
   insert(user) {
     return this.database.query(
-      `insert into ${this.table} (firstname, lastname, email, birthdate, address, city, hashed_password, aroma_id, flavour_id, type_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `insert into ${this.table} (firstname, lastname, email, birthdate, address, postcode, city, hashed_password, aroma_id, flavour_id, type_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         user.firstname,
         user.lastname,
         user.email,
         user.birthdate,
         user.address,
+        user.postcode,
         user.city,
         user.hashed_password,
         user.aroma_id,
