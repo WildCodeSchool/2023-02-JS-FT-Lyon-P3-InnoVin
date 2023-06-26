@@ -19,8 +19,7 @@ const hashPassword = (req, res, next) => {
     .hash(password, hashingOptions)
     .then((hashedPassword) => {
       req.body.hashedPassword = hashedPassword;
-      // delete refusé par ESLint. Trouver solution de contournement.
-      // delete password
+      // delete password;
       next();
     })
     .catch((err) => {

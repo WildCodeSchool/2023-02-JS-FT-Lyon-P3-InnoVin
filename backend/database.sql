@@ -57,9 +57,10 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`User` (
   `birthdate` DATE NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   `hashed_password` VARCHAR(255) NOT NULL,
-  `address` VARCHAR(80) NULL,
+  `street` VARCHAR(80) NULL,
+    `postcode` INT NOT NULL,
   `city` VARCHAR(45) NULL,
-  `role` VARCHAR(45) NOT NULL,
+  `role` VARCHAR(45) DEFAULT 'User',
   PRIMARY KEY (`id`),
   INDEX `fk_User_Aroma1_idx` (`aroma_id` ASC) VISIBLE,
   INDEX `fk_User_Flavour1_idx` (`flavour_id` ASC) VISIBLE,
@@ -81,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`User` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-INSERT INTO User (aroma_id, flavour_id, type_id, firstname, lastname, birthdate, email, hashed_password, address, city, role) VALUES (0, 0, 0, "Yann", "Richard", "1989-07-12", "yann.richard9@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$cXFnN2s1ZHU0aTAwMDAwMA$XFP3Vrp4/huxiy9p4p2EAw", "Rue de l'exemple", "Lyon", "User");
+INSERT INTO User (aroma_id, flavour_id, type_id, firstname, lastname, birthdate, email, hashed_password, street, postcode, city) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 -- -----------------------------------------------------
 -- Table `Inovin`.`Country`
 -- -----------------------------------------------------

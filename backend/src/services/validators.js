@@ -1,27 +1,28 @@
 const validateUser = (req, res, next) => {
   const {
-    aroma,
+    aromaId,
     flavourId,
     typeId,
     firstname,
     lastname,
     birthdate,
     email,
-    hashedPassword,
-    address,
+    password,
+    street,
+    postcode,
     city,
   } = req.body;
   const errors = [];
   const emailRegex = /[a-z0-9._]+@[a-z0-9-]+\.[a-z]{2,3}/;
 
-  if (aroma == null) {
-    errors.push({ field: "aroma", message: "This field is required" });
+  if (aromaId == null) {
+    errors.push({ field: "aromaId", message: "This field is required" });
   }
   if (flavourId == null) {
-    errors.push({ field: "flavour_id", message: "This field is required" });
+    errors.push({ field: "flavourId", message: "This field is required" });
   }
   if (typeId == null) {
-    errors.push({ field: "type_id", message: "This field is required" });
+    errors.push({ field: "typeId", message: "This field is required" });
   }
   if (firstname == null) {
     errors.push({ field: "firstname", message: "This field is required" });
@@ -32,14 +33,17 @@ const validateUser = (req, res, next) => {
   if (birthdate == null) {
     errors.push({ field: "birthdate", message: "This field is required" });
   }
-  if (hashedPassword == null) {
+  if (password == null) {
     errors.push({
-      field: "hashed_password",
+      field: "password",
       message: "This field is required",
     });
   }
-  if (address == null) {
-    errors.push({ field: "adress", message: "This field is required" });
+  if (street == null) {
+    errors.push({ field: "street", message: "This field is required" });
+  }
+  if (postcode == null) {
+    errors.push({ field: "postcode", message: "This field is required" });
   }
   if (city == null) {
     errors.push({ field: "city", message: "This field is required" });

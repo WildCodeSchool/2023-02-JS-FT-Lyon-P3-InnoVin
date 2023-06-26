@@ -20,12 +20,12 @@ router.delete("/items/:id", itemControllers.destroy);
 
 const userControllers = require("./controllers/userControllers");
 const { validateUser } = require("./services/validators");
+const { hashPassword } = require("./services/auth");
 
 router.get("/register", userControllers.browse);
 router.get("/register/:id", userControllers.read);
-router.post("/register", validateUser, userControllers.add);
-router.put("/register/:id", itemControllers.edit);
-
+router.post("/register", hashPassword, validateUser, userControllers.add);
+router.put("/register/:id", userControllers.edit);
 router.delete("/register/:id", userControllers.destroy);
 
 module.exports = router;
