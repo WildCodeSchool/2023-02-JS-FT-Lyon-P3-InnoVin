@@ -8,7 +8,12 @@ class UserManager extends AbstractManager {
   // Override
   find(id) {
     return this.database.query(
-      `select id, firstname, lastname, email, birthdate, address, city, role, aroma_id, flavour_id from  ${this.table} where id = ?`,
+      `select u.id, u.firstname, u.lastname, u.email, u.birthdate, u.address, u.city, u.role, a.name as aroma, f.name as flavour, t.name as type
+      from  ${this.table} as u
+      inner join aroma as a on a.id = u.aroma_id
+      inner join flavour as f on f.id = u.flavour_id
+      inner join type as t on t.id = u.type_id
+      where id = ?`,
       [id]
     );
   }
@@ -16,7 +21,11 @@ class UserManager extends AbstractManager {
   // Override
   findAll() {
     return this.database.query(
-      `select id, firstname, lastname, email, birthdate, address, city, role, aroma_id, flavour_id, type_id  from  ${this.table}`
+      `select u.id, u.firstname, u.lastname, u.email, u.birthdate, u.address, u.city, u.role, a.name as aroma, f.name as flavour, t.name as type
+      from  ${this.table} as u
+      inner join aroma as a on a.id = u.aroma_id
+      inner join flavour as f on f.id = u.flavour_id
+      inner join type as t on t.id = u.type_id`
     );
   }
 

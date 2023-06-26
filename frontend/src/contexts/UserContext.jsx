@@ -1,6 +1,6 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const UserContext = createContext();
 
@@ -9,11 +9,11 @@ export default UserContext;
 export function UserContextProvider({ children }) {
   // on utilise un hook personnalisé
   const [user, setUser] = useState({});
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!user.id) navigate("/");
-  }, [user.id]);
+  // useEffect(() => {
+  //   if (!user.id) navigate("/");
+  // }, [user.id]);
 
   const logout = async () => {
     try {

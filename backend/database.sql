@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`User` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-INSERT INTO User (aroma_id, flavour_id, type_id, firstname, lastname, birthdate, email, hashed_password, address, city, role) VALUES (0, 0, 0, "Yann", "Richard", "1989-07-12", "yann.richard9@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$cXFnN2s1ZHU0aTAwMDAwMA$XFP3Vrp4/huxiy9p4p2EAw", "Rue de l'exemple", "Lyon", "User");
+INSERT INTO User (aroma_id, flavour_id, type_id, firstname, lastname, birthdate, email, hashed_password, address, city, role) VALUES (3, 2, 1, "Yann", "Richard", "1989-07-12", "yann.richard9@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$cXFnN2s1ZHU0aTAwMDAwMA$XFP3Vrp4/huxiy9p4p2EAw", "Rue de l'exemple", "Lyon", "Admin");
 -- -----------------------------------------------------
 -- Table `Inovin`.`Country`
 -- -----------------------------------------------------
@@ -340,7 +340,106 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`Wine_has_Aroma` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
+INSERT INTO Wine_has_Aroma (wine_id, aroma_id) VALUES 
+(1, 1),
+(1, 5), 
+(1, 7),
+(2, 1),
+(2, 5),
+(2, 7),
+(3, 1),
+(3, 5),
+(3, 7),
+(4, 1),
+(4, 3),
+(4, 7),
+(5, 1),
+(5, 3),
+(5, 7),
+(6, 1),
+(6, 3),
+(6, 7),
+(7, 1),
+(7, 3),
+(7, 7),
+(8, 1),
+(8, 3),
+(8, 7),
+(9, 1),
+(9, 3),
+(9, 7),
+(10, 1),
+(10, 5),
+(10, 7),
+(11, 1),
+(11, 5),
+(11, 7),
+(12, 1),
+(12, 5),
+(12, 7),
+(13, 1),
+(13, 5),
+(13, 7),
+(14, 1),
+(14, 5),
+(14, 7),
+(15, 1),
+(15, 5),
+(15, 7),
+(16, 1),
+(16, 5),
+(16, 7),
+(17, 1),
+(17, 5),
+(17, 7),
+(18, 1),
+(18, 5),
+(18, 7),
+(19, 1),
+(19, 2),
+(19, 7),
+(20, 1),
+(20, 2),
+(20, 7),
+(21, 1),
+(21, 2),
+(21, 7),
+(22, 1),
+(22, 3),
+(22, 7),
+(23, 1),
+(23, 3),
+(23, 7),
+(24, 1),
+(24, 3),
+(24, 7),
+(25, 1),
+(25, 7),
+(26, 1),
+(26, 7),
+(27, 1),
+(27, 7),
+(28, 1),
+(28, 5),
+(28, 7),
+(29, 1),
+(29, 5),
+(29, 7),
+(30, 1),
+(30, 5),
+(30, 7),
+(31, 1),
+(31, 7),
+(32, 1),
+(32, 7),
+(33, 1),
+(33, 7),
+(34, 1),
+(34, 7),
+(35, 1),
+(35, 7),
+(36, 1),
+(36, 7);
 -- -----------------------------------------------------
 -- Table `Inovin`.`Wine_has_Flavour`
 -- -----------------------------------------------------
@@ -362,7 +461,7 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`Wine_has_Flavour` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
+INSERT INTO Wine_has_Flavour (wine_id, flavour_id) VALUES (1, 2), (1, 4), (2, 3), (3, 5), (4, 3);
 -- -----------------------------------------------------
 -- Table `Inovin`.`Tasting_note`
 -- -----------------------------------------------------
