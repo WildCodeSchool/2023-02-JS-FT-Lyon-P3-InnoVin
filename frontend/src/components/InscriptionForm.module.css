@@ -1,0 +1,277 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Playfair Display", serif;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 43px;
+  color: #d8b024;
+}
+.labelErroContainer {
+  display: flex;
+  flex-direction: row;
+}
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-block: 10px;
+}
+.inputContainer input {
+  width: 604px;
+  height: 73.58px;
+  background: #fffdcc;
+  border: 1px solid #5f5353;
+  border-radius: 10px;
+  padding-inline: 10px;
+  margin-top: 5px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 43px;
+  color: black;
+}
+.inputContainer select {
+  width: 604px;
+  height: 73.58px;
+  background: #fffdcc;
+  border: 1px solid #5f5353;
+  border-radius: 10px;
+  padding-left: 5px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 43px;
+  color: black;
+}
+
+.inputContainer select option {
+  font-size: 20px;
+}
+
+/*User informations container*/
+
+/*firstname + lastname container*/
+.nameContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 604px;
+}
+
+.nameContainer input {
+  width: 285.94px;
+  height: 73.58px;
+  padding-inline: 10px;
+}
+
+/*size birthday input*/
+.birthdayContainer input {
+  width: 285.94px;
+  height: 73.58px;
+  padding-inline: 10px;
+}
+
+.birthdayContainer {
+  width: 604px;
+}
+
+/*CP + street container*/
+.streetContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 604px;
+}
+
+.streetContainer input {
+  width: 285.94px;
+  height: 73.58px;
+  padding-inline: 10px;
+}
+/*Preferences container*/
+
+.preferContainer h2 {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 53px;
+  text-align: center;
+  color: #d8b024;
+}
+.inputContainer select {
+  padding-inline: 10px;
+}
+/*buttonswine*/
+.buttonswineContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.redwine {
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  width: 190px;
+  height: 100px;
+  color: #fffdcc;
+}
+
+.redwine input {
+  display: none;
+}
+.redwine label:hover {
+  cursor: pointer;
+}
+.redwine label::before {
+  background-color: black;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  filter: blur(15px);
+}
+.redwine label {
+  position: relative;
+  z-index: 1;
+}
+.rosewine {
+  background-image: url("https://cdn.pixabay.com/photo/2018/10/12/11/43/grapes-3741999_1280.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 190px;
+  height: 100px;
+  color: #fffdcc;
+  border-radius: 5px;
+}
+.rosewine label::before {
+  background-color: black;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  filter: blur(15px);
+}
+.rosewine label {
+  position: relative;
+  z-index: 1;
+}
+.rosewine input {
+  display: none;
+}
+.rosewine label:hover {
+  cursor: pointer;
+}
+
+.whitewine {
+  background-image: url("https://cdn.pixabay.com/photo/2016/09/22/23/50/grape-1688607_1280.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 190px;
+  height: 100px;
+  color: #fffdcc;
+  border-radius: 5px;
+}
+.whitewine label::before {
+  background-color: black;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  filter: blur(15px);
+}
+.whitewine label {
+  position: relative;
+  z-index: 1;
+}
+.whitewine input {
+  display: none;
+}
+.whitewine label:hover {
+  cursor: pointer;
+}
+
+/*submit button*/
+.submitButton {
+  width: 263px;
+  height: 73px;
+  border-radius: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 43px;
+}
+.error {
+  color: #c42727;
+}
+
+.bottomFormContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.disabled {
+  filter: grayscale(100%);
+}
+
+@media screen and (min-width: 1477px) {
+  form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 250px;
+    height: 80vh;
+  }
+  .informationsContainer {
+    height: 50vh;
+  }
+  .middleFormContainer {
+    height: 50vh;
+  }
+  .bottomFormContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 50vh;
+  }
+
+  .preferContainer h2 {
+    margin-top: 0;
+  }
+  .submitButton {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    align-self: center;
+    justify-self: center;
+  }
+  .bottomFormContainer {
+    grid-column-start: 2;
+    grid-column-end: 3;
+  }
+}

@@ -1,0 +1,24 @@
+h1 {
+  font-family: "Playfair Display";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 53px;
+  color: #d8b024;
+  margin-right: 200px;
+}
+.inscriptionTitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+}
+.inscriptionFormContainer {
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+}
+.header {
+  display: flex;
+  flex-direction: row;
+}
