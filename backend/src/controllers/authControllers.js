@@ -12,8 +12,7 @@ const getUserByEmailMiddleWare = (req, res, next) => {
         next();
       } else {
         // If user with this mail doesnt exist
-        console.warn("Mail doesnt exist");
-        res.sendStatus(401);
+        res.status(401).send("Mail doesn't exist");
       }
     })
     .catch((error) => {
@@ -28,7 +27,6 @@ const register = (req, res) => {
   models.user
     .insert(user)
     .then(([result]) => {
-      console.warn("Result from register request", result);
       if (result.affectedRows) res.sendStatus(201);
       else res.sendStatus(400);
     })
