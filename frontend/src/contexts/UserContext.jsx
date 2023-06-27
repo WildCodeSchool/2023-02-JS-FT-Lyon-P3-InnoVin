@@ -9,15 +9,9 @@ export default UserContext;
 export function UserContextProvider({ children }) {
   // on utilise un hook personnalisé
   const [user, setUser] = useState({});
-  // const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   if (!user.id) navigate("/");
-  // }, [user.id]);
 
   const logout = async () => {
     try {
-      // await axios.get(`${BACKEND_URL}/api/logout`);
       setUser({});
     } catch (error) {
       console.error(error);
