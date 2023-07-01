@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`Country` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-INSERT INTO Country (name) VALUES ('France'), ('Suisse');
+INSERT INTO Country (name) VALUES ('France'), ('Suisse'), ('Italie'), ('Argentine');
 -- -----------------------------------------------------
 -- Table `Inovin`.`Region`
 -- -----------------------------------------------------
@@ -103,7 +103,7 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`Region` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-INSERT INTO Region (name) VALUES ('Bordeaux'), ('Beaujolais'), ('Bourgogne'), ('Sud-Ouest'), ('Vallée du Rhône'), ('Vallée de la Loire'), ('Alsace'), ('Vaud');
+INSERT INTO Region (name) VALUES ('Bordeaux'), ('Beaujolais'), ('Bourgogne'), ('Sud-Ouest'), ('Vallée du Rhône'), ('Vallée de la Loire'), ('Alsace'), ('Vaud'), ('Provence'), ('Languedoc'), ('Toscane'), ('Mendoza');
 -- -----------------------------------------------------
 -- Table `Inovin`.`Domain`
 -- -----------------------------------------------------
@@ -155,7 +155,19 @@ VALUES
     ('Cave de la Côte'), 
     ('Château Coutet'), 
     ('Château de Malle'), 
-    ('Château de Rayne Vigneau');
+    ('Château de Rayne Vigneau'), 
+    ('Domaine de la Bastide Blanche'), 
+    ('Domaine de la Marotte'), 
+    ('Domaines Ott'), 
+    ('Domaine de la Vallongue'), 
+    ("Domaine de l'Hermitage"), 
+    ("Domaine de la Marfée"), 
+    ('Tenuta La Fuga'), 
+    ('Podere II Palazzino'), 
+    ("Villa Sant'Anna"), 
+    ('Domaine de la Vallée'), 
+    ('Vina del Sol'), 
+    ('Domaine de la Roseraie') ;
 -- -----------------------------------------------------
 -- Table `Inovin`.`Grape_variety`
 -- -----------------------------------------------------
@@ -181,7 +193,11 @@ VALUES
 ("Riesling", "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Riesling_-_Amp%C3%A9lographie.jpg/605px-Riesling_-_Amp%C3%A9lographie.jpg?20191120145753"),
 ("Aligoté", "https://upload.wikimedia.org/wikipedia/commons/b/b3/Aligot%C3%A9_Viala_Vermorel.jpg"),
 ("Chasselas", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Chasselas_dor%C3%A9_-_Amp%C3%A9lographie.jpg/605px-Chasselas_dor%C3%A9_-_Amp%C3%A9lographie.jpg?20191120183439"), 
-("Muscadelle", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Muscadelle_-_Amp%C3%A9lographie.jpg/605px-Muscadelle_-_Amp%C3%A9lographie.jpg?20191125103251");
+("Muscadelle", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Muscadelle_-_Amp%C3%A9lographie.jpg/605px-Muscadelle_-_Amp%C3%A9lographie.jpg?20191125103251"),
+("Mourvèdre", "https://upload.wikimedia.org/wikipedia/commons/0/08/Mourv%C3%A8dre_-_Amp%C3%A9lographie.jpg?uselang=fr"), 
+("Cinsault", "https://upload.wikimedia.org/wikipedia/commons/8/8a/Cinsaut_-_Amp%C3%A9lographie.jpg"), 
+("Sangiovese", "https://upload.wikimedia.org/wikipedia/commons/c/cb/Nieluccio_-_Amp%C3%A9lographie.png"), 
+("Malbec", "https://upload.wikimedia.org/wikipedia/commons/a/a5/C%C3%B4t_-_Amp%C3%A9lographie.jpg"); 
 -- -----------------------------------------------------
 -- Table `Inovin`.`Wine`
 -- -----------------------------------------------------
@@ -229,22 +245,22 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`Wine` (
 ENGINE = InnoDB;
 
 INSERT INTO Wine (country_id, region_id, type_id, domain_id, grape_variety_id, flavour_id, name, vintage) VALUES
-	(1, 1, 2, 1, 1, 4, 'Château Margaux', 2015),
-	(1, 1, 2, 2, 1, 4, 'Château Lafite Rothschild', 2012),
-	(1, 1, 2, 3, 1, 4, 'Château Latour', 2010),
+	(1, 1, 2, 1, 1, 4, 'Margaux Grand Cru', 2015),
+	(1, 1, 2, 2, 1, 4, 'Rothschild Réserve Spéciale', 2012),
+	(1, 1, 2, 3, 1, 4, 'Latour Cuvée Prestige', 2010),
 	(1, 2, 2, 4, 2, 1, "Fleurie", 2018),
 	(1, 2, 2, 5, 2, 1, 'Morgon', 2019),
 	(1, 2, 2, 6, 2, 1, 'Côte du Py Morgon', 2017),
 	(1, 3, 2, 7, 3, 2, 'Romanée-Conti La Tâche', 2016),
 	(1, 3, 2, 8, 3, 2, 'Chambolle-Musigny 1er Cru Les Amoureuses', 2015),
 	(1, 3, 2, 9, 3, 2, 'Chambertin Grand Cru', 2014),
-	(1, 1, 2, 10, 4, 5, 'Château Pétrus', 2010),
-	(1, 1, 2, 11, 4, 5, 'Château Le Pin Pomerol', 2015),
-	(1, 1, 2, 12, 4, 5, 'Château Angélus', 2012),
+	(1, 1, 2, 10, 4, 5, 'Pomerol Prestige', 2010),
+	(1, 1, 2, 11, 4, 5, 'Pomerol', 2015),
+	(1, 1, 2, 12, 4, 5, 'Saint-Emilion Excellence', 2012),
 	(1, 4, 2, 13, 5, 2, 'Fronton', 2018),
-	(1, 4, 2, 14, 5, 2, 'Château Boujac Cuvée Fébus Fronton', 2017),
+	(1, 4, 2, 14, 5, 2, 'Cuvée Fébus Fronton', 2017),
 	(1, 4, 2, 15, 5, 2, 'Vin de Pays des Côtes du Tarn', 2016),
-	(1, 5, 2, 16, 6, 3, 'Domaine Jean-Louis Chave Hermitage', 2015),
+	(1, 5, 2, 16, 6, 3, 'Hermitage', 2015),
 	(1, 5, 2, 17, 6, 3, 'Côte-Rôtie La Landonne', 2016),
 	(1, 5, 2, 18, 6, 3, 'Ermitage Le Pavillon', 2014),
 	(1, 3, 1, 19, 7, 2, 'Puligny-Montrachet Les Pucelles', 2017),
@@ -270,7 +286,19 @@ INSERT INTO Wine (country_id, region_id, type_id, domain_id, grape_variety_id, f
   (2, 8, 1, 38, 13, 1, 'Epesses AOC Chasselas', 2020),
   (1, 1, 1, 39, 14, 2, 'Premier Cru Barsac', 2015),
   (1, 1, 1, 40, 14, 2, 'Sauternes', 2016),
-  (1, 1, 1, 41, 14, 2, 'Premier Cru Sauternes', 2014);
+  (1, 1, 1, 41, 14, 2, 'Premier Cru Sauternes', 2014),
+  (1, 9, 3, 42, 15, 4, 'La Londe Rosé', 2017), 
+  (1, 9, 3, 43, 15, 4, 'Cuvée Spéciale Rosé', 2018), 
+  (1, 9, 3, 44, 15, 4, 'Clos Mireille Rosé', 2019), 
+  (1, 9, 3, 45, 16, 2, 'Château de Pibarnon', 2019), 
+  (1, 9, 3, 46, 16, 2, 'Mas de Gourgonnier Rosé', 2020),
+  (1, 10, 3, 47, 16, 2, 'Château des Estanilles Rosé', 2018), 
+  (3, 11, 3, 48, 17, 1, 'Fattoria dei Barbi Rosso di Montalcino', 2018), 
+  (3, 11, 3, 49, 17, 1, 'Caparzo Rosso di Montalcino', 2017), 
+  (3, 11, 3, 50, 17, 1, 'Castello di Volpaia Rosato', 2020), 
+  (1, 4, 3, 51, 18, 5, "Rose d'été 'La Vie en Rose'", 2020), 
+  (4, 12, 3, 52, 18, 5, 'Rosado Mistico', 2019), 
+  (1, 10, 3, 53, 18, 5, "Soleil d'Été Rosé", 2021); 
 -- -----------------------------------------------------
 -- Table `Inovin`.`Session`
 -- -----------------------------------------------------
@@ -466,8 +494,34 @@ VALUES
 (41, 4),
 (42, 1),
 (42, 3),
-(42, 4);
-
+(42, 4),
+(43, 1),
+(43, 2),
+(43, 4),
+(44, 1),
+(44, 2),
+(44, 4),
+(45, 1),
+(45, 2),
+(45, 4),
+(46, 1),
+(46, 5),
+(47, 1),
+(47, 7),
+(48, 1),
+(48, 3),
+(49, 1),
+(49, 5),
+(50, 1),
+(50, 7),
+(51, 1),
+(51, 3),
+(52, 1),
+(52, 5),
+(53, 1),
+(53, 3),
+(54, 1),
+(54, 7);
 
 -- -----------------------------------------------------
 -- Table `Inovin`.`Tasting_note`
