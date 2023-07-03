@@ -21,7 +21,7 @@ export default function InscriptionForm() {
       birthdate: "",
       password: "",
       confirmPassword: "",
-      street: "",
+      address: "",
       postcode: "",
       city: "",
       flavourId: "",
@@ -183,16 +183,16 @@ export default function InscriptionForm() {
             </div>
             <div className={styles.inputContainer}>
               <div className={styles.labelErroContainer}>
-                <label htmlFor="street">Numéro et rue</label>
-                {formik.touched.street && formik.errors.street && (
-                  <div className={styles.error}>{formik.errors.street}</div>
+                <label htmlFor="address">Numéro et rue</label>
+                {formik.touched.address && formik.errors.address && (
+                  <div className={styles.error}>{formik.errors.address}</div>
                 )}{" "}
               </div>
               <input
-                name="street"
-                type="street"
+                name="address"
+                type="address"
                 onChange={formik.handleChange}
-                value={formik.values.street}
+                value={formik.values.address}
               />
             </div>
             <div className={styles.streetContainer}>

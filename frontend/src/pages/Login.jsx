@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Typography,
@@ -54,10 +54,6 @@ export default function Login() {
 
   const { login } = useUserContext();
 
-  const [userInfos, setUserInfos] = useState({
-    email: "",
-    password: "",
-  });
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -68,11 +64,18 @@ export default function Login() {
       sessionDate: "",
     },
     validationSchema,
-    onSubmit: () => {
-      APIService.post(`/login`, userInfos)
+
+    onSubmit: (values) => {
+      APIService.post(`/login`, values)
         .then(({ data: user }) => {
           login(user);
-          navigate("/");
+          toast.success(
+            `Bienvenue ${user.firstname}! Vous allez être redirigé vers la page d'accueil.`,
+            { position: toast.POSITION.TOP_CENTER, autoClose: 3000, icon: "🍷" }
+          );
+          setTimeout(() => {
+            navigate("/tasting");
+          }, 4000);
         })
         .catch((error) => {
           if (error.response?.status === 401) {
@@ -109,10 +112,6 @@ export default function Login() {
         position: toast.POSITION.TOP_CENTER,
       });
     }
-    setUserInfos({
-      email: formik.values.email,
-      password: formik.values.password,
-    });
   };
 
   return (

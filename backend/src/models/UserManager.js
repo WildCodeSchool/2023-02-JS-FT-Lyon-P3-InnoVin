@@ -8,7 +8,7 @@ class UserManager extends AbstractManager {
   // Override
   find(id) {
     return this.database.query(
-      `select id, aroma_id, flavour_id, type_id, firstname, lastname, birthdate, email, hashed_password, street, postcode, city from  ${this.table} where id = ?`,
+      `select id, firstname, lastname, email, birthdate, address, postcode, city, role, aroma_id, flavour_id, type_id from  ${this.table} where id = ?`,
       [id]
     );
   }
@@ -16,25 +16,25 @@ class UserManager extends AbstractManager {
   // Override
   findAll() {
     return this.database.query(
-      `select id, aroma_id, flavour_id, type_id, firstname, lastname, birthdate, email, hashed_password, street, postcode, city from  ${this.table}`
+      `select id, firstname, lastname, email, birthdate, address, postcode,  city, hashed_password, role, aroma_id, flavour_id, type_id  from  ${this.table}`
     );
   }
 
   insert(user) {
     return this.database.query(
-      `insert into ${this.table} (aroma_id, flavour_id, type_id, firstname, lastname, birthdate, email, hashed_password, street, postcode, city) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `insert into ${this.table} (firstname, lastname, email, birthdate, address, postcode, city, hashed_password, aroma_id, flavour_id, type_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
+        user.firstname,
+        user.lastname,
+        user.email,
+        user.birthdate,
+        user.address,
+        user.postcode,
+        user.city,
+        user.hashedPassword,
         user.aromaId,
         user.flavourId,
         user.typeId,
-        user.firstname,
-        user.lastname,
-        user.birthdate,
-        user.email,
-        user.hashedPassword,
-        user.street,
-        user.postcode,
-        user.city,
       ]
     );
   }

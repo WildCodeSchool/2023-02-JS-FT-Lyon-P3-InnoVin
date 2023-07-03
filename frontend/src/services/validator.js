@@ -14,7 +14,7 @@ const validationSchema = Yup.object({
     .oneOf([Yup.ref("password"), null], "Le mot de passe doit être identique")
     .required("*"),
   birthdate: Yup.date().required("*"),
-  street: Yup.string().max(60, "Must be 60 characters or less").required("*"),
+  address: Yup.string().max(60, "Must be 60 characters or less").required("*"),
   postcode: Yup.number().integer().required("*"),
   city: Yup.string().max(40, "Must be 40 characters or less").required("*"),
   flavourId: Yup.number().required("*"),

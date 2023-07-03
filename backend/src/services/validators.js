@@ -8,7 +8,7 @@ const validateUser = (req, res, next) => {
     birthdate,
     email,
     password,
-    street,
+    address,
     postcode,
     city,
   } = req.body;
@@ -39,8 +39,8 @@ const validateUser = (req, res, next) => {
       message: "This field is required",
     });
   }
-  if (street == null) {
-    errors.push({ field: "street", message: "This field is required" });
+  if (address == null) {
+    errors.push({ field: "address", message: "This field is required" });
   }
   if (postcode == null) {
     errors.push({ field: "postcode", message: "This field is required" });
