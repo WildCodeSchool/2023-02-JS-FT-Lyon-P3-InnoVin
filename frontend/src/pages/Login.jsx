@@ -69,7 +69,13 @@ export default function Login() {
       APIService.post(`/login`, values)
         .then(({ data: user }) => {
           login(user);
-          navigate("/");
+          toast.success(
+            `Bienvenue ${user.firstname}! Vous allez être redirigé vers la page d'accueil.`,
+            { position: toast.POSITION.TOP_CENTER, autoClose: 3000, icon: "🍷" }
+          );
+          setTimeout(() => {
+            navigate("/tasting");
+          }, 4000);
         })
         .catch((error) => {
           if (error.response?.status === 401) {

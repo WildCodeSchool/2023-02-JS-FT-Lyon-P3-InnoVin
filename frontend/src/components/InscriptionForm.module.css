@@ -264,7 +264,7 @@ form {
   .preferContainer h2 {
     margin-top: 0;
   }
-  .submitButton {
+  .submitButton { 
     grid-column-start: 2;
     grid-column-end: 3;
     align-self: center;

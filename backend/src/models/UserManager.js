@@ -8,7 +8,7 @@ class UserManager extends AbstractManager {
   // Override
   find(id) {
     return this.database.query(
-      `select id, firstname, lastname, email, birthdate, address, postcode, city, role, aroma_id, flavour_id from  ${this.table} where id = ?`,
+      `select id, firstname, lastname, email, birthdate, address, postcode, city, role, aroma_id, flavour_id, type_id from  ${this.table} where id = ?`,
       [id]
     );
   }
