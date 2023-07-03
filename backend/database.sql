@@ -218,6 +218,8 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`Wine` (
   INDEX `fk_Wine_Type1_idx` (`type_id` ASC) VISIBLE,
   INDEX `fk_Wine_Domain1_idx` (`domain_id` ASC) VISIBLE,
   INDEX `fk_Wine_Grape_Variety1_idx` (`grape_variety_id` ASC) VISIBLE,
+  INDEX `fk_Wine_Flavour1_idx` (`flavour_id` ASC) VISIBLE,
+  INDEX `fk_Wine_Aroma1_idx` (`aroma_id` ASC) VISIBLE,
   CONSTRAINT `fk_Wine_Country1`
     FOREIGN KEY (`country_id`)
     REFERENCES `Inovin`.`Country` (`id`)
@@ -241,6 +243,16 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`Wine` (
   CONSTRAINT `fk_Wine_Grape_Variety1`
     FOREIGN KEY (`grape_variety_id`)
     REFERENCES `Inovin`.`Grape_variety` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Wine_Flavour1`
+    FOREIGN KEY (`flavour_id`)
+    REFERENCES `Inovin`.`Flavour` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Wine_Aroma1`
+    FOREIGN KEY (`aroma_id`)
+    REFERENCES `Inovin`.`Aroma` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
