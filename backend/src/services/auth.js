@@ -20,12 +20,13 @@ const hashPassword = (req, res, next) => {
     .then((hashedPassword) => {
       req.body.hashedPassword = hashedPassword;
       delete req.body.password;
-      next();
+
+      return next();
     })
     .catch((err) => {
       console.error(err);
 
-      res.sendStatus(500);
+      return res.sendStatus(500);
     });
 };
 
