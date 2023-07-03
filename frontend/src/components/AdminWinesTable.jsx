@@ -1,17 +1,22 @@
-import axios from "axios";
 import { useEffect } from "react";
 import { DataGrid, gridClasses } from "@mui/x-data-grid";
 import { styled } from "@mui/material/styles";
 import { useAdminContext } from "../contexts/AdminContext";
+import WineService from "../services/WineService";
 
 export default function AdminWinesTable() {
   const { winesData, setWinesData } = useAdminContext();
 
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/wines`)
-      .then((response) => setWinesData(response.data))
-      .catch((err) => console.error(err));
+    async function fetch() {
+      try {
+        const response = await WineService.getWines();
+        setWinesData(response.data);
+      } catch (error) {
+        console.error("Internal error");
+      }
+    }
+    fetch();
   }, []);
 
   const StripedWinesDataGrid = styled(DataGrid)(({ theme }) => ({
@@ -31,6 +36,8 @@ export default function AdminWinesTable() {
     {
       field: "country",
       headerClassName: "super-app-theme--header",
+      type: "singleSelect",
+      valueOptions: ["France", "Suisse"],
       headerName: "Pays",
       width: 150,
       editable: true,
@@ -39,6 +46,8 @@ export default function AdminWinesTable() {
       field: "region",
       headerClassName: "super-app-theme--header",
       headerName: "Région",
+      type: "singleSelect",
+      valueOptions: ["Bordeaux", "Loire"],
       width: 150,
       editable: true,
     },
@@ -46,7 +55,8 @@ export default function AdminWinesTable() {
       field: "domain",
       headerClassName: "super-app-theme--header",
       headerName: "Domaine",
-      description: "This column has a value getter and is not sortable.",
+      type: "singleSelect",
+      valueOptions: ["Château Margaux"],
       width: 200,
       editable: true,
     },
@@ -54,6 +64,8 @@ export default function AdminWinesTable() {
       field: "type",
       headerClassName: "super-app-theme--header",
       headerName: "Type",
+      type: "singleSelect",
+      valueOptions: ["Rouge", "Rosé", "Blanc"],
       width: 150,
       editable: true,
     },
@@ -61,6 +73,8 @@ export default function AdminWinesTable() {
       field: "grape_variety",
       headerClassName: "super-app-theme--header",
       headerName: "Cépage",
+      type: "singleSelect",
+      valueOptions: ["Gamay", "Merlot"],
       width: 150,
       editable: true,
     },
@@ -82,16 +96,28 @@ export default function AdminWinesTable() {
       field: "flavours",
       headerClassName: "super-app-theme--header",
       headerName: "Saveur",
+      type: "singleSelect",
+      valueOptions: ["Sucré", "Amer", "Acide"],
       width: 150,
       editable: true,
     },
   ];
+
+  const processRowUpdate = (newRow, oldRow) => {
+    console.info(newRow, oldRow);
+  };
+
+  const onProcessRowUpdateError = (error) => {
+    console.error(error);
+  };
 
   return (
     <StripedWinesDataGrid
       rows={winesData}
       columns={columnsWines}
       editMode="row"
+      processRowUpdate={processRowUpdate}
+      onProcessRowUpdateError={onProcessRowUpdateError}
       sx={{ backgroundColor: "text.primary", color: "background.default" }}
       getRowClassName={(params) =>
         params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
