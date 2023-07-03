@@ -1,18 +1,19 @@
 .formcontainer {
-    display: flex; 
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 img {
-    width: 22vw;
-    height: 11vh;
+  width: 22vw;
+  height: 11vh;
 }
 
 @media screen and (min-width: 1477px) {
-    .formcontainer {
-      margin-top: 5rem;
-      display: flex;
-      gap: 40px;
-      font-size:2.5em;}
-    }
+  .formcontainer {
+    margin-top: 5rem;
+    display: flex;
+    gap: 40px;
+    font-size: 2.5em;
+  }
+}

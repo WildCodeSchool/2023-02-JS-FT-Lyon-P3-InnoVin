@@ -54,12 +54,12 @@ const edit = (req, res) => {
 const add = (req, res) => {
   const user = req.body;
 
-  // TODO validations (length, format...)
+  // registerTODO validations (length, format...)
 
   models.user
     .insert(user)
     .then(([result]) => {
-      res.location(`/users/${result.insertId}`).sendStatus(201);
+      res.location(`/register/${result.insertId}`).sendStatus(201);
     })
     .catch((err) => {
       console.error(err);
