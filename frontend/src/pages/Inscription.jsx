@@ -1,4 +1,4 @@
-import InscriptionForm from "@components/InscriptionForm";
+import InscriptionForm from "../components/InscriptionForm";
 import styles from "./Inscription.module.css";
 import logo from "../assets/logo.svg";
 

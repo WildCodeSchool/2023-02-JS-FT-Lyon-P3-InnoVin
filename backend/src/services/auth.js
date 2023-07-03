@@ -14,13 +14,13 @@ const hashingOptions = {
 };
 
 const hashPassword = (req, res, next) => {
-  const { password } = req.body;
+  let { password } = req.body;
   argon2
     .hash(password, hashingOptions)
     .then((hashedPassword) => {
       req.body.hashedPassword = hashedPassword;
       // delete refusé par ESLint. Trouver solution de contournement.
-      // delete password
+      password = null;
       next();
     })
     .catch((err) => {
@@ -46,7 +46,6 @@ const verifyPassword = async (req, res) => {
         });
         delete req.body.password;
         delete req.user.hashedPassword;
-        // res.send({ token, user: req.user });
 
         res
           .cookie("access_token", token, {
@@ -67,27 +66,27 @@ const verifyPassword = async (req, res) => {
 
 const verifyToken = (req, res, next) => {
   try {
-    const header = req.get("Authorization");
+    const token = req.cookies.access_token;
 
-    if (header == null) {
-      throw new Error("Authorization header is missing");
-    }
-    const [type, token] = header.split(" ");
+    if (!token) return res.sendStatus(403);
 
-    if (type !== "Bearer") {
-      throw new Error("Authorization header has not the 'Bearer' type");
-    }
-    req.payload = jwt.verify(token, process.env.JWT_SECRET);
-    next();
+    // on place le contenu du token (payloads dans la propriété payloads de la requête)
+    // afin de pouvoir retrouver les infos de l'utilisateurs connecté dans la prochaine fonction.
+    req.payloads = jwt.verify(token, JWT_SECRET);
+    return next();
   } catch (err) {
     console.error(err);
-
-    res.sendStatus(401);
+    return res.sendStatus(403);
   }
+};
+
+const logout = (req, res) => {
+  res.clearCookie("access_token").sendStatus(200);
 };
 
 module.exports = {
   hashPassword,
   verifyPassword,
   verifyToken,
+  logout,
 };
