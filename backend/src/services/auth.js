@@ -19,7 +19,7 @@ const hashPassword = (req, res, next) => {
     .hash(password, hashingOptions)
     .then((hashedPassword) => {
       req.body.hashedPassword = hashedPassword;
-      // delete password;
+      delete req.body.password;
       next();
     })
     .catch((err) => {

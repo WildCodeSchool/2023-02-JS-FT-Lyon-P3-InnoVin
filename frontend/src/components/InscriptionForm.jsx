@@ -60,8 +60,9 @@ export default function InscriptionForm() {
         });
     },
   });
+
   const handleClick = () => {
-    if (formik.errors) {
+    if (!formik.isValid) {
       toast.error("Champ manquant", {
         position: "bottom-right",
         autoClose: 5000,
@@ -246,7 +247,7 @@ export default function InscriptionForm() {
                     <input
                       type="radio"
                       name="typeId"
-                      value="1"
+                      value={1}
                       checked={formik.values.typeId === "1"}
                       onChange={formik.handleChange}
                     />
@@ -265,7 +266,7 @@ export default function InscriptionForm() {
                     <input
                       type="radio"
                       name="typeId"
-                      value="2"
+                      value={2}
                       checked={formik.values.typeId === "2"}
                       onChange={formik.handleChange}
                     />
@@ -284,7 +285,7 @@ export default function InscriptionForm() {
                     <input
                       type="radio"
                       name="typeId"
-                      value="3"
+                      value={3}
                       checked={formik.values.typeId === "3"}
                       onChange={formik.handleChange}
                     />
