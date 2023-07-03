@@ -21,7 +21,7 @@ class UserManager extends AbstractManager {
   // Override
   findAll() {
     return this.database.query(
-      `select u.id, u.firstname, u.lastname, u.email, u.birthdate, u.address, u.city, u.role, a.name as aroma, f.name as flavour, t.name as type
+      `select u.id, u.firstname, u.lastname, u.email, u.birthdate, u.address, u.postcode, u.city, u.role, a.name as aroma, f.name as flavour, t.name as type
       from  ${this.table} as u
       inner join aroma as a on a.id = u.aroma_id
       inner join flavour as f on f.id = u.flavour_id

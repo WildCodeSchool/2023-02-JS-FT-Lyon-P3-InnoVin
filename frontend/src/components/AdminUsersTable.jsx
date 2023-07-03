@@ -1,17 +1,22 @@
-import axios from "axios";
 import { useEffect } from "react";
 import { DataGrid, gridClasses } from "@mui/x-data-grid";
 import { styled } from "@mui/material/styles";
 import { useAdminContext } from "../contexts/AdminContext";
+import UserService from "../services/UserService";
 
 export default function AdminUsersTable() {
   const { usersData, setUsersData } = useAdminContext();
 
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/users`)
-      .then((response) => setUsersData(response.data))
-      .catch((err) => console.error(err));
+    async function fetch() {
+      try {
+        const response = await UserService.getUsers();
+        setUsersData(response.data);
+      } catch (error) {
+        console.error("Internal error");
+      }
+    }
+    fetch();
   }, []);
 
   const StripedUsersDataGrid = styled(DataGrid)(({ theme }) => ({
@@ -53,6 +58,13 @@ export default function AdminUsersTable() {
       field: "address",
       headerClassName: "super-app-theme--header",
       headerName: "Adresse",
+      width: 150,
+      editable: true,
+    },
+    {
+      field: "postcode",
+      headerClassName: "super-app-theme--header",
+      headerName: "Code postal",
       width: 150,
       editable: true,
     },

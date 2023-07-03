@@ -86,14 +86,14 @@ export default function AdminWinesTable() {
       editable: true,
     },
     {
-      field: "aromas",
+      field: "aroma",
       headerClassName: "super-app-theme--header",
       headerName: "Arôme",
       width: 200,
       editable: true,
     },
     {
-      field: "flavours",
+      field: "flavour",
       headerClassName: "super-app-theme--header",
       headerName: "Saveur",
       type: "singleSelect",
