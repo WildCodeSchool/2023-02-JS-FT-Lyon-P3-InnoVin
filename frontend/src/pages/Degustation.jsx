@@ -1,14 +1,7 @@
-import {
-  Typography,
-  Box,
-  Checkbox,
-  FormGroup,
-  FormControlLabel,
-  Slider,
-  Button,
-} from "@mui/material";
+import { Typography, Box, FormGroup, Slider, Button } from "@mui/material";
 import { useState } from "react";
 import logo from "../assets/logo.svg";
+import ControlLabel from "../components/ControlLabel";
 
 export default function Degustation() {
   const [choices, setChoices] = useState("");
@@ -97,189 +90,77 @@ export default function Degustation() {
             </Typography>
             <Box flexDirection="row" display="flex">
               <FormGroup>
-                <FormControlLabel
+                <ControlLabel
                   value="Framboise"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Framboise"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Cerise"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Cerise"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Rubis"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Rubis"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Pourpre"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Pourpre"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Violet"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Violet"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Grenat"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Grenat"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Tuilé"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Tuilé"
                 />
               </FormGroup>
+
               <FormGroup>
-                <FormControlLabel
+                <ControlLabel
                   value="Jaune vert"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                        fontSize: "2rem",
-                      }}
-                    />
-                  }
                   label="Jaune vert"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Jaune paille"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Jaune paille"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Or vert"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Or vert"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Or jaune"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Or jaune"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Roux"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Roux"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Ambré"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Ambré"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Doré"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Doré"
                 />
               </FormGroup>
@@ -300,56 +181,24 @@ export default function Degustation() {
             </Typography>
             <Box flexDirection="column" display="flex">
               <FormGroup>
-                <FormControlLabel
+                <ControlLabel
                   value="Claire"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Claire"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Moyenne"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Moyenne"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Trouble"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Trouble"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Opaque"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Opaque"
                 />
               </FormGroup>
@@ -365,30 +214,14 @@ export default function Degustation() {
                 Fluidité des larmes
               </Typography>
               <FormGroup>
-                <FormControlLabel
+                <ControlLabel
                   value="Fines et fluides"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Fines et fluides"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Larges et visqueuses"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Larges et visqueuses"
                 />
               </FormGroup>
@@ -425,43 +258,19 @@ export default function Degustation() {
             </Typography>
             <Box flexDirection="row" display="flex">
               <FormGroup>
-                <FormControlLabel
+                <ControlLabel
                   value="Faible"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Faible"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Moyenne"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Moyenne"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Forte"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Forte"
                 />
               </FormGroup>
@@ -481,98 +290,43 @@ export default function Degustation() {
             </Typography>
             <Box flexDirection="row" display="flex">
               <FormGroup>
-                <FormControlLabel
+                <ControlLabel
                   value="Fruits"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Fruits"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Fleurs"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Fleurs"
                 />
-                <FormControlLabel
+
+                <ControlLabel
                   value="Epices"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Epices"
                 />
-                <FormControlLabel
-                  value="Empyreumatiques"
+                <ControlLabel
+                  value="Empyreumatique"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
-                  label="Empyreumatiques"
+                  label="Empyreutmatique"
                 />
               </FormGroup>
 
               <FormGroup>
-                <FormControlLabel
+                <ControlLabel
                   value="Végétaux"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Végétaux"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Animal"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Animal"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Défauts"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Défauts"
                 />
               </FormGroup>
@@ -609,69 +363,29 @@ export default function Degustation() {
             </Typography>
             <Box flexDirection="row" display="flex">
               <FormGroup>
-                <FormControlLabel
+                <ControlLabel
                   value="Acidité"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Acidité"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Amer"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Amer"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Sucré"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Sucré"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Gras"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Gras"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Alcool"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Alcool"
                 />
               </FormGroup>
@@ -691,43 +405,19 @@ export default function Degustation() {
             </Typography>
             <Box flexDirection="row" display="flex">
               <FormGroup>
-                <FormControlLabel
+                <ControlLabel
                   value="Léger"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Léger"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Fluide"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Fluide"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Charpenté"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Charpenté"
                 />
               </FormGroup>
@@ -748,43 +438,19 @@ export default function Degustation() {
             </Typography>
             <Box flexDirection="row" display="flex">
               <FormGroup>
-                <FormControlLabel
+                <ControlLabel
                   value="Courte"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Courte"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Moyenne"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Moyenne"
                 />
-                <FormControlLabel
+                <ControlLabel
                   value="Persistante"
                   onChange={handleChange}
-                  control={
-                    <Checkbox
-                      sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
-                      style={{
-                        color: "#FFFDCC",
-                      }}
-                    />
-                  }
                   label="Persistante"
                 />
               </FormGroup>
@@ -816,7 +482,7 @@ export default function Degustation() {
           <Slider
             sx={{ width: "75%", margin: "0 auto" }}
             aria-label="note globale"
-            defaultValue={0}
+            defaultValue={5}
             valueLabelDisplay="on"
             step={1}
             min={0}
