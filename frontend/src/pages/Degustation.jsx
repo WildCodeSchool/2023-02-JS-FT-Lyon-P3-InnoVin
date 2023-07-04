@@ -61,8 +61,15 @@ export default function Degustation() {
           Fiche de dégustation{" "}
         </Typography>
       </Box>
-      <Box flexDirection="column" display="flex" marginBottom="2rem">
+      <Box
+        flexDirection="column"
+        display="flex"
+        marginBottom="2rem"
+        marginRight="2rem"
+        marginLeft="2rem"
+      >
         <Typography
+          marginBottom="2rem"
           variant="h4"
           sx={{
             display: "flex",
@@ -76,12 +83,12 @@ export default function Degustation() {
           Examen visuel{" "}
         </Typography>
         <Box flexDirection="row" display="flex">
-          <Box flexDirection="column" display="flex" marginLeft="5rem">
+          <Box flexDirection="column" display="flex">
             <Typography
               variant="h5"
               sx={{
                 display: "flex",
-                color: "contrastText",
+                color: "secondary.main",
                 fontSize: "calc(1.5rem + 1vmin)",
               }}
             >
@@ -172,7 +179,7 @@ export default function Degustation() {
               variant="h5"
               sx={{
                 display: "flex",
-                color: "contrastText",
+                color: "secondary.main",
                 fontSize: "calc(1.5rem + 1vmin)",
               }}
             >
@@ -204,9 +211,10 @@ export default function Degustation() {
               </FormGroup>
               <Typography
                 variant="h5"
+                marginTop="1.5rem"
                 sx={{
                   display: "flex",
-                  color: "contrastText",
+                  color: "secondary.main",
                   fontSize: "calc(1.5rem + 1vmin)",
                 }}
               >
@@ -230,27 +238,36 @@ export default function Degustation() {
         </Box>
       </Box>
 
-      <Box flexDirection="column" display="flex" marginBottom="2rem">
+      <Box
+        flexDirection="column"
+        display="flex"
+        marginBottom="2rem"
+        marginLeft="2rem"
+      >
         <Typography
           variant="h4"
+          marginBottom="2rem"
+          marginLeft="10rem"
           sx={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             color: "secondary.main",
             fontSize: "calc(2rem + 1vmin)",
+            width: "60%",
+            borderTop: 1,
           }}
         >
           {" "}
           Examen olfactif{" "}
         </Typography>
         <Box flexDirection="row" display="flex">
-          <Box flexDirection="column" display="flex" marginLeft="5rem">
+          <Box flexDirection="column" display="flex">
             <Typography
               variant="h5"
               sx={{
                 display: "flex",
-                color: "contrastText",
+                color: "secondary.main",
                 fontSize: "calc(1.5rem + 1vmin)",
               }}
             >
@@ -281,7 +298,7 @@ export default function Degustation() {
               variant="h5"
               sx={{
                 display: "flex",
-                color: "contrastText",
+                color: "secondary.main",
                 fontSize: "calc(1.5rem + 1vmin)",
               }}
             >
@@ -335,27 +352,37 @@ export default function Degustation() {
         </Box>
       </Box>
 
-      <Box flexDirection="column" display="flex" marginBottom="2rem">
+      <Box
+        flexDirection="column"
+        display="flex"
+        marginBottom="2rem"
+        marginLeft="2rem"
+        marginRight="1rem"
+      >
         <Typography
           variant="h4"
+          marginBottom="2rem"
+          marginLeft="10rem"
           sx={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             color: "secondary.main",
             fontSize: "calc(2rem + 1vmin)",
+            width: "60%",
+            borderTop: 1,
           }}
         >
           {" "}
           Examen gustatif{" "}
         </Typography>
         <Box flexDirection="row" display="flex">
-          <Box flexDirection="column" display="flex" marginLeft="5rem">
+          <Box flexDirection="column" display="flex">
             <Typography
               variant="h5"
               sx={{
                 display: "flex",
-                color: "contrastText",
+                color: "secondary.main",
                 fontSize: "calc(1.5rem + 1vmin)",
               }}
             >
@@ -391,12 +418,12 @@ export default function Degustation() {
               </FormGroup>
             </Box>
           </Box>
-          <Box flexDirection="column" display="flex" marginLeft="5rem">
+          <Box flexDirection="column" display="flex" marginLeft="4rem">
             <Typography
               variant="h5"
               sx={{
                 display: "flex",
-                color: "contrastText",
+                color: "secondary.main",
                 fontSize: "calc(1.5rem + 1vmin)",
               }}
             >
@@ -424,12 +451,12 @@ export default function Degustation() {
             </Box>
           </Box>
 
-          <Box flexDirection="column" display="flex" marginLeft="5rem">
+          <Box flexDirection="column" display="flex" marginLeft="4rem">
             <Typography
               variant="h5"
               sx={{
                 display: "flex",
-                color: "contrastText",
+                color: "secondary.main",
                 fontSize: "calc(1.5rem + 1vmin)",
               }}
             >
@@ -482,7 +509,7 @@ export default function Degustation() {
           <Slider
             sx={{ width: "75%", margin: "0 auto" }}
             aria-label="note globale"
-            defaultValue={5}
+            defaultValue={0}
             valueLabelDisplay="on"
             step={1}
             min={0}
