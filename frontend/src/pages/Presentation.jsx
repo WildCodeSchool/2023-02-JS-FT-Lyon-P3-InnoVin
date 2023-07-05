@@ -50,15 +50,17 @@ export default function Presentation() {
             overflow: "auto",
           }}
         >
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras auctor
-          lobortis dolor nec interdum. Duis non porttitor nibh, nec malesuada
-          justo. Aliquam placerat consectetur ullamcorper. Vestibulum ultrices
-          enim dui, et eleifend turpis consectetur eu. Proin a blandit nisl.
-          Proin efficitur urna arcu, nec eleifend eros imperdiet nec. Nunc
-          malesuada lacus purus, vel mollis dolor volutpat eu. Cras vitae lorem
-          placerat, cursus ex ut, rutrum arcu. Curabitur dictum tincidunt dolor,
-          in efficitur libero. Sed sem neque, ultrices in gravida nec, viverra
-          pulvinar ligula. Suspendisse dapibus egestas turpis eu consequat.
+          Bienvenue dans notre application d'accompagnement pour l'atelier de
+          dégustation de vins !<br /> Découvrez un voyage sensoriel unique où
+          chaque note compte. <br /> <br />
+          Après avoir évalué chaque vin dégusté, vous recevrez une fiche recette
+          personnalisée mettant en valeur trois vins sélectionnés spécialement
+          pour vous. Ensuite, participez à notre atelier de création de mélanges
+          pour composer votre propre chef-d'œuvre œnologique et repartez avec
+          une bouteille unique, créée selon vos goûts.
+          <br /> <br />
+          Laissez-vous guider par notre application pour une expérience
+          inoubliable.
         </Typography>
         <Stack
           flexDirection="row"

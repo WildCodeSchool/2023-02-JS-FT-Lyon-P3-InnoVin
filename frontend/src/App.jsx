@@ -7,6 +7,7 @@ import Inscription from "./pages/Inscription";
 import Admin from "./pages/Admin";
 import Degustation from "./pages/Degustation";
 import "react-toastify/dist/ReactToastify.css";
+import TastingSheet from "./pages/TastingSheet";
 
 function App() {
   return (
@@ -19,7 +20,9 @@ function App() {
         <Route path="/admin/wines" element={<Admin />} />
         <Route path="/admin/grapes" element={<Admin />} />
         <Route path="/admin/sessions" element={<Admin />} />
-        <Route path="/tasting" element={<Degustation />} />
+        <Route path="/tasting" element={<Degustation />}>
+          <Route path="tastingsheet" element={<TastingSheet />} />
+        </Route>
       </Routes>
       <ToastContainer />
     </div>
