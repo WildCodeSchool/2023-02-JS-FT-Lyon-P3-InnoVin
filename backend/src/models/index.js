@@ -39,6 +39,21 @@ const UserManager = require("./UserManager");
 models.user = new UserManager();
 models.user.setDatabase(pool);
 
+const SessionManager = require("./SessionManager");
+
+models.session = new SessionManager();
+models.session.setDatabase(pool);
+
+const SessionHasWineManager = require("./SessionHasWineManager");
+
+models.sessionHasWine = new SessionHasWineManager();
+models.sessionHasWine.setDatabase(pool);
+
+const TastingNoteManager = require("./TastingNoteManager");
+
+models.tasting_note = new TastingNoteManager();
+models.tasting_note.setDatabase(pool);
+
 // bonus: use a proxy to personalize error message,
 // when asking for a non existing model
 

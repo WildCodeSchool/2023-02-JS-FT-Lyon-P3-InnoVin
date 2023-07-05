@@ -316,30 +316,31 @@ INSERT INTO Wine (country_id, region_id, type_id, domain_id, grape_variety_id, f
 -- Table `Inovin`.`Session`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Inovin`.`Session` (
-  `Id` INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `date` DATE NOT NULL,
   PRIMARY KEY (`Id`))
 ENGINE = InnoDB;
 
+INSERT INTO Session (date) VALUES ("2023-07-04"), ("2023-07-10"), ("2023-07-15"), ("2023-07-20"), ("2023-07-28");
 
 -- -----------------------------------------------------
--- Table `Inovin`.`Receipt`
+-- Table `Inovin`.`Recipe`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Inovin`.`Receipt` (
+CREATE TABLE IF NOT EXISTS `Inovin`.`Recipe` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
-  `session_Id` INT NOT NULL,
+  `session_id` INT NOT NULL,
   `name` VARCHAR(80) NULL,
-  PRIMARY KEY (`id`, `user_id`, `session_Id`),
-  INDEX `fk_Receipt_User1_idx` (`user_id` ASC) VISIBLE,
-  INDEX `fk_Receipt_Session1_idx` (`session_Id` ASC) VISIBLE,
-  CONSTRAINT `fk_Receipt_User1`
+  PRIMARY KEY (`id`, `user_id`, `session_id`),
+  INDEX `fk_Recipe_User1_idx` (`user_id` ASC) VISIBLE,
+  INDEX `fk_Recipe_Session1_idx` (`session_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Recipe_User1`
     FOREIGN KEY (`user_id`)
     REFERENCES `Inovin`.`User` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Receipt_Session1`
-    FOREIGN KEY (`session_Id`)
+  CONSTRAINT `fk_Recipe_Session1`
+    FOREIGN KEY (`session_id`)
     REFERENCES `Inovin`.`Session` (`Id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -351,9 +352,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Inovin`.`User_has_Session` (
   `user_id` INT NOT NULL,
-  `session_Id` INT NOT NULL,
-  PRIMARY KEY (`user_id`, `session_Id`),
-  INDEX `fk_User_has_Session_Session1_idx` (`session_Id` ASC) VISIBLE,
+  `session_id` INT NOT NULL,
+  PRIMARY KEY (`user_id`, `session_id`),
+  INDEX `fk_User_has_Session_Session1_idx` (`session_id` ASC) VISIBLE,
   INDEX `fk_User_has_Session_User1_idx` (`user_id` ASC) VISIBLE,
   CONSTRAINT `fk_User_has_Session_User1`
     FOREIGN KEY (`user_id`)
@@ -361,8 +362,8 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`User_has_Session` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_User_has_Session_Session1`
-    FOREIGN KEY (`session_Id`)
-    REFERENCES `Inovin`.`Session` (`Id`)
+    FOREIGN KEY (`session_id`)
+    REFERENCES `Inovin`.`Session` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -373,12 +374,12 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `Inovin`.`Tasting_note` (
   `user_id` INT NOT NULL,
   `wine_id` INT NOT NULL,
-  `session_Id` INT NOT NULL,
+  `session_id` INT NOT NULL,
   `note` INT NOT NULL,
-  PRIMARY KEY (`user_id`, `wine_id`, `session_Id`),
+  PRIMARY KEY (`user_id`, `wine_id`, `session_id`),
   INDEX `fk_User_has_Wine_Wine1_idx` (`wine_id` ASC) VISIBLE,
   INDEX `fk_User_has_Wine_User1_idx` (`user_id` ASC) VISIBLE,
-  INDEX `fk_Tasting_note_Session1_idx` (`session_Id` ASC) VISIBLE,
+  INDEX `fk_Tasting_note_Session1_idx` (`session_id` ASC) VISIBLE,
   CONSTRAINT `fk_User_has_Wine_User1`
     FOREIGN KEY (`user_id`)
     REFERENCES `Inovin`.`User` (`id`)
@@ -390,7 +391,7 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`Tasting_note` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Tasting_note_Session1`
-    FOREIGN KEY (`session_Id`)
+    FOREIGN KEY (`session_id`)
     REFERENCES `Inovin`.`Session` (`Id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -398,21 +399,21 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Inovin`.`Receipt_has_Wine`
+-- Table `Inovin`.`Recipe_has_Wine`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Inovin`.`Receipt_has_Wine` (
-  `receipt_id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `Inovin`.`Recipe_has_Wine` (
+  `recipe_id` INT NOT NULL,
   `wine_id` INT NOT NULL,
   `dosage` INT NOT NULL,
-  PRIMARY KEY (`receipt_id`, `wine_id`),
-  INDEX `fk_Receipt_has_Wine_Wine1_idx` (`wine_id` ASC) VISIBLE,
-  INDEX `fk_Receipt_has_Wine_Receipt1_idx` (`receipt_id` ASC) VISIBLE,
-  CONSTRAINT `fk_Receipt_has_Wine_Receipt1`
-    FOREIGN KEY (`receipt_id`)
-    REFERENCES `Inovin`.`Receipt` (`id`)
+  PRIMARY KEY (`recipe_id`, `wine_id`),
+  INDEX `fk_Recipe_has_Wine_Wine1_idx` (`wine_id` ASC) VISIBLE,
+  INDEX `fk_Recipe_has_Wine_Recipe1_idx` (`recipe_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Recipe_has_Wine_Recipe1`
+    FOREIGN KEY (`recipe_id`)
+    REFERENCES `Inovin`.`Recipe` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Receipt_has_Wine_Wine1`
+  CONSTRAINT `fk_Recipe_has_Wine_Wine1`
     FOREIGN KEY (`wine_id`)
     REFERENCES `Inovin`.`Wine` (`id`)
     ON DELETE NO ACTION
@@ -446,13 +447,13 @@ ENGINE = InnoDB;
 -- Table `Inovin`.`Session_has_Wine`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Inovin`.`Session_has_Wine` (
-  `session_Id` INT NOT NULL,
+  `session_id` INT NOT NULL,
   `wine_id` INT NOT NULL,
-  PRIMARY KEY (`session_Id`, `wine_id`),
+  PRIMARY KEY (`session_id`, `wine_id`),
   INDEX `fk_Session_has_Wine_Wine1_idx` (`wine_id` ASC) VISIBLE,
-  INDEX `fk_Session_has_Wine_Session1_idx` (`session_Id` ASC) VISIBLE,
+  INDEX `fk_Session_has_Wine_Session1_idx` (`session_id` ASC) VISIBLE,
   CONSTRAINT `fk_Session_has_Wine_Session1`
-    FOREIGN KEY (`session_Id`)
+    FOREIGN KEY (`session_id`)
     REFERENCES `Inovin`.`Session` (`Id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
@@ -462,6 +463,27 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`Session_has_Wine` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+ INSERT INTO Session_has_Wine (session_id, wine_id) VALUE 
+ (1, 1), 
+ (1, 2), 
+ (1, 19), 
+ (1, 43), 
+ (2, 20), 
+ (2, 21), 
+ (2, 3), 
+ (2, 44), 
+ (3, 4), 
+ (3, 22), 
+ (3, 45), 
+ (3, 46), 
+ (4, 5), 
+ (4, 6), 
+ (4, 23), 
+ (4, 47), 
+ (5, 5), 
+ (5, 6), 
+ (5, 23), 
+ (5, 47);
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

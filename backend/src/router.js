@@ -8,9 +8,24 @@ const { verifyPassword } = require("./services/auth");
 
 const { getUserByEmailMiddleWare } = require("./controllers/authControllers");
 
+const {
+  getSessionIdByDateMiddleWare,
+} = require("./controllers/sessionControllers");
+
+const {
+  getWineIdBySessionIdMiddleWare,
+} = require("./controllers/sessionHasWineControllers");
+
 // Public routes
 // Auth
-router.post("/login", validateLogin, getUserByEmailMiddleWare, verifyPassword);
+router.post(
+  "/login",
+  validateLogin,
+  getUserByEmailMiddleWare,
+  getSessionIdByDateMiddleWare,
+  getWineIdBySessionIdMiddleWare,
+  verifyPassword
+);
 
 const itemControllers = require("./controllers/itemControllers");
 
@@ -23,5 +38,17 @@ router.delete("/items/:id", itemControllers.destroy);
 const userControllers = require("./controllers/userControllers");
 
 router.get("/users", userControllers.browse);
+router.get("/users/:id", userControllers.read);
+router.put("/users/:id", userControllers.edit);
+router.post("/users", userControllers.add);
+router.delete("/users/:id", userControllers.destroy);
+
+const sessionControllers = require("./controllers/sessionControllers");
+
+router.get("/sessions", sessionControllers.browse);
+router.get("/sessions/:id", sessionControllers.read);
+router.put("/sessions/:id", sessionControllers.edit);
+router.post("/sessions", sessionControllers.add);
+router.delete("/sessions/:id", sessionControllers.destroy);
 
 module.exports = router;
