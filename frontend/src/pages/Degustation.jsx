@@ -1,4 +1,5 @@
 import { Box, Typography, Grid, Button } from "@mui/material";
+import { Outlet } from "react-router-dom";
 import styles from "./Degustation.module.css";
 import pic from "../assets/pic.png";
 import logo from "../assets/logo.svg";
@@ -117,6 +118,7 @@ export default function Degustation() {
         {" "}
         Afficher mon profil <br /> de dégustation{" "}
       </Button>
+      <Outlet />
     </div>
   );
 }

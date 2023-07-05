@@ -1,3 +1,9 @@
+SET  FOREIGN_KEY_CHECKS=0;
+
+
+-- -----------------------------------------------------
+-- Table `aroma`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `aroma` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(80) NOT NULL,
@@ -6,6 +12,9 @@ ENGINE = InnoDB;
 
 INSERT INTO aroma (name) VALUES ('Fruits'), ('Empyreumatiques'), ('Fleurs'), ('Animal'), ('Epices'), ('Défauts'), ('Végétaux');
 
+-- -----------------------------------------------------
+-- Table `flavour`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `flavour` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(80) NOT NULL,
@@ -14,6 +23,9 @@ ENGINE = InnoDB;
 
 INSERT INTO flavour (name) VALUES ('Acidité'), ('Gras'), ('Amer'), ('Alcool'), ('Sucre');
 
+-- -----------------------------------------------------
+-- Table `type`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `type` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(80) NOT NULL,
@@ -22,6 +34,9 @@ ENGINE = InnoDB;
 
 INSERT INTO type (name) VALUES ('Blanc'), ('Rouge'), ('Rosé');
 
+-- -----------------------------------------------------
+-- Table `user`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `user` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `aroma_id` INT NOT NULL,
@@ -55,6 +70,10 @@ ENGINE = InnoDB;
 INSERT INTO user (aroma_id, flavour_id, type_id, firstname, lastname, birthdate, email, hashed_password, address, postcode, city, role) 
 VALUES (1, 1, 1, "Yann", "Richard", "1989-07-12", "yann.richard9@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$cXFnN2s1ZHU0aTAwMDAwMA$XFP3Vrp4/huxiy9p4p2EAw", "Rue de l'exemple", 69000, "Lyon", "User");
 
+-- -----------------------------------------------------
+-- Table `country`
+-- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `country` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(80) NULL,
@@ -63,6 +82,9 @@ ENGINE = InnoDB;
 
 INSERT INTO country (name) VALUES ('France'), ('Suisse'), ('Italie'), ('Argentine');
 
+-- -----------------------------------------------------
+-- Table `region`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `region` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(80) NOT NULL,
@@ -71,6 +93,9 @@ ENGINE = InnoDB;
 
 INSERT INTO region (name) VALUES ('Bordeaux'), ('Beaujolais'), ('Bourgogne'), ('Sud-Ouest'), ('Vallée du Rhône'), ('Vallée de la Loire'), ('Alsace'), ('Vaud'), ('Provence'), ('Languedoc'), ('Toscane'), ('Mendoza');
 
+-- -----------------------------------------------------
+-- Table `domain`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `domain` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(80) NULL,
@@ -133,6 +158,9 @@ VALUES
     ('Vina del Sol'), 
     ('Domaine de la Roseraie') ;
 
+-- -----------------------------------------------------
+-- Table `grape_variety`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `grape_variety` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(80) NOT NULL,
@@ -161,6 +189,9 @@ VALUES
 ("Sangiovese", "https://upload.wikimedia.org/wikipedia/commons/c/cb/Nieluccio_-_Amp%C3%A9lographie.png"), 
 ("Malbec", "https://upload.wikimedia.org/wikipedia/commons/a/a5/C%C3%B4t_-_Amp%C3%A9lographie.jpg"); 
 
+-- -----------------------------------------------------
+-- Table `wine`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wine` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `country_id` INT NOT NULL,
@@ -259,14 +290,20 @@ INSERT INTO wine (country_id, region_id, type_id, domain_id, grape_variety_id, f
   (4, 12, 3, 52, 18, 5, 3, 'Rosado Mistico', 2019), 
   (1, 10, 3, 53, 18, 5, 7, "Soleil d'Été Rosé", 2021); 
 
+-- -----------------------------------------------------
+-- Table `session`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `session` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `Id` INT NOT NULL AUTO_INCREMENT,
   `date` DATE NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
 INSERT INTO session (date) VALUES ("2023-07-04"), ("2023-07-10"), ("2023-07-15"), ("2023-07-20"), ("2023-07-28");
 
+-- -----------------------------------------------------
+-- Table `recipe`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `recipe` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
@@ -284,6 +321,10 @@ CREATE TABLE IF NOT EXISTS `recipe` (
 
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `user_has_session`
+-- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `user_has_session` (
   `user_id` INT NOT NULL,
   `session_id` INT NOT NULL,
@@ -299,6 +340,9 @@ CREATE TABLE IF NOT EXISTS `user_has_session` (
 
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `tasting_note`
+-- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `tasting_note` (
   `user_id` INT NOT NULL,
@@ -321,7 +365,9 @@ CREATE TABLE IF NOT EXISTS `tasting_note` (
 
 ENGINE = InnoDB;
 
-
+-- -----------------------------------------------------
+-- Table `recipe_has_wine`
+-- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `recipe_has_wine` (
   `recipe_id` INT NOT NULL,
   `wine_id` INT NOT NULL,
@@ -338,6 +384,10 @@ CREATE TABLE IF NOT EXISTS `recipe_has_wine` (
 
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `user_has_wine`
+-- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `user_has_wine` (
   `user_id` INT NOT NULL,
   `wine_id` INT NOT NULL,
@@ -353,6 +403,10 @@ CREATE TABLE IF NOT EXISTS `user_has_wine` (
 
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `session_has_wine`
+-- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `session_has_wine` (
   `session_id` INT NOT NULL,
   `wine_id` INT NOT NULL,
@@ -367,7 +421,7 @@ CREATE TABLE IF NOT EXISTS `session_has_wine` (
     REFERENCES `wine` (`id`))
 
 ENGINE = InnoDB;
- INSERT INTO Session_has_Wine (session_id, wine_id) VALUE 
+ INSERT INTO session_has_wine (session_id, wine_id) VALUE 
  (1, 1), 
  (1, 2), 
  (1, 19), 
@@ -389,6 +443,7 @@ ENGINE = InnoDB;
  (5, 23), 
  (5, 47);
 
+SET FOREIGN_KEY_CHECKS=1;
 
 
 
