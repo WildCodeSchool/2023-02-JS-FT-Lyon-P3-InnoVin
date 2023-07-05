@@ -14,13 +14,12 @@ const hashingOptions = {
 };
 
 const hashPassword = (req, res, next) => {
-  let { password } = req.body;
   argon2
-    .hash(password, hashingOptions)
+    .hash(req.body.password, hashingOptions)
     .then((hashedPassword) => {
       req.body.hashedPassword = hashedPassword;
-      // delete refusé par ESLint. Trouver solution de contournement.
-      password = null;
+      delete req.body.password;
+
       next();
     })
     .catch((err) => {
