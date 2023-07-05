@@ -8,13 +8,21 @@ const { verifyPassword } = require("./services/auth");
 
 const { getUserByEmailMiddleWare } = require("./controllers/authControllers");
 
+// const {
+//   getWineNameByWineIdMiddleWare,
+// } = require("./controllers/wineControllers");
+
+const {
+  getWinesAndGrapesBySessionIdMiddleWare,
+} = require("./controllers/wineControllers");
+
 const {
   getSessionIdByDateMiddleWare,
 } = require("./controllers/sessionControllers");
 
-const {
-  getWineIdBySessionIdMiddleWare,
-} = require("./controllers/sessionHasWineControllers");
+// const {
+//   getWineIdBySessionIdMiddleWare,
+// } = require("./controllers/sessionHasWineControllers");
 
 // Public routes
 // Auth
@@ -23,7 +31,9 @@ router.post(
   validateLogin,
   getUserByEmailMiddleWare,
   getSessionIdByDateMiddleWare,
-  getWineIdBySessionIdMiddleWare,
+  getWinesAndGrapesBySessionIdMiddleWare,
+  // getWineIdBySessionIdMiddleWare,
+  // getWineNameByWineIdMiddleWare,
   verifyPassword
 );
 
