@@ -52,6 +52,45 @@ const TastingNoteManager = require("./TastingNoteManager");
 
 models.tasting_note = new TastingNoteManager();
 models.tasting_note.setDatabase(pool);
+const WineManager = require("./WineManager");
+
+models.wine = new WineManager();
+models.wine.setDatabase(pool);
+
+const GrapeManager = require("./GrapeManager");
+
+models.grape = new GrapeManager();
+models.grape.setDatabase(pool);
+
+const DomainManager = require("./DomainManager");
+
+models.domain = new DomainManager();
+models.domain.setDatabase(pool);
+
+const RegionManager = require("./RegionManager");
+
+models.region = new RegionManager();
+models.region.setDatabase(pool);
+
+const CountryManager = require("./CountryManager");
+
+models.country = new CountryManager();
+models.country.setDatabase(pool);
+
+const TypeManager = require("./TypeManager");
+
+models.type = new TypeManager();
+models.type.setDatabase(pool);
+
+const AromaManager = require("./AromaManager");
+
+models.aroma = new AromaManager();
+models.aroma.setDatabase(pool);
+
+const FlavourManager = require("./FlavourManager");
+
+models.flavour = new FlavourManager();
+models.flavour.setDatabase(pool);
 
 // bonus: use a proxy to personalize error message,
 // when asking for a non existing model
