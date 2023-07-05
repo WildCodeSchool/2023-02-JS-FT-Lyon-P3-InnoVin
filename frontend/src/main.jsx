@@ -45,17 +45,6 @@ const theme = createTheme({
     subtitle2: {
       fontFamily: "Josefin Sans",
     },
-    components: {
-      MuiOutlinedLabel: {
-        styleOverrides: {
-          // Name of the slot
-          label: {
-            // Some CSS
-            color: "black",
-          },
-        },
-      },
-    },
   },
 });
 
