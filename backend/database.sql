@@ -1,53 +1,42 @@
 -- MySQL Workbench Forward Engineering
 
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+SET  FOREIGN_KEY_CHECKS=0;
+
 
 -- -----------------------------------------------------
--- Schema Inovin
+-- Table `Aroma`
 -- -----------------------------------------------------
-
--- -----------------------------------------------------
--- Schema Inovin
--- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `Inovin` DEFAULT CHARACTER SET utf8 ;
-USE `Inovin` ;
-
--- -----------------------------------------------------
--- Table `Inovin`.`Aroma`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Inovin`.`Aroma` (
+CREATE TABLE IF NOT EXISTS `aroma` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(80) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-INSERT INTO Aroma (name) VALUES ('Fruits'), ('Empyreumatiques'), ('Fleurs'), ('Animal'), ('Epices'), ('Défauts'), ('Végétaux');
+INSERT INTO aroma (name) VALUES ('Fruits'), ('Empyreumatiques'), ('Fleurs'), ('Animal'), ('Epices'), ('Défauts'), ('Végétaux');
 -- -----------------------------------------------------
--- Table `Inovin`.`Flavour`
+-- Table `Flavour`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Inovin`.`Flavour` (
+CREATE TABLE IF NOT EXISTS `flavour` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(80) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-INSERT INTO Flavour (name) VALUES ('Acidité'), ('Gras'), ('Amer'), ('Alcool'), ('Sucre');
+INSERT INTO flavour (name) VALUES ('Acidité'), ('Gras'), ('Amer'), ('Alcool'), ('Sucre');
 -- -----------------------------------------------------
--- Table `Inovin`.`Type`
+-- Table `Type`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Inovin`.`Type` (
+CREATE TABLE IF NOT EXISTS `type` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(80) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-INSERT INTO Inovin.Type (name) VALUES ('Blanc'), ('Rouge'), ('Rosé');
+INSERT INTO type (name) VALUES ('Blanc'), ('Rouge'), ('Rosé');
 -- -----------------------------------------------------
--- Table `Inovin`.`User`
+-- Table `User`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Inovin`.`User` (
+CREATE TABLE IF NOT EXISTS `User` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `aroma_id` INT NOT NULL,
   `flavour_id` INT NOT NULL,
@@ -62,22 +51,22 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`User` (
   `city` VARCHAR(45) NULL,
   `role` VARCHAR(45) DEFAULT 'User',
   PRIMARY KEY (`id`),
-  INDEX `fk_User_Aroma1_idx` (`aroma_id` ASC) VISIBLE,
-  INDEX `fk_User_Flavour1_idx` (`flavour_id` ASC) VISIBLE,
-  INDEX `fk_User_Type1_idx` (`type_id` ASC) VISIBLE,
+  INDEX `fk_User_Aroma1_idx` (`aroma_id` ASC),
+  INDEX `fk_User_Flavour1_idx` (`flavour_id` ASC),
+  INDEX `fk_User_Type1_idx` (`type_id` ASC),
   CONSTRAINT `fk_User_Aroma1`
     FOREIGN KEY (`aroma_id`)
-    REFERENCES `Inovin`.`Aroma` (`id`)
+    REFERENCES `Aroma` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_User_Flavour1`
     FOREIGN KEY (`flavour_id`)
-    REFERENCES `Inovin`.`Flavour` (`id`)
+    REFERENCES `Flavour` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_User_Type1`
     FOREIGN KEY (`type_id`)
-    REFERENCES `Inovin`.`Type` (`id`)
+    REFERENCES `Type` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -85,35 +74,35 @@ ENGINE = InnoDB;
 INSERT INTO User (aroma_id, flavour_id, type_id, firstname, lastname, birthdate, email, hashed_password, address, postcode, city, role) 
 VALUES (0, 0, 0, "Yann", "Richard", "1989-07-12", "yann.richard9@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$cXFnN2s1ZHU0aTAwMDAwMA$XFP3Vrp4/huxiy9p4p2EAw", "Rue de l'exemple", 69000, "Lyon", "User");
 -- -----------------------------------------------------
--- Table `Inovin`.`Country`
+-- Table `Country`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Inovin`.`Country` (
+CREATE TABLE IF NOT EXISTS `country` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(80) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-INSERT INTO Country (name) VALUES ('France'), ('Suisse'), ('Italie'), ('Argentine');
+INSERT INTO country (name) VALUES ('France'), ('Suisse'), ('Italie'), ('Argentine');
 -- -----------------------------------------------------
--- Table `Inovin`.`Region`
+-- Table `Region`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Inovin`.`Region` (
+CREATE TABLE IF NOT EXISTS `region` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(80) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-INSERT INTO Region (name) VALUES ('Bordeaux'), ('Beaujolais'), ('Bourgogne'), ('Sud-Ouest'), ('Vallée du Rhône'), ('Vallée de la Loire'), ('Alsace'), ('Vaud'), ('Provence'), ('Languedoc'), ('Toscane'), ('Mendoza');
+INSERT INTO region (name) VALUES ('Bordeaux'), ('Beaujolais'), ('Bourgogne'), ('Sud-Ouest'), ('Vallée du Rhône'), ('Vallée de la Loire'), ('Alsace'), ('Vaud'), ('Provence'), ('Languedoc'), ('Toscane'), ('Mendoza');
 -- -----------------------------------------------------
--- Table `Inovin`.`Domain`
+-- Table `Domain`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Inovin`.`Domain` (
+CREATE TABLE IF NOT EXISTS `domain` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(80) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-INSERT INTO Domain (name)
+INSERT INTO domain (name)
 VALUES
     ('Château Margaux'),
     ('Château Lafite Rothschild'),
@@ -169,16 +158,16 @@ VALUES
     ('Vina del Sol'), 
     ('Domaine de la Roseraie') ;
 -- -----------------------------------------------------
--- Table `Inovin`.`Grape_variety`
+-- Table `Grape_variety`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Inovin`.`Grape_variety` (
+CREATE TABLE IF NOT EXISTS `grape_variety` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(80) NOT NULL,
   `picture` VARCHAR(255) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-INSERT INTO Grape_Variety (name, picture) 
+INSERT INTO grape_variety (name, picture) 
 VALUES 
 ("Cabernet Sauvignon", "https://upload.wikimedia.org/wikipedia/commons/a/a7/Lithographie_de_Cabernet_Sauvignon.jpg?uselang=fr"),
 ("Gamay", "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Gamay_Fr%C3%A9aux_-_Amp%C3%A9lographie.jpg/640px-Gamay_Fr%C3%A9aux_-_Amp%C3%A9lographie.jpg"),
@@ -199,9 +188,9 @@ VALUES
 ("Sangiovese", "https://upload.wikimedia.org/wikipedia/commons/c/cb/Nieluccio_-_Amp%C3%A9lographie.png"), 
 ("Malbec", "https://upload.wikimedia.org/wikipedia/commons/a/a5/C%C3%B4t_-_Amp%C3%A9lographie.jpg"); 
 -- -----------------------------------------------------
--- Table `Inovin`.`Wine`
+-- Table `Wine`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Inovin`.`Wine` (
+CREATE TABLE IF NOT EXISTS `wine` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `country_id` INT NOT NULL,
   `region_id` INT NOT NULL,
@@ -213,51 +202,51 @@ CREATE TABLE IF NOT EXISTS `Inovin`.`Wine` (
   `name` VARCHAR(80) NOT NULL,
   `vintage` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_Wine_Country1_idx` (`country_id` ASC) VISIBLE,
-  INDEX `fk_Wine_Region1_idx` (`region_id` ASC) VISIBLE,
-  INDEX `fk_Wine_Type1_idx` (`type_id` ASC) VISIBLE,
-  INDEX `fk_Wine_Domain1_idx` (`domain_id` ASC) VISIBLE,
-  INDEX `fk_Wine_Grape_Variety1_idx` (`grape_variety_id` ASC) VISIBLE,
-  INDEX `fk_Wine_Flavour1_idx` (`flavour_id` ASC) VISIBLE,
-  INDEX `fk_Wine_Aroma1_idx` (`aroma_id` ASC) VISIBLE,
+  INDEX `fk_Wine_Country1_idx` (`country_id` ASC),
+  INDEX `fk_Wine_Region1_idx` (`region_id` ASC),
+  INDEX `fk_Wine_Type1_idx` (`type_id` ASC),
+  INDEX `fk_Wine_Domain1_idx` (`domain_id` ASC),
+  INDEX `fk_Wine_Grape_Variety1_idx` (`grape_variety_id` ASC),
+  INDEX `fk_Wine_Flavour1_idx` (`flavour_id` ASC),
+  INDEX `fk_Wine_Aroma1_idx` (`aroma_id` ASC),
   CONSTRAINT `fk_Wine_Country1`
     FOREIGN KEY (`country_id`)
-    REFERENCES `Inovin`.`Country` (`id`)
+    REFERENCES `Country` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Wine_Region1`
     FOREIGN KEY (`region_id`)
-    REFERENCES `Inovin`.`Region` (`id`)
+    REFERENCES `Region` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Wine_Type1`
     FOREIGN KEY (`type_id`)
-    REFERENCES `Inovin`.`Type` (`id`)
+    REFERENCES `Type` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Wine_Domain1`
     FOREIGN KEY (`domain_id`)
-    REFERENCES `Inovin`.`Domain` (`id`)
+    REFERENCES `Domain` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Wine_Grape_Variety1`
     FOREIGN KEY (`grape_variety_id`)
-    REFERENCES `Inovin`.`Grape_variety` (`id`)
+    REFERENCES `Grape_variety` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Wine_Flavour1`
     FOREIGN KEY (`flavour_id`)
-    REFERENCES `Inovin`.`Flavour` (`id`)
+    REFERENCES `Flavour` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Wine_Aroma1`
     FOREIGN KEY (`aroma_id`)
-    REFERENCES `Inovin`.`Aroma` (`id`)
+    REFERENCES `Aroma` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-INSERT INTO Wine (country_id, region_id, type_id, domain_id, grape_variety_id, flavour_id, aroma_id, name, vintage) VALUES
+INSERT INTO wine (country_id, region_id, type_id, domain_id, grape_variety_id, flavour_id, aroma_id, name, vintage) VALUES
 	(1, 1, 2, 1, 1, 4, 1, 'Margaux Grand Cru', 2015),
 	(1, 1, 2, 2, 1, 4, 4,  'Rothschild Réserve Spéciale', 2012),
 	(1, 1, 2, 3, 1, 4, 7,  'Latour Cuvée Prestige', 2010),
@@ -313,9 +302,9 @@ INSERT INTO Wine (country_id, region_id, type_id, domain_id, grape_variety_id, f
   (4, 12, 3, 52, 18, 5, 3, 'Rosado Mistico', 2019), 
   (1, 10, 3, 53, 18, 5, 7, "Soleil d'Été Rosé", 2021); 
 -- -----------------------------------------------------
--- Table `Inovin`.`Session`
+-- Table `Session`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Inovin`.`Session` (
+CREATE TABLE IF NOT EXISTS `session` (
   `Id` INT NOT NULL AUTO_INCREMENT,
   `date` DATE NOT NULL,
   PRIMARY KEY (`Id`))
@@ -323,150 +312,148 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Inovin`.`Receipt`
+-- Table `Receipt`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Inovin`.`Receipt` (
+CREATE TABLE IF NOT EXISTS `receipt` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
   `session_Id` INT NOT NULL,
   `name` VARCHAR(80) NULL,
   PRIMARY KEY (`id`, `user_id`, `session_Id`),
-  INDEX `fk_Receipt_User1_idx` (`user_id` ASC) VISIBLE,
-  INDEX `fk_Receipt_Session1_idx` (`session_Id` ASC) VISIBLE,
+  INDEX `fk_Receipt_User1_idx` (`user_id` ASC),
+  INDEX `fk_Receipt_Session1_idx` (`session_Id` ASC),
   CONSTRAINT `fk_Receipt_User1`
     FOREIGN KEY (`user_id`)
-    REFERENCES `Inovin`.`User` (`id`)
+    REFERENCES `User` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Receipt_Session1`
     FOREIGN KEY (`session_Id`)
-    REFERENCES `Inovin`.`Session` (`Id`)
+    REFERENCES `Session` (`Id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Inovin`.`User_has_Session`
+-- Table `User_has_Session`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Inovin`.`User_has_Session` (
+CREATE TABLE IF NOT EXISTS `User_has_Session` (
   `user_id` INT NOT NULL,
   `session_Id` INT NOT NULL,
   PRIMARY KEY (`user_id`, `session_Id`),
-  INDEX `fk_User_has_Session_Session1_idx` (`session_Id` ASC) VISIBLE,
-  INDEX `fk_User_has_Session_User1_idx` (`user_id` ASC) VISIBLE,
+  INDEX `fk_User_has_Session_Session1_idx` (`session_Id` ASC),
+  INDEX `fk_User_has_Session_User1_idx` (`user_id` ASC),
   CONSTRAINT `fk_User_has_Session_User1`
     FOREIGN KEY (`user_id`)
-    REFERENCES `Inovin`.`User` (`id`)
+    REFERENCES `User` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_User_has_Session_Session1`
     FOREIGN KEY (`session_Id`)
-    REFERENCES `Inovin`.`Session` (`Id`)
+    REFERENCES `Session` (`Id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `Inovin`.`Tasting_note`
+-- Table `Tasting_note`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Inovin`.`Tasting_note` (
+CREATE TABLE IF NOT EXISTS `tasting_note` (
   `user_id` INT NOT NULL,
   `wine_id` INT NOT NULL,
   `session_Id` INT NOT NULL,
   `note` INT NOT NULL,
   PRIMARY KEY (`user_id`, `wine_id`, `session_Id`),
-  INDEX `fk_User_has_Wine_Wine1_idx` (`wine_id` ASC) VISIBLE,
-  INDEX `fk_User_has_Wine_User1_idx` (`user_id` ASC) VISIBLE,
-  INDEX `fk_Tasting_note_Session1_idx` (`session_Id` ASC) VISIBLE,
+  INDEX `fk_User_has_Wine_Wine1_idx` (`wine_id` ASC),
+  INDEX `fk_User_has_Wine_User1_idx` (`user_id` ASC),
+  INDEX `fk_Tasting_note_Session1_idx` (`session_Id` ASC),
   CONSTRAINT `fk_User_has_Wine_User1`
     FOREIGN KEY (`user_id`)
-    REFERENCES `Inovin`.`User` (`id`)
+    REFERENCES `User` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_User_has_Wine_Wine1`
     FOREIGN KEY (`wine_id`)
-    REFERENCES `Inovin`.`Wine` (`id`)
+    REFERENCES `Wine` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Tasting_note_Session1`
     FOREIGN KEY (`session_Id`)
-    REFERENCES `Inovin`.`Session` (`Id`)
+    REFERENCES `Session` (`Id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Inovin`.`Receipt_has_Wine`
+-- Table `Receipt_has_Wine`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Inovin`.`Receipt_has_Wine` (
+CREATE TABLE IF NOT EXISTS `receipt_has_Wine` (
   `receipt_id` INT NOT NULL,
   `wine_id` INT NOT NULL,
   `dosage` INT NOT NULL,
   PRIMARY KEY (`receipt_id`, `wine_id`),
-  INDEX `fk_Receipt_has_Wine_Wine1_idx` (`wine_id` ASC) VISIBLE,
-  INDEX `fk_Receipt_has_Wine_Receipt1_idx` (`receipt_id` ASC) VISIBLE,
+  INDEX `fk_Receipt_has_Wine_Wine1_idx` (`wine_id` ASC),
+  INDEX `fk_Receipt_has_Wine_Receipt1_idx` (`receipt_id` ASC),
   CONSTRAINT `fk_Receipt_has_Wine_Receipt1`
     FOREIGN KEY (`receipt_id`)
-    REFERENCES `Inovin`.`Receipt` (`id`)
+    REFERENCES `Receipt` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Receipt_has_Wine_Wine1`
     FOREIGN KEY (`wine_id`)
-    REFERENCES `Inovin`.`Wine` (`id`)
+    REFERENCES `Wine` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Inovin`.`User_has_Wine`
+-- Table `User_has_Wine`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Inovin`.`User_has_Wine` (
+CREATE TABLE IF NOT EXISTS `user_has_Wine` (
   `user_id` INT NOT NULL,
   `wine_id` INT NOT NULL,
   PRIMARY KEY (`user_id`, `wine_id`),
-  INDEX `fk_User_has_Wine_Wine2_idx` (`wine_id` ASC) VISIBLE,
-  INDEX `fk_User_has_Wine_User2_idx` (`user_id` ASC) VISIBLE,
+  INDEX `fk_User_has_Wine_Wine2_idx` (`wine_id` ASC),
+  INDEX `fk_User_has_Wine_User2_idx` (`user_id` ASC),
   CONSTRAINT `fk_User_has_Wine_User2`
     FOREIGN KEY (`user_id`)
-    REFERENCES `Inovin`.`User` (`id`)
+    REFERENCES `User` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_User_has_Wine_Wine2`
     FOREIGN KEY (`wine_id`)
-    REFERENCES `Inovin`.`Wine` (`id`)
+    REFERENCES `Wine` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `Inovin`.`Session_has_Wine`
+-- Table `Session_has_Wine`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `Inovin`.`Session_has_Wine` (
+CREATE TABLE IF NOT EXISTS `session_has_Wine` (
   `session_Id` INT NOT NULL,
   `wine_id` INT NOT NULL,
   PRIMARY KEY (`session_Id`, `wine_id`),
-  INDEX `fk_Session_has_Wine_Wine1_idx` (`wine_id` ASC) VISIBLE,
-  INDEX `fk_Session_has_Wine_Session1_idx` (`session_Id` ASC) VISIBLE,
+  INDEX `fk_Session_has_Wine_Wine1_idx` (`wine_id` ASC),
+  INDEX `fk_Session_has_Wine_Session1_idx` (`session_Id` ASC),
   CONSTRAINT `fk_Session_has_Wine_Session1`
     FOREIGN KEY (`session_Id`)
-    REFERENCES `Inovin`.`Session` (`Id`)
+    REFERENCES `Session` (`Id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Session_has_Wine_Wine1`
     FOREIGN KEY (`wine_id`)
-    REFERENCES `Inovin`.`Wine` (`id`)
+    REFERENCES `Wine` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+SET FOREIGN_KEY_CHECKS=1;
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 
 
