@@ -1,0 +1,11 @@
+@media screen and (min-aspect-ratio: 1/1) {
+  .responsiveSheet {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .rate {
+    width: 67vw;
+  }
+}
