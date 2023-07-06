@@ -78,13 +78,13 @@ router.put("/wines/:id", wineControllers.edit);
 router.post("/wines", wineControllers.add);
 router.delete("/wines/:id", wineControllers.destroy);
 
-const tastingNoteControllers = require("./controllers/tastingNoteControllers");
+const tastingnoteControllers = require("./controllers/tastingnoteControllers");
 
-router.get("/tastingnotes", tastingNoteControllers.browse);
-router.get("/tastingnotes/:id", tastingNoteControllers.read);
-router.put("/tastingnotes/:id", tastingNoteControllers.edit);
-router.post("/tastingnotes", tastingNoteControllers.add);
-router.delete("/tastingnotes/:id", tastingNoteControllers.destroy);
+router.get("/tastingnotes", tastingnoteControllers.browse);
+router.get("/tastingnotes/:id", tastingnoteControllers.read);
+router.put("/tastingnotes/:id", tastingnoteControllers.edit);
+router.post("/tastingnotes", tastingnoteControllers.add);
+router.delete("/tastingnotes/:id", tastingnoteControllers.destroy);
 
 // Grapes
 const grapeControllers = require("./controllers/grapeControllers");
