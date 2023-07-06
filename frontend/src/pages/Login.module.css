@@ -2,7 +2,9 @@
     display: flex; 
     flex-direction: column;
     align-items: center;
-    width: 100vw;
+    margin: auto;
+    width: 75vw;
+    max-width: 900px;
 }
 
 img {
@@ -10,10 +12,11 @@ img {
     height: 11vh;
 }
 
-@media screen and (min-width: 1477px) {
+@media screen and (min-width: 900px) {
     .formcontainer {
       margin-top: 5rem;
+      max-width: 900px;
       display: flex;
-      gap: 40px;
+      gap: 10px;
       font-size:2.5em;}
     }
