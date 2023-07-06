@@ -423,25 +423,25 @@ CREATE TABLE IF NOT EXISTS `session_has_wine` (
 ENGINE = InnoDB;
  INSERT INTO session_has_wine (session_id, wine_id) VALUE 
  (1, 1), 
- (1, 2), 
+ (1, 4), 
  (1, 19), 
  (1, 43), 
  (2, 20), 
- (2, 21), 
+ (2, 22), 
  (2, 3), 
  (2, 44), 
  (3, 4), 
  (3, 22), 
  (3, 45), 
  (3, 46), 
- (4, 5), 
- (4, 6), 
+ (4, 7), 
+ (4, 10), 
  (4, 23), 
  (4, 47), 
- (5, 5), 
- (5, 6), 
- (5, 23), 
- (5, 47);
+ (5, 12), 
+ (5, 27), 
+ (5, 31), 
+ (5, 50);
 
 SET FOREIGN_KEY_CHECKS=1;
 

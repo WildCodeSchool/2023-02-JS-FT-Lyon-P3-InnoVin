@@ -63,18 +63,20 @@ class WineManager extends AbstractManager {
     );
   }
 
-  findWineNameByWineId(wineId) {
+  findWinesBySessionId(sessionId) {
     return this.database.query(
-      `SELECT wine.name FROM ${this.table} WHERE wine.id IN (?, ?, ?, ?)`,
-      [wineId[0].id, wineId[1].id, wineId[2].id, wineId[3].id]
+      `SELECT w.id, w.name, vintage
+    FROM ${this.table} AS w
+    JOIN session_has_wine AS shw ON w.id = shw.wine_id
+    WHERE shw.session_id = ?`,
+      [sessionId]
     );
   }
 
-  findWinesandGrapesBySessionId(sessionId) {
+  findGrapesBySessionId(sessionId) {
     return this.database.query(
-      `SELECT w.name, vintage, domain.name, grape_variety.name, grape_variety.picture
+      `SELECT grape_variety.id, grape_variety.name, grape_variety.picture
     FROM ${this.table} AS w
-    JOIN domain ON domain.id = w.domain_id
     JOIN grape_variety ON grape_variety.id = w.grape_variety_id
     JOIN session_has_wine AS shw ON w.id = shw.wine_id
     WHERE shw.session_id = ?`,

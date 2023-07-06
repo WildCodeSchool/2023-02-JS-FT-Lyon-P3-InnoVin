@@ -29,7 +29,7 @@ const hashPassword = (req, res, next) => {
     });
 };
 
-const verifyPassword = async (req, res) => {
+const verifyPassword = async (req, res, next) => {
   argon2
 
     .verify(
@@ -46,12 +46,12 @@ const verifyPassword = async (req, res) => {
         delete req.body.password;
         delete req.user.hashedPassword;
 
-        res
-          .cookie("access_token", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-          })
-          .send(req.user);
+        res.cookie("access_token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+        });
+        // .send([req.user, req.session]);
+        next();
       } else {
         res.sendStatus(401);
       }

@@ -85,18 +85,13 @@ const destroy = (req, res) => {
     });
 };
 
-const getWineNameByWineIdMiddleWare = (req, res, next) => {
-  // We just wanna check if session exist with this date
-  const { wines } = req.user;
+const getWinesAndGrapesBySessionIdMiddleWare = (req, res) => {
   models.wine
-    .findWineNameByWineId(wines)
-    .then(([names]) => {
-      if (names[0]) {
-        // if session exist, push it to req.user so we can access like req.user.id, req.user.firstname, etc
-        [req.user.wines.names] = names;
-        next();
+    .findWinesBySessionId(req.session.id)
+    .then((wines) => {
+      if (wines[0]) {
+        [req.session.wines] = wines;
       } else {
-        // If session with this date doesnt exist
         res.sendStatus(401);
       }
     })
@@ -104,20 +99,14 @@ const getWineNameByWineIdMiddleWare = (req, res, next) => {
       console.error(error);
       res.sendStatus(500);
     });
-};
 
-const getWinesAndGrapesBySessionIdMiddleWare = (req, res, next) => {
-  // We just wanna check if session exist with this date
-  const { session } = req.user;
   models.wine
-    .findWinesandGrapesBySessionId(session.id)
-    .then((winesandgrappes) => {
-      if (winesandgrappes[0]) {
-        // if session exist, push it to req.user so we can access like req.user.id, req.user.firstname, etc
-        [req.user.wines_and_grappes] = winesandgrappes;
-        next();
+    .findGrapesBySessionId(req.session.id)
+    .then((grapes) => {
+      if (grapes[0]) {
+        [req.session.grapes] = grapes;
+        res.send([req.user, req.session]);
       } else {
-        // If session with this date doesnt exist
         res.sendStatus(401);
       }
     })
@@ -132,6 +121,5 @@ module.exports = {
   edit,
   add,
   destroy,
-  getWineNameByWineIdMiddleWare,
   getWinesAndGrapesBySessionIdMiddleWare,
 };

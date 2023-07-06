@@ -23,13 +23,6 @@ class SessionHasWineManager extends AbstractManager {
       [sessionHasWine.session_id, sessionHasWine.wine_id]
     );
   }
-
-  findWineIdBySessionId(sessionId) {
-    return this.database.query(
-      `SELECT wine_id FROM ${this.table} WHERE session_id = ?`,
-      [sessionId]
-    );
-  }
 }
 
 module.exports = SessionHasWineManager;

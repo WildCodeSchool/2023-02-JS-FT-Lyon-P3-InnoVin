@@ -13,6 +13,7 @@ import {
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { toast } from "react-toastify";
+import { useSessionContext } from "../contexts/SessionContext";
 import { useUserContext } from "../contexts/UserContext";
 import APIService from "../services/APIService";
 import "react-toastify/dist/ReactToastify.css";
@@ -53,6 +54,7 @@ export default function Login() {
   });
 
   const { login } = useUserContext();
+  const { setSessionWines, setSessionGrapes } = useSessionContext();
 
   const navigate = useNavigate();
 
@@ -67,19 +69,25 @@ export default function Login() {
 
     onSubmit: (values) => {
       APIService.post(`/login`, values)
-        .then(({ data: user }) => {
+        .then(({ data: [user, session] }) => {
           login(user);
+          setSessionWines(session.wines);
+          setSessionGrapes(session.grapes);
           toast.success(
             `Bienvenue ${user.firstname}! Vous allez être redirigé vers la page d'accueil.`,
-            { position: toast.POSITION.TOP_CENTER, autoClose: 3000, icon: "🍷" }
+            { position: toast.POSITION.TOP_CENTER, autoClose: 2000, icon: "🍷" }
           );
           setTimeout(() => {
             navigate("/tasting");
-          }, 4000);
+          }, 3000);
         })
         .catch((error) => {
           if (error.response?.status === 401) {
             toast.error("Email et/ou mot de passe incorrect(s)", {
+              position: toast.POSITION.TOP_CENTER,
+            });
+          } else if (error.response?.status === 465) {
+            toast.error("Aucune session n'est prévue pour cette date", {
               position: toast.POSITION.TOP_CENTER,
             });
           } else {

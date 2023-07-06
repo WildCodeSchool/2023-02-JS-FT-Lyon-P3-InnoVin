@@ -1,16 +1,21 @@
 import { Box, Typography, Grid, Button } from "@mui/material";
-import { Outlet } from "react-router-dom";
-import styles from "./Degustation.module.css";
+import { useNavigate } from "react-router-dom";
+import styles from "./Tasting.module.css";
 import pic from "../assets/pic.png";
 import logo from "../assets/logo.svg";
-// import { useUserContext } from "../contexts/UserContext";
+import { useUserContext } from "../contexts/UserContext";
 
-export default function Degustation() {
+export default function Tasting() {
   const style = {
     button: {
       p: 2,
       width: "60%",
       borderRadius: 2,
+      fontFamily: "EB Garamond",
+      "&.Mui-disabled": {
+        background: "#FFFDCC",
+        color: "grey",
+      },
     },
     gridItem: {
       display: "flex",
@@ -18,8 +23,18 @@ export default function Degustation() {
     },
   };
 
-  // const { user } = useUserContext();
+  const { setUserPick, tastedWines } = useUserContext();
+  const navigate = useNavigate();
+  const uncompleteTasting = Object.entries(tastedWines).some(
+    (element) => element[1].tastingNote == null
+  );
 
+  const handleClick = (event) => {
+    setUserPick(event.target.value);
+    navigate("/tasting/tastingsheet");
+  };
+
+  // const { user } = useUserContext();
   return (
     <div>
       <Box flexDirection="row" display="flex" marginBottom="1rem">
@@ -56,25 +71,53 @@ export default function Degustation() {
         sx={{ width: "60vw", mb: "2.5rem" }}
       >
         <Grid item xs={6} sx={style.gridItem}>
-          <Button variant="contained" size="large" sx={style.button}>
+          <Button
+            onClick={handleClick}
+            disabled={tastedWines.wine1.isDisabled}
+            variant="contained"
+            value="Wine 1"
+            size="large"
+            sx={style.button}
+          >
             {" "}
             Vin 1{" "}
           </Button>
         </Grid>
         <Grid item xs={6} sx={style.gridItem}>
-          <Button variant="contained" size="large" sx={style.button}>
+          <Button
+            onClick={handleClick}
+            disabled={tastedWines.wine2.isDisabled}
+            variant="contained"
+            value="Wine 2"
+            size="large"
+            sx={style.button}
+          >
             {" "}
             Vin 2{" "}
           </Button>
         </Grid>
         <Grid item xs={6} sx={style.gridItem}>
-          <Button variant="contained" size="large" sx={style.button}>
+          <Button
+            onClick={handleClick}
+            disabled={tastedWines.wine3.isDisabled}
+            variant="contained"
+            size="large"
+            value="Wine 3"
+            sx={style.button}
+          >
             {" "}
             Vin 3{" "}
           </Button>
         </Grid>
         <Grid item xs={6} sx={style.gridItem}>
-          <Button variant="contained" size="large" sx={style.button}>
+          <Button
+            onClick={handleClick}
+            disabled={tastedWines.wine4.isDisabled}
+            variant="contained"
+            size="large"
+            value="Wine 4"
+            sx={style.button}
+          >
             {" "}
             Vin 4{" "}
           </Button>
@@ -107,18 +150,22 @@ export default function Degustation() {
       <Button
         variant="contained"
         size="large"
+        disabled={uncompleteTasting}
         sx={{
           p: 2,
           margin: "0 auto",
           display: "flex",
           width: "40dvw",
           borderRadius: 2,
+          "&.Mui-disabled": {
+            background: "#FFFDCC",
+            color: "grey",
+          },
         }}
       >
         {" "}
         Afficher mon profil <br /> de dégustation{" "}
       </Button>
-      <Outlet />
     </div>
   );
 }

@@ -92,12 +92,12 @@ const getSessionIdByDateMiddleWare = (req, res, next) => {
     .findSessionIdByDate(sessionDate)
     .then(([sessions]) => {
       if (sessions[0]) {
-        // if session exist, push it to req.user so we can access like req.user.id, req.user.firstname, etc
-        [req.user.session] = sessions;
+        // if session exist, push it to req.session so we can access like req.user.id, req.user.firstname, etc
+        [req.session] = sessions;
         next();
       } else {
         // If session with this date doesnt exist
-        res.status(401).send("Aucune session n'est prévue pour cette date");
+        res.status(465).send("Aucune session n'est prévue pour cette date");
       }
     })
     .catch((error) => {

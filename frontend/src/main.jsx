@@ -5,6 +5,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import App from "./App";
 import { UserContextProvider } from "./contexts/UserContext";
+import { SessionContextProvider } from "./contexts/SessionContext";
 import { AdminContextProvider } from "./contexts/AdminContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -55,7 +56,9 @@ root.render(
         <CssBaseline />
         <AdminContextProvider>
           <UserContextProvider>
-            <App />
+            <SessionContextProvider>
+              <App />
+            </SessionContextProvider>
           </UserContextProvider>
         </AdminContextProvider>
       </ThemeProvider>
