@@ -34,7 +34,6 @@ export default function Tasting() {
     navigate("/tasting/tastingsheet");
   };
 
-  // const { user } = useUserContext();
   return (
     <div>
       <Box flexDirection="row" display="flex" marginBottom="1rem">
