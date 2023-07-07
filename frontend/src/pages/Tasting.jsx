@@ -28,7 +28,6 @@ export default function Tasting() {
   const uncompleteTasting = Object.entries(tastedWines).some(
     (element) => element[1].tastingNote == null
   );
-
   const handleClick = (event) => {
     setUserPick(event.target.value);
     navigate("/tasting/tastingsheet");

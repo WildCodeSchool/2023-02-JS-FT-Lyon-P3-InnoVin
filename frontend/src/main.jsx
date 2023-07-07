@@ -50,18 +50,18 @@ const theme = createTheme({
 });
 
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <AdminContextProvider>
-          <UserContextProvider>
-            <SessionContextProvider>
-              <App />
-            </SessionContextProvider>
-          </UserContextProvider>
-        </AdminContextProvider>
-      </ThemeProvider>
-    </BrowserRouter>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <AdminContextProvider>
+        <UserContextProvider>
+          <SessionContextProvider>
+            <App />
+          </SessionContextProvider>
+        </UserContextProvider>
+      </AdminContextProvider>
+    </ThemeProvider>
+  </BrowserRouter>
+  // </React.StrictMode>
 );

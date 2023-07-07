@@ -50,7 +50,7 @@ const verifyPassword = async (req, res, next) => {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
         });
-        // .send([req.user, req.session]);
+
         next();
       } else {
         res.sendStatus(401);

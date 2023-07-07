@@ -13,8 +13,12 @@ const {
 } = require("./controllers/sessionControllers");
 
 const {
-  getWinesAndGrapesBySessionIdMiddleWare,
+  getWinesBySessionIdMiddleWare,
 } = require("./controllers/wineControllers");
+
+const {
+  getGrapesBySessionIdMiddleWare,
+} = require("./controllers/grapeControllers");
 
 // Public routes
 // Auth
@@ -24,7 +28,8 @@ router.post(
   getUserByEmailMiddleWare,
   verifyPassword,
   getSessionIdByDateMiddleWare,
-  getWinesAndGrapesBySessionIdMiddleWare
+  getWinesBySessionIdMiddleWare,
+  getGrapesBySessionIdMiddleWare
 );
 
 const itemControllers = require("./controllers/itemControllers");
@@ -40,11 +45,6 @@ const userControllers = require("./controllers/userControllers");
 const { validateUser } = require("./services/validators");
 const { hashPassword } = require("./services/auth");
 
-router.get("/users", userControllers.browse);
-router.get("/users/:id", userControllers.read);
-router.put("/users/:id", userControllers.edit);
-router.post("/users", userControllers.add);
-router.delete("/users/:id", userControllers.destroy);
 router.get("/register", userControllers.browse);
 router.get("/register/:id", userControllers.read);
 router.post("/register", validateUser, hashPassword, userControllers.add);

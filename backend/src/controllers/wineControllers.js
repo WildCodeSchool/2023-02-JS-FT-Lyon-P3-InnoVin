@@ -85,27 +85,13 @@ const destroy = (req, res) => {
     });
 };
 
-const getWinesAndGrapesBySessionIdMiddleWare = (req, res) => {
+const getWinesBySessionIdMiddleWare = (req, res, next) => {
   models.wine
     .findWinesBySessionId(req.session.id)
     .then((wines) => {
       if (wines[0]) {
         [req.session.wines] = wines;
-      } else {
-        res.sendStatus(401);
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      res.sendStatus(500);
-    });
-
-  models.wine
-    .findGrapesBySessionId(req.session.id)
-    .then((grapes) => {
-      if (grapes[0]) {
-        [req.session.grapes] = grapes;
-        res.send([req.user, req.session]);
+        next();
       } else {
         res.sendStatus(401);
       }
@@ -115,11 +101,12 @@ const getWinesAndGrapesBySessionIdMiddleWare = (req, res) => {
       res.sendStatus(500);
     });
 };
+
 module.exports = {
   browse,
   read,
   edit,
   add,
   destroy,
-  getWinesAndGrapesBySessionIdMiddleWare,
+  getWinesBySessionIdMiddleWare,
 };

@@ -84,6 +84,22 @@ const destroy = (req, res) => {
       res.sendStatus(500);
     });
 };
+const getGrapesBySessionIdMiddleWare = (req, res) => {
+  models.grape
+    .findGrapesBySessionId(req.session.id)
+    .then((grapes) => {
+      if (grapes[0]) {
+        [req.session.grapes] = grapes;
+        res.send([req.user, req.session]);
+      } else {
+        res.sendStatus(401);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.sendStatus(500);
+    });
+};
 
 module.exports = {
   browse,
@@ -91,4 +107,5 @@ module.exports = {
   edit,
   add,
   destroy,
+  getGrapesBySessionIdMiddleWare,
 };
