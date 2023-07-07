@@ -1,6 +1,13 @@
-import { useEffect } from "react";
-import { DataGrid, gridClasses } from "@mui/x-data-grid";
+import { useEffect, useState } from "react";
+import {
+  DataGrid,
+  GridActionsCellItem,
+  GridRowEditStopReasons,
+  GridRowModes,
+  gridClasses,
+} from "@mui/x-data-grid";
 import { styled } from "@mui/material/styles";
+import { Cancel, Delete, Edit, Save } from "@mui/icons-material";
 import { useAdminContext } from "../contexts/AdminContext";
 // --- Services ---
 import WineService from "../services/WineService";
@@ -31,6 +38,8 @@ export default function AdminWinesTable() {
     countriesData,
     setCountriesData,
   } = useAdminContext();
+
+  const [rowModesModel, setRowModesModel] = useState({});
 
   // --- Fetch des données au montage du composant ---
   useEffect(() => {
@@ -66,7 +75,7 @@ export default function AdminWinesTable() {
     },
   }));
 
-  // --- Déclaration des selects ---
+  // --- Déclaration des valeurs des selects ---
   const grapeSelect = grapesData.map((grape) => ({
     value: grape.id,
     label: grape.name,
@@ -96,17 +105,60 @@ export default function AdminWinesTable() {
     label: country.name,
   }));
 
+  // --- Gestion de l'édition des champs ---
+  const handleEditClick = (id) => () => {
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+  };
+
+  const handleSaveClick = (id) => () => {
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+  };
+
+  const handleDeleteClick = (id) => () => {
+    setWinesData(winesData.filter((wine) => wine.id !== id));
+  };
+
+  const handleCancelClick = (id) => () => {
+    setRowModesModel({
+      ...rowModesModel,
+      [id]: { mode: GridRowModes.View, ignoreModifications: true },
+    });
+  };
+
+  const handleRowModesModelChange = (newRowModesModel) => {
+    setRowModesModel(newRowModesModel);
+  };
+
+  const handleRowEditStop = (params, e) => {
+    if (params.reason === GridRowEditStopReasons.rowFocusOut) {
+      e.defaultMuiPrevented = true;
+    }
+  };
+
+  const processRowUpdate = async (newRow) => {
+    try {
+      const updatedWine = await WineService.updateWine(newRow);
+      console.info(updatedWine);
+    } catch (err) {
+      console.error("Update failed");
+    }
+  };
+
+  const onProcessRowUpdateError = (error) => {
+    console.error(error);
+  };
+
   // --- Définition des colonnes ---
   const columnsWines = [
     {
-      field: "wine",
+      field: "name",
       headerClassName: "super-app-theme--header",
       headerName: "Vin",
       width: 150,
       editable: true,
     },
     {
-      field: "country",
+      field: "country_id",
       headerClassName: "super-app-theme--header",
       type: "singleSelect",
       valueOptions: countrySelect,
@@ -115,7 +167,7 @@ export default function AdminWinesTable() {
       editable: true,
     },
     {
-      field: "region",
+      field: "region_id",
       headerClassName: "super-app-theme--header",
       headerName: "Région",
       type: "singleSelect",
@@ -124,7 +176,7 @@ export default function AdminWinesTable() {
       editable: true,
     },
     {
-      field: "domain",
+      field: "domain_id",
       headerClassName: "super-app-theme--header",
       headerName: "Domaine",
       type: "singleSelect",
@@ -133,7 +185,7 @@ export default function AdminWinesTable() {
       editable: true,
     },
     {
-      field: "type",
+      field: "type_id",
       headerClassName: "super-app-theme--header",
       headerName: "Type",
       type: "singleSelect",
@@ -142,7 +194,7 @@ export default function AdminWinesTable() {
       editable: true,
     },
     {
-      field: "grape_variety",
+      field: "grape_variety_id",
       headerClassName: "super-app-theme--header",
       headerName: "Cépage",
       type: "singleSelect",
@@ -158,7 +210,7 @@ export default function AdminWinesTable() {
       editable: true,
     },
     {
-      field: "aroma",
+      field: "aroma_id",
       headerClassName: "super-app-theme--header",
       headerName: "Arôme",
       type: "singleSelect",
@@ -167,7 +219,7 @@ export default function AdminWinesTable() {
       editable: true,
     },
     {
-      field: "flavour",
+      field: "flavour_id",
       headerClassName: "super-app-theme--header",
       headerName: "Saveur",
       type: "singleSelect",
@@ -175,22 +227,60 @@ export default function AdminWinesTable() {
       width: 150,
       editable: true,
     },
+    {
+      field: "actions",
+      headerClassName: "super-app-theme--header",
+      headerName: "Actions",
+      type: "actions",
+      width: 150,
+      getActions: ({ id }) => {
+        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+
+        if (isInEditMode) {
+          return [
+            <GridActionsCellItem
+              icon={<Save />}
+              label="Save"
+              onClick={handleSaveClick(id)}
+              color="inherit"
+            />,
+            <GridActionsCellItem
+              icon={<Cancel />}
+              label="Cancel"
+              onClick={handleCancelClick(id)}
+              color="inherit"
+            />,
+          ];
+        }
+
+        return [
+          <GridActionsCellItem
+            icon={<Edit />}
+            label="Edit"
+            onClick={handleEditClick(id)}
+            color="inherit"
+          />,
+          <GridActionsCellItem
+            icon={<Delete />}
+            label="Delete"
+            sx={{
+              color: "primary.main",
+            }}
+            onClick={handleDeleteClick(id)}
+          />,
+        ];
+      },
+    },
   ];
-
-  // --- Gestion de l'édition des champs ---
-  const processRowUpdate = (newRow, oldRow) => {
-    console.info(newRow, oldRow);
-  };
-
-  const onProcessRowUpdateError = (error) => {
-    console.error(error);
-  };
 
   return (
     <StripedWinesDataGrid
       rows={winesData}
       columns={columnsWines}
       editMode="row"
+      rowModesModel={rowModesModel}
+      onRowModesModelChange={handleRowModesModelChange}
+      onRowEditStop={handleRowEditStop}
       processRowUpdate={processRowUpdate}
       onProcessRowUpdateError={onProcessRowUpdateError}
       sx={{ backgroundColor: "text.primary", color: "background.default" }}
