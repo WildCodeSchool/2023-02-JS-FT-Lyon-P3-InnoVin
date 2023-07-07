@@ -8,9 +8,29 @@ const { verifyPassword } = require("./services/auth");
 
 const { getUserByEmailMiddleWare } = require("./controllers/authControllers");
 
+const {
+  getSessionIdByDateMiddleWare,
+} = require("./controllers/sessionControllers");
+
+const {
+  getWinesBySessionIdMiddleWare,
+} = require("./controllers/wineControllers");
+
+const {
+  getGrapesBySessionIdMiddleWare,
+} = require("./controllers/grapeControllers");
+
 // Public routes
 // Auth
-router.post("/login", validateLogin, getUserByEmailMiddleWare, verifyPassword);
+router.post(
+  "/login",
+  validateLogin,
+  getUserByEmailMiddleWare,
+  verifyPassword,
+  getSessionIdByDateMiddleWare,
+  getWinesBySessionIdMiddleWare,
+  getGrapesBySessionIdMiddleWare
+);
 
 const itemControllers = require("./controllers/itemControllers");
 
@@ -31,6 +51,24 @@ router.post("/register", validateUser, hashPassword, userControllers.add);
 router.put("/register/:id", userControllers.edit);
 router.delete("/register/:id", userControllers.destroy);
 
+// Sessions
+const sessionControllers = require("./controllers/sessionControllers");
+
+router.get("/sessions", sessionControllers.browse);
+router.get("/sessions/:id", sessionControllers.read);
+router.put("/sessions/:id", sessionControllers.edit);
+router.post("/sessions", sessionControllers.add);
+router.delete("/sessions/:id", sessionControllers.destroy);
+
+// Session has Wines
+const sessionHasWineControllers = require("./controllers/sessionHasWineControllers");
+
+router.get("/sessionhaswines", sessionHasWineControllers.browse);
+router.get("/sessionhaswines/:id", sessionHasWineControllers.read);
+router.put("/sessionhaswines/:id", sessionHasWineControllers.edit);
+router.post("/sessionhaswines", sessionHasWineControllers.add);
+router.delete("/sessionhaswines/:id", sessionHasWineControllers.destroy);
+
 // Wines
 const wineControllers = require("./controllers/wineControllers");
 
@@ -39,6 +77,14 @@ router.get("/wines/:id", wineControllers.read);
 router.put("/wines/:id", wineControllers.edit);
 router.post("/wines", wineControllers.add);
 router.delete("/wines/:id", wineControllers.destroy);
+
+const tastingnoteControllers = require("./controllers/tastingnoteControllers");
+
+router.get("/tastingnotes", tastingnoteControllers.browse);
+router.get("/tastingnotes/:id", tastingnoteControllers.read);
+router.put("/tastingnotes/:id", tastingnoteControllers.edit);
+router.post("/tastingnotes", tastingnoteControllers.add);
+router.delete("/tastingnotes/:id", tastingnoteControllers.destroy);
 
 // Grapes
 const grapeControllers = require("./controllers/grapeControllers");

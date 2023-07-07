@@ -1,6 +1,7 @@
 import { Typography, Box, FormGroup, Slider, Button } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../contexts/UserContext";
 import logo from "../assets/logo.svg";
 import ControlLabel from "../components/ControlLabel";
 import styles from "./TastingSheet.module.css";
@@ -8,6 +9,7 @@ import styles from "./TastingSheet.module.css";
 export default function TastingSheet() {
   const [rate, setRate] = useState(0);
   const navigate = useNavigate();
+  const { tastedWines, setTastedWines, userPick } = useUserContext();
 
   const style = {
     button: {
@@ -72,6 +74,34 @@ export default function TastingSheet() {
     setRate(newRate);
   };
   const handleSubmit = () => {
+    switch (userPick) {
+      case "Wine 1":
+        setTastedWines({
+          ...tastedWines,
+          wine1: { isDisabled: true, tastingNote: rate },
+        });
+        break;
+      case "Wine 2":
+        setTastedWines({
+          ...tastedWines,
+          wine2: { isDisabled: true, tastingNote: rate },
+        });
+        break;
+      case "Wine 3":
+        setTastedWines({
+          ...tastedWines,
+          wine3: { isDisabled: true, tastingNote: rate },
+        });
+        break;
+      case "Wine 4":
+        setTastedWines({
+          ...tastedWines,
+          wine4: { isDisabled: true, tastingNote: rate },
+        });
+        break;
+      default:
+    }
+
     navigate("/tasting");
   };
 

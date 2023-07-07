@@ -85,10 +85,28 @@ const destroy = (req, res) => {
     });
 };
 
+const getWinesBySessionIdMiddleWare = (req, res, next) => {
+  models.wine
+    .findWinesBySessionId(req.session.id)
+    .then((wines) => {
+      if (wines[0]) {
+        [req.session.wines] = wines;
+        next();
+      } else {
+        res.sendStatus(401);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.sendStatus(500);
+    });
+};
+
 module.exports = {
   browse,
   read,
   edit,
   add,
   destroy,
+  getWinesBySessionIdMiddleWare,
 };
