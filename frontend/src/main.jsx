@@ -5,6 +5,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import App from "./App";
 import { UserContextProvider } from "./contexts/UserContext";
+import { SessionContextProvider } from "./contexts/SessionContext";
 import { AdminContextProvider } from "./contexts/AdminContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -49,16 +50,18 @@ const theme = createTheme({
 });
 
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <AdminContextProvider>
-          <UserContextProvider>
+  // <React.StrictMode>
+  <BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <AdminContextProvider>
+        <UserContextProvider>
+          <SessionContextProvider>
             <App />
-          </UserContextProvider>
-        </AdminContextProvider>
-      </ThemeProvider>
-    </BrowserRouter>
-  </React.StrictMode>
+          </SessionContextProvider>
+        </UserContextProvider>
+      </AdminContextProvider>
+    </ThemeProvider>
+  </BrowserRouter>
+  // </React.StrictMode>
 );

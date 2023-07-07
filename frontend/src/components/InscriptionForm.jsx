@@ -3,7 +3,7 @@ import { differenceInYears, parse } from "date-fns";
 import { toast } from "react-toastify";
 import { Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import validationSchema from "@services/validator";
+import validationSchema from "../services/validator";
 import rouge from "../assets/redwinepicture.png";
 import rose from "../assets/rosewinepicture.png";
 import blanc from "../assets/whitewinepicture.png";

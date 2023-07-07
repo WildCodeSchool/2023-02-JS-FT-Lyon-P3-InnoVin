@@ -1,7 +1,7 @@
 const models = require("../models");
 
 const browse = (req, res) => {
-  models.grape
+  models.sessionHasWine
     .findAll()
     .then(([rows]) => {
       res.send(rows);
@@ -14,7 +14,7 @@ const browse = (req, res) => {
 
 const read = (req, res) => {
   const id = parseInt(req.params.id, 10);
-  models.grape
+  models.sessionHasWine
     .find(id)
     .then(([rows]) => {
       if (rows[0] == null) {
@@ -30,14 +30,14 @@ const read = (req, res) => {
 };
 
 const edit = (req, res) => {
-  const grape = req.body;
+  const session = req.body;
 
   // TODO validations (length, format...)
 
-  grape.id = parseInt(req.params.id, 10);
+  session.id = parseInt(req.params.id, 10);
 
-  models.grape
-    .update(grape)
+  models.session
+    .update(session)
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);
@@ -52,14 +52,14 @@ const edit = (req, res) => {
 };
 
 const add = (req, res) => {
-  const grape = req.body;
+  const sessionHasWine = req.body;
 
   // TODO validations (length, format...)
 
-  models.grape
-    .insert(grape)
+  models.sessionHasWine
+    .insert(sessionHasWine)
     .then(([result]) => {
-      res.location(`/grapes/${result.insertId}`).sendStatus(201);
+      res.location(`/sessionhaswines/${result.insertId}`).sendStatus(201);
     })
     .catch((err) => {
       console.error(err);
@@ -70,7 +70,7 @@ const add = (req, res) => {
 const destroy = (req, res) => {
   const id = parseInt(req.params.id, 10);
 
-  models.grape
+  models.session
     .delete(id)
     .then(([result]) => {
       if (result.affectedRows === 0) {
@@ -84,22 +84,6 @@ const destroy = (req, res) => {
       res.sendStatus(500);
     });
 };
-const getGrapesBySessionIdMiddleWare = (req, res) => {
-  models.grape
-    .findGrapesBySessionId(req.session.id)
-    .then((grapes) => {
-      if (grapes[0]) {
-        [req.session.grapes] = grapes;
-        res.send([req.user, req.session]);
-      } else {
-        res.sendStatus(401);
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      res.sendStatus(500);
-    });
-};
 
 module.exports = {
   browse,
@@ -107,5 +91,4 @@ module.exports = {
   edit,
   add,
   destroy,
-  getGrapesBySessionIdMiddleWare,
 };

@@ -1,10 +1,8 @@
--- MySQL Workbench Forward Engineering
-
 SET  FOREIGN_KEY_CHECKS=0;
 
 
 -- -----------------------------------------------------
--- Table `Aroma`
+-- Table `aroma`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `aroma` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -13,8 +11,9 @@ CREATE TABLE IF NOT EXISTS `aroma` (
 ENGINE = InnoDB;
 
 INSERT INTO aroma (name) VALUES ('Fruits'), ('Empyreumatiques'), ('Fleurs'), ('Animal'), ('Epices'), ('Défauts'), ('Végétaux');
+
 -- -----------------------------------------------------
--- Table `Flavour`
+-- Table `flavour`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `flavour` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -23,8 +22,9 @@ CREATE TABLE IF NOT EXISTS `flavour` (
 ENGINE = InnoDB;
 
 INSERT INTO flavour (name) VALUES ('Acidité'), ('Gras'), ('Amer'), ('Alcool'), ('Sucre');
+
 -- -----------------------------------------------------
--- Table `Type`
+-- Table `type`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `type` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -33,10 +33,11 @@ CREATE TABLE IF NOT EXISTS `type` (
 ENGINE = InnoDB;
 
 INSERT INTO type (name) VALUES ('Blanc'), ('Rouge'), ('Rosé');
+
 -- -----------------------------------------------------
--- Table `User`
+-- Table `user`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `User` (
+CREATE TABLE IF NOT EXISTS `user` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `aroma_id` INT NOT NULL,
   `flavour_id` INT NOT NULL,
@@ -51,31 +52,28 @@ CREATE TABLE IF NOT EXISTS `User` (
   `city` VARCHAR(45) NULL,
   `role` VARCHAR(45) DEFAULT 'User',
   PRIMARY KEY (`id`),
-  INDEX `fk_User_Aroma1_idx` (`aroma_id` ASC),
-  INDEX `fk_User_Flavour1_idx` (`flavour_id` ASC),
-  INDEX `fk_User_Type1_idx` (`type_id` ASC),
-  CONSTRAINT `fk_User_Aroma1`
+
+  CONSTRAINT `fk_user_aroma`
     FOREIGN KEY (`aroma_id`)
-    REFERENCES `Aroma` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_User_Flavour1`
+    REFERENCES `aroma` (`id`),
+
+  CONSTRAINT `fk_user_flavour`
     FOREIGN KEY (`flavour_id`)
-    REFERENCES `Flavour` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_User_Type1`
+    REFERENCES `flavour` (`id`),
+
+  CONSTRAINT `fk_user_type`
     FOREIGN KEY (`type_id`)
-    REFERENCES `Type` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `type` (`id`))
+
 ENGINE = InnoDB;
 
-INSERT INTO User (aroma_id, flavour_id, type_id, firstname, lastname, birthdate, email, hashed_password, address, postcode, city, role) 
-VALUES (0, 0, 0, "Yann", "Richard", "1989-07-12", "yann.richard9@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$cXFnN2s1ZHU0aTAwMDAwMA$XFP3Vrp4/huxiy9p4p2EAw", "Rue de l'exemple", 69000, "Lyon", "User");
+INSERT INTO user (aroma_id, flavour_id, type_id, firstname, lastname, birthdate, email, hashed_password, address, postcode, city, role) 
+VALUES (1, 1, 1, "Yann", "Richard", "1989-07-12", "yann.richard9@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$cXFnN2s1ZHU0aTAwMDAwMA$XFP3Vrp4/huxiy9p4p2EAw", "Rue de l'exemple", 69000, "Lyon", "User");
+
 -- -----------------------------------------------------
--- Table `Country`
+-- Table `country`
 -- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `country` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(80) NULL,
@@ -83,8 +81,9 @@ CREATE TABLE IF NOT EXISTS `country` (
 ENGINE = InnoDB;
 
 INSERT INTO country (name) VALUES ('France'), ('Suisse'), ('Italie'), ('Argentine');
+
 -- -----------------------------------------------------
--- Table `Region`
+-- Table `region`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `region` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -93,8 +92,9 @@ CREATE TABLE IF NOT EXISTS `region` (
 ENGINE = InnoDB;
 
 INSERT INTO region (name) VALUES ('Bordeaux'), ('Beaujolais'), ('Bourgogne'), ('Sud-Ouest'), ('Vallée du Rhône'), ('Vallée de la Loire'), ('Alsace'), ('Vaud'), ('Provence'), ('Languedoc'), ('Toscane'), ('Mendoza');
+
 -- -----------------------------------------------------
--- Table `Domain`
+-- Table `domain`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `domain` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -157,8 +157,9 @@ VALUES
     ('Domaine de la Vallée'), 
     ('Vina del Sol'), 
     ('Domaine de la Roseraie') ;
+
 -- -----------------------------------------------------
--- Table `Grape_variety`
+-- Table `grape_variety`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `grape_variety` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -187,8 +188,9 @@ VALUES
 ("Cinsault", "https://upload.wikimedia.org/wikipedia/commons/8/8a/Cinsaut_-_Amp%C3%A9lographie.jpg"), 
 ("Sangiovese", "https://upload.wikimedia.org/wikipedia/commons/c/cb/Nieluccio_-_Amp%C3%A9lographie.png"), 
 ("Malbec", "https://upload.wikimedia.org/wikipedia/commons/a/a5/C%C3%B4t_-_Amp%C3%A9lographie.jpg"); 
+
 -- -----------------------------------------------------
--- Table `Wine`
+-- Table `wine`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `wine` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -202,48 +204,34 @@ CREATE TABLE IF NOT EXISTS `wine` (
   `name` VARCHAR(80) NOT NULL,
   `vintage` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_Wine_Country1_idx` (`country_id` ASC),
-  INDEX `fk_Wine_Region1_idx` (`region_id` ASC),
-  INDEX `fk_Wine_Type1_idx` (`type_id` ASC),
-  INDEX `fk_Wine_Domain1_idx` (`domain_id` ASC),
-  INDEX `fk_Wine_Grape_Variety1_idx` (`grape_variety_id` ASC),
-  INDEX `fk_Wine_Flavour1_idx` (`flavour_id` ASC),
-  INDEX `fk_Wine_Aroma1_idx` (`aroma_id` ASC),
-  CONSTRAINT `fk_Wine_Country1`
+  CONSTRAINT `fk_wine_country`
     FOREIGN KEY (`country_id`)
-    REFERENCES `Country` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Wine_Region1`
+    REFERENCES `country` (`id`),
+
+  CONSTRAINT `fk_wine_region`
     FOREIGN KEY (`region_id`)
-    REFERENCES `Region` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Wine_Type1`
+    REFERENCES `region` (`id`),
+
+  CONSTRAINT `fk_wine_type`
     FOREIGN KEY (`type_id`)
-    REFERENCES `Type` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Wine_Domain1`
+    REFERENCES `type` (`id`),
+
+  CONSTRAINT `fk_wine_domain`
     FOREIGN KEY (`domain_id`)
-    REFERENCES `Domain` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Wine_Grape_Variety1`
+    REFERENCES `domain` (`id`),
+ 
+  CONSTRAINT `fk_wine_grape_variety`
     FOREIGN KEY (`grape_variety_id`)
-    REFERENCES `Grape_variety` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Wine_Flavour1`
+    REFERENCES `grape_variety` (`id`),
+
+  CONSTRAINT `fk_wine_flavour`
     FOREIGN KEY (`flavour_id`)
-    REFERENCES `Flavour` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Wine_Aroma1`
+    REFERENCES `flavour` (`id`),
+
+  CONSTRAINT `fk_wine_aroma`
     FOREIGN KEY (`aroma_id`)
-    REFERENCES `Aroma` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `aroma` (`id`))
+
 ENGINE = InnoDB;
 
 INSERT INTO wine (country_id, region_id, type_id, domain_id, grape_variety_id, flavour_id, aroma_id, name, vintage) VALUES
@@ -301,159 +289,161 @@ INSERT INTO wine (country_id, region_id, type_id, domain_id, grape_variety_id, f
   (1, 4, 3, 51, 18, 5, 5, "Rose d'été 'La Vie en Rose'", 2020), 
   (4, 12, 3, 52, 18, 5, 3, 'Rosado Mistico', 2019), 
   (1, 10, 3, 53, 18, 5, 7, "Soleil d'Été Rosé", 2021); 
+
 -- -----------------------------------------------------
--- Table `Session`
+-- Table `session`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `session` (
   `Id` INT NOT NULL AUTO_INCREMENT,
   `date` DATE NOT NULL,
-  PRIMARY KEY (`Id`))
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
+INSERT INTO session (date) VALUES ("2023-07-04"), ("2023-07-10"), ("2023-07-15"), ("2023-07-20"), ("2023-07-28");
 
 -- -----------------------------------------------------
--- Table `Receipt`
+-- Table `recipe`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `receipt` (
+CREATE TABLE IF NOT EXISTS `recipe` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NOT NULL,
-  `session_Id` INT NOT NULL,
+  `session_id` INT NOT NULL,
   `name` VARCHAR(80) NULL,
-  PRIMARY KEY (`id`, `user_id`, `session_Id`),
-  INDEX `fk_Receipt_User1_idx` (`user_id` ASC),
-  INDEX `fk_Receipt_Session1_idx` (`session_Id` ASC),
-  CONSTRAINT `fk_Receipt_User1`
+  PRIMARY KEY (`id`, `user_id`, `session_id`),
+
+  CONSTRAINT `fk_recipe_user`
     FOREIGN KEY (`user_id`)
-    REFERENCES `User` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Receipt_Session1`
-    FOREIGN KEY (`session_Id`)
-    REFERENCES `Session` (`Id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `user` (`id`),
+
+  CONSTRAINT `fk_recipe_session`
+    FOREIGN KEY (`session_id`)
+    REFERENCES `session` (`id`))
+
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `user_has_session`
+-- -----------------------------------------------------
 
--- -----------------------------------------------------
--- Table `User_has_Session`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `User_has_Session` (
+CREATE TABLE IF NOT EXISTS `user_has_session` (
   `user_id` INT NOT NULL,
-  `session_Id` INT NOT NULL,
-  PRIMARY KEY (`user_id`, `session_Id`),
-  INDEX `fk_User_has_Session_Session1_idx` (`session_Id` ASC),
-  INDEX `fk_User_has_Session_User1_idx` (`user_id` ASC),
-  CONSTRAINT `fk_User_has_Session_User1`
+  `session_id` INT NOT NULL,
+  PRIMARY KEY (`user_id`, `session_id`),
+
+  CONSTRAINT `fk_user_has_session_User`
     FOREIGN KEY (`user_id`)
-    REFERENCES `User` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_User_has_Session_Session1`
-    FOREIGN KEY (`session_Id`)
-    REFERENCES `Session` (`Id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `user` (`id`),
+
+  CONSTRAINT `fk_user_has_session_session`
+    FOREIGN KEY (`session_id`)
+    REFERENCES `session` (`id`))
+
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Table `Tasting_note`
+-- Table `tasting_note`
 -- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `tasting_note` (
   `user_id` INT NOT NULL,
   `wine_id` INT NOT NULL,
-  `session_Id` INT NOT NULL,
+  `session_id` INT NOT NULL,
   `note` INT NOT NULL,
-  PRIMARY KEY (`user_id`, `wine_id`, `session_Id`),
-  INDEX `fk_User_has_Wine_Wine1_idx` (`wine_id` ASC),
-  INDEX `fk_User_has_Wine_User1_idx` (`user_id` ASC),
-  INDEX `fk_Tasting_note_Session1_idx` (`session_Id` ASC),
-  CONSTRAINT `fk_User_has_Wine_User1`
+  PRIMARY KEY (`user_id`, `wine_id`, `session_id`),
+
+  CONSTRAINT `fk_tasting_note_user`
     FOREIGN KEY (`user_id`)
-    REFERENCES `User` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_User_has_Wine_Wine1`
+    REFERENCES `user` (`id`),
+
+  CONSTRAINT `fk_tasting_note_wine`
     FOREIGN KEY (`wine_id`)
-    REFERENCES `Wine` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Tasting_note_Session1`
-    FOREIGN KEY (`session_Id`)
-    REFERENCES `Session` (`Id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `wine` (`id`),
+
+  CONSTRAINT `fk_tasting_note_session`
+    FOREIGN KEY (`session_id`)
+    REFERENCES `session` (`id`))
+
 ENGINE = InnoDB;
 
-
 -- -----------------------------------------------------
--- Table `Receipt_has_Wine`
+-- Table `recipe_has_wine`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `receipt_has_Wine` (
-  `receipt_id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `recipe_has_wine` (
+  `recipe_id` INT NOT NULL,
   `wine_id` INT NOT NULL,
   `dosage` INT NOT NULL,
-  PRIMARY KEY (`receipt_id`, `wine_id`),
-  INDEX `fk_Receipt_has_Wine_Wine1_idx` (`wine_id` ASC),
-  INDEX `fk_Receipt_has_Wine_Receipt1_idx` (`receipt_id` ASC),
-  CONSTRAINT `fk_Receipt_has_Wine_Receipt1`
-    FOREIGN KEY (`receipt_id`)
-    REFERENCES `Receipt` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Receipt_has_Wine_Wine1`
+  PRIMARY KEY (`recipe_id`, `wine_id`),
+
+  CONSTRAINT `fk_recipe_has_wine_recipe`
+    FOREIGN KEY (`recipe_id`)
+    REFERENCES `recipe` (`id`),
+  
+  CONSTRAINT `fk_recipe_has_wine_wine`
     FOREIGN KEY (`wine_id`)
-    REFERENCES `Wine` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `wine` (`id`))
+
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `user_has_wine`
+-- -----------------------------------------------------
 
--- -----------------------------------------------------
--- Table `User_has_Wine`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `user_has_Wine` (
+CREATE TABLE IF NOT EXISTS `user_has_wine` (
   `user_id` INT NOT NULL,
   `wine_id` INT NOT NULL,
   PRIMARY KEY (`user_id`, `wine_id`),
-  INDEX `fk_User_has_Wine_Wine2_idx` (`wine_id` ASC),
-  INDEX `fk_User_has_Wine_User2_idx` (`user_id` ASC),
-  CONSTRAINT `fk_User_has_Wine_User2`
+
+  CONSTRAINT `fk_user_has_wine_user`
     FOREIGN KEY (`user_id`)
-    REFERENCES `User` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_User_has_Wine_Wine2`
+    REFERENCES `user` (`id`),
+
+  CONSTRAINT `fk_user_has_wine_wine`
     FOREIGN KEY (`wine_id`)
-    REFERENCES `Wine` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `wine` (`id`))
+
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `session_has_wine`
+-- -----------------------------------------------------
 
--- -----------------------------------------------------
--- Table `Session_has_Wine`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `session_has_Wine` (
-  `session_Id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `session_has_wine` (
+  `session_id` INT NOT NULL,
   `wine_id` INT NOT NULL,
-  PRIMARY KEY (`session_Id`, `wine_id`),
-  INDEX `fk_Session_has_Wine_Wine1_idx` (`wine_id` ASC),
-  INDEX `fk_Session_has_Wine_Session1_idx` (`session_Id` ASC),
-  CONSTRAINT `fk_Session_has_Wine_Session1`
-    FOREIGN KEY (`session_Id`)
-    REFERENCES `Session` (`Id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Session_has_Wine_Wine1`
+  PRIMARY KEY (`session_id`, `wine_id`),
+
+  CONSTRAINT `fk_session_has_wine_session`
+    FOREIGN KEY (`session_id`)
+    REFERENCES `session` (`id`),
+
+  CONSTRAINT `fk_session_has_wine_wine`
     FOREIGN KEY (`wine_id`)
-    REFERENCES `Wine` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `wine` (`id`))
+
 ENGINE = InnoDB;
+ INSERT INTO session_has_wine (session_id, wine_id) VALUE 
+ (1, 1), 
+ (1, 4), 
+ (1, 19), 
+ (1, 43), 
+ (2, 20), 
+ (2, 22), 
+ (2, 3), 
+ (2, 44), 
+ (3, 4), 
+ (3, 22), 
+ (3, 45), 
+ (3, 46), 
+ (4, 7), 
+ (4, 10), 
+ (4, 23), 
+ (4, 47), 
+ (5, 12), 
+ (5, 27), 
+ (5, 31), 
+ (5, 50);
 
 SET FOREIGN_KEY_CHECKS=1;
-
 
 
 
