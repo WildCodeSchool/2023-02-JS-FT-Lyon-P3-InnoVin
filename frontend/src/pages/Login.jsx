@@ -13,6 +13,7 @@ import {
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { toast } from "react-toastify";
+import { useSessionContext } from "../contexts/SessionContext";
 import { useUserContext } from "../contexts/UserContext";
 import APIService from "../services/APIService";
 import "react-toastify/dist/ReactToastify.css";
@@ -53,6 +54,7 @@ export default function Login() {
   });
 
   const { login } = useUserContext();
+  const { setSessionWines, setSessionGrapes } = useSessionContext();
 
   const navigate = useNavigate();
 
@@ -67,19 +69,25 @@ export default function Login() {
 
     onSubmit: (values) => {
       APIService.post(`/login`, values)
-        .then(({ data: user }) => {
+        .then(({ data: [user, session] }) => {
           login(user);
+          setSessionWines(session.wines);
+          setSessionGrapes(session.grapes);
           toast.success(
             `Bienvenue ${user.firstname}! Vous allez être redirigé vers la page d'accueil.`,
-            { position: toast.POSITION.TOP_CENTER, autoClose: 3000, icon: "🍷" }
+            { position: toast.POSITION.TOP_CENTER, autoClose: 2000, icon: "🍷" }
           );
           setTimeout(() => {
             navigate("/tasting");
-          }, 4000);
+          }, 3000);
         })
         .catch((error) => {
           if (error.response?.status === 401) {
             toast.error("Email et/ou mot de passe incorrect(s)", {
+              position: toast.POSITION.TOP_CENTER,
+            });
+          } else if (error.response?.status === 465) {
+            toast.error("Aucune session n'est prévue pour cette date", {
               position: toast.POSITION.TOP_CENTER,
             });
           } else {
@@ -135,108 +143,117 @@ export default function Login() {
       </Box>
       <form onSubmit={formik.handleSubmit} className={styles.formcontainer}>
         <Box
-          width="75vw"
-          alignSelf="center"
+          maxHeight="650px"
           display="flex"
           flexDirection="column"
+          alignItems="center"
+          width="75w"
+          maxWidth="900px"
         >
-          <FormLabel htmlFor="email_id" sx={style.formlabels}>
-            {" "}
-            Email{" "}
-          </FormLabel>
-          <InputBase
-            sx={style.textfields}
-            id="email_id"
-            type="email"
-            name="email"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-          />
-          <FormLabel sx={style.formlabels} htmlFor="password_id">
-            {" "}
-            Mot de Passe{" "}
-          </FormLabel>
-          <InputBase
-            id="password_id"
-            type="password"
-            name="password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            sx={style.textfields}
-          />
-        </Box>
-        <Typography
-          variant="h4"
-          sx={{ textDecoration: "underline", mt: "0.5em" }}
-          color="#C42727"
-        >
-          J'ai oublié mon mot de passe
-        </Typography>
-        <Typography
-          variant="h3"
-          sx={{
-            p: 3,
-            mt: 6,
-            color: "secondary.main",
-            fontSize: "calc(2.5rem + 1vmin)",
-          }}
-        >
-          {" "}
-          Session{" "}
-        </Typography>
-        <Box
-          width="75vw"
-          alignSelf="center"
-          display="flex"
-          flexDirection="column"
-        >
-          <InputLabel id="sessionName_id" sx={style.formlabels}>
-            {" "}
-            Nom{" "}
-          </InputLabel>
-          <Select
-            labelId="sessionName_id"
-            name="sessionName"
-            value={formik.values.sessionName}
-            onChange={formik.handleChange}
-            select
+          <Box
+            width="100%"
+            alignSelf="center"
+            display="flex"
+            flexDirection="column"
+          >
+            <FormLabel htmlFor="email_id" sx={style.formlabels}>
+              {" "}
+              Email{" "}
+            </FormLabel>
+            <InputBase
+              sx={style.textfields}
+              id="email_id"
+              type="email"
+              name="email"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+            />
+            <FormLabel sx={style.formlabels} htmlFor="password_id">
+              {" "}
+              Mot de Passe{" "}
+            </FormLabel>
+            <InputBase
+              id="password_id"
+              type="password"
+              name="password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              sx={style.textfields}
+            />
+          </Box>
+          <Typography
+            variant="h4"
+            sx={{ textDecoration: "underline", mt: "0.5em" }}
+            color="#C42727"
+          >
+            J'ai oublié mon mot de passe
+          </Typography>
+          <Typography
+            variant="h3"
             sx={{
-              backgroundColor: "#FFFDCC",
-              fontSize: "1.5rem",
-              height: "5vh",
-              marginBottom: "1.5vh",
-              color: "black",
+              p: 3,
+              mt: 2,
+              color: "secondary.main",
+              fontSize: "calc(2.5rem + 1vmin)",
             }}
           >
-            <MenuItem value=""> Sélectionnez le nom </MenuItem>
-            <MenuItem value="choix 1"> choix 1 </MenuItem>
-            <MenuItem value="choix 2"> choix 2 </MenuItem>
-            <MenuItem value="choix 3"> choix 3 </MenuItem>
-          </Select>
-          <FormLabel htmlFor="sessionDate_id" sx={style.formlabels}>
             {" "}
-            Date{" "}
-          </FormLabel>
-          <InputBase
-            id="sessionDate_id"
-            type="date"
-            name="sessionDate"
-            value={formik.values.sessionDate}
-            onChange={formik.handleChange}
-            sx={style.textfields}
-          />
-        </Box>
-        <Button
-          color="error"
-          variant="contained"
-          sx={{ mt: 12, width: "30vw", height: "5vh" }}
-          type="submit"
-          onClick={handleClick}
-        >
-          <Typography variant="button" fontSize={24}>
-            Valider
+            Session{" "}
           </Typography>
-        </Button>
+          <Box
+            width="100%"
+            alignSelf="center"
+            display="flex"
+            flexDirection="column"
+          >
+            <InputLabel id="sessionName_id" sx={style.formlabels}>
+              {" "}
+              Nom{" "}
+            </InputLabel>
+            <Select
+              labelId="sessionName_id"
+              name="sessionName"
+              value={formik.values.sessionName}
+              onChange={formik.handleChange}
+              select
+              sx={{
+                backgroundColor: "#FFFDCC",
+                fontSize: "1.5rem",
+                height: "5vh",
+                marginBottom: "1.5vh",
+                color: "black",
+              }}
+            >
+              <MenuItem value=""> Sélectionnez le nom </MenuItem>
+              <MenuItem value="choix 1"> choix 1 </MenuItem>
+              <MenuItem value="choix 2"> choix 2 </MenuItem>
+              <MenuItem value="choix 3"> choix 3 </MenuItem>
+            </Select>
+            <FormLabel htmlFor="sessionDate_id" sx={style.formlabels}>
+              {" "}
+              Date{" "}
+            </FormLabel>
+            <InputBase
+              id="sessionDate_id"
+              type="date"
+              name="sessionDate"
+              value={formik.values.sessionDate}
+              onChange={formik.handleChange}
+              sx={style.textfields}
+            />
+          </Box>
+          <Button
+            color="error"
+            variant="contained"
+            sx={{ mt: 12, width: "30vw", height: "5vh" }}
+            type="submit"
+            onClick={handleClick}
+          >
+            <Typography variant="button" fontSize={24}>
+              Valider
+            </Typography>
+          </Button>
+        </Box>
       </form>
     </div>
   );

@@ -35,6 +35,16 @@ class WineManager extends AbstractManager {
       ]
     );
   }
+
+  findWinesBySessionId(sessionId) {
+    return this.database.query(
+      `SELECT w.name, w.id, vintage
+    FROM ${this.table} AS w
+    JOIN session_has_wine AS shw ON w.id = shw.wine_id
+    WHERE shw.session_id = ?`,
+      [sessionId]
+    );
+  }
 }
 
 module.exports = WineManager;
