@@ -1,9 +1,11 @@
 import { Box, Typography, Grid, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import styles from "./Tasting.module.css";
 import pic from "../assets/pic.png";
 import logo from "../assets/logo.svg";
 import { useUserContext } from "../contexts/UserContext";
+import { useSessionContext } from "../contexts/SessionContext";
 
 export default function Tasting() {
   const style = {
@@ -23,11 +25,35 @@ export default function Tasting() {
     },
   };
 
-  const { setUserPick, tastedWines } = useUserContext();
+  const { setUserPick, userWines, setPreferredWines } = useUserContext();
+  const { sessionWines, sessionGrapes } = useSessionContext();
   const navigate = useNavigate();
-  const uncompleteTasting = Object.entries(tastedWines).some(
-    (element) => element[1].tastingNote == null
+  const uncompleteTasting = userWines.some(
+    (element) => element.isRated === false
   );
+
+  if (userWines.length === 0) {
+    for (let i = 0; i < sessionWines.length; i += 1) {
+      userWines.push({
+        ...sessionWines[i],
+        ...sessionGrapes[i],
+        isRated: false,
+        tastingNote: null,
+      });
+    }
+  }
+
+  useEffect(() => {
+    if (!uncompleteTasting) {
+      setPreferredWines(
+        userWines.sort((a, b) => b.tastingNote - a.tastingNote).slice(0, 3)
+      );
+    }
+  }, []);
+
+  // }
+  // }, []);
+
   const handleClick = (event) => {
     setUserPick(event.target.value);
     navigate("/tasting/tastingsheet");
@@ -71,9 +97,9 @@ export default function Tasting() {
         <Grid item xs={6} sx={style.gridItem}>
           <Button
             onClick={handleClick}
-            disabled={tastedWines.wine1.isDisabled}
+            disabled={userWines[0].isRated}
             variant="contained"
-            value="Wine 1"
+            value={0}
             size="large"
             sx={style.button}
           >
@@ -84,9 +110,9 @@ export default function Tasting() {
         <Grid item xs={6} sx={style.gridItem}>
           <Button
             onClick={handleClick}
-            disabled={tastedWines.wine2.isDisabled}
+            disabled={userWines[1].isRated}
             variant="contained"
-            value="Wine 2"
+            value={1}
             size="large"
             sx={style.button}
           >
@@ -97,10 +123,10 @@ export default function Tasting() {
         <Grid item xs={6} sx={style.gridItem}>
           <Button
             onClick={handleClick}
-            disabled={tastedWines.wine3.isDisabled}
+            disabled={userWines[2].isRated}
             variant="contained"
             size="large"
-            value="Wine 3"
+            value={2}
             sx={style.button}
           >
             {" "}
@@ -110,10 +136,10 @@ export default function Tasting() {
         <Grid item xs={6} sx={style.gridItem}>
           <Button
             onClick={handleClick}
-            disabled={tastedWines.wine4.isDisabled}
+            disabled={userWines[3].isRated}
             variant="contained"
             size="large"
-            value="Wine 4"
+            value={3}
             sx={style.button}
           >
             {" "}

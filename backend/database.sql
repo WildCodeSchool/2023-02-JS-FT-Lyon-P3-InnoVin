@@ -68,7 +68,8 @@ CREATE TABLE IF NOT EXISTS `user` (
 ENGINE = InnoDB;
 
 INSERT INTO user (aroma_id, flavour_id, type_id, firstname, lastname, birthdate, email, hashed_password, address, postcode, city, role) 
-VALUES (1, 1, 1, "Yann", "Richard", "1989-07-12", "yann.richard9@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$cXFnN2s1ZHU0aTAwMDAwMA$XFP3Vrp4/huxiy9p4p2EAw", "Rue de l'exemple", 69000, "Lyon", "User");
+VALUES (1, 1, 1, "Yann", "Richard", "1989-07-12", "yann.richard9@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$cXFnN2s1ZHU0aTAwMDAwMA$XFP3Vrp4/huxiy9p4p2EAw", "Rue de l'exemple", 69000, "Lyon", "User"),
+(2, 2, 2, "Cédric", "Boriat", "1982-06-25", "cedric@exemple.com", "$argon2id$v=19$m=12,t=2,p=1$bXFkenRzdmVmM2EwMDAwMA$W8Njzcn6wAiAJEETUHmkSQ", "Rue de l'exemple", 48000, "Mende", "Admin");
 
 -- -----------------------------------------------------
 -- Table `country`

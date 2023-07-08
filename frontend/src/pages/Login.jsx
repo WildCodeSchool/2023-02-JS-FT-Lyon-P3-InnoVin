@@ -73,13 +73,31 @@ export default function Login() {
           login(user);
           setSessionWines(session.wines);
           setSessionGrapes(session.grapes);
-          toast.success(
-            `Bienvenue ${user.firstname}! Vous allez être redirigé vers la page d'accueil.`,
-            { position: toast.POSITION.TOP_CENTER, autoClose: 2000, icon: "🍷" }
-          );
-          setTimeout(() => {
-            navigate("/tasting");
-          }, 3000);
+          if (user.role === "User") {
+            toast.success(
+              `Bienvenue ${user.firstname}! Vous allez être redirigé vers la page d'accueil.`,
+              {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 2000,
+                icon: "🍷",
+              }
+            );
+            setTimeout(() => {
+              navigate("/tasting");
+            }, 3000);
+          } else if (user.role === "Admin") {
+            toast.success(
+              `Bienvenue ${user.firstname}! Vous allez être redirigé vers votre dashboard.`,
+              {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 2000,
+                icon: "🍷",
+              }
+            );
+            setTimeout(() => {
+              navigate("/admin/users");
+            }, 3000);
+          }
         })
         .catch((error) => {
           if (error.response?.status === 401) {
