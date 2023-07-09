@@ -308,10 +308,11 @@ export default function InscriptionForm() {
                 type="select"
               >
                 <option value="">Sélectionner une saveur </option>
-                <option value={1}>choix1 </option>
-                <option value={2}>choix2 </option>
-                <option value={3}>choix3 </option>
-                <option value={4}>choix4 </option>
+                <option value={1}>Acide </option>
+                <option value={2}>Gras </option>
+                <option value={3}>Amer </option>
+                <option value={4}>Alcool </option>
+                <option value={5}>Sucré </option>
               </select>
             </div>
             <div className={styles.inputContainer}>
@@ -328,10 +329,13 @@ export default function InscriptionForm() {
                 type="select"
               >
                 <option value="">Sélectionner un arôme </option>
-                <option value={1}>choix1 </option>
-                <option value={2}>choix2 </option>
-                <option value={3}>choix3 </option>
-                <option value={4}>choix4 </option>
+                <option value={1}>Fruits </option>
+                <option value={2}>Empyreumatiques </option>
+                <option value={3}>Fleurs </option>
+                <option value={4}>Animal </option>
+                <option value={5}>Epices </option>
+                <option value={6}>Défauts </option>
+                <option value={7}>Végétaux </option>
               </select>
             </div>
           </div>
