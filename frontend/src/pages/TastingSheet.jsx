@@ -1,4 +1,11 @@
-import { Typography, Box, FormGroup, Slider, Button } from "@mui/material";
+import {
+  Typography,
+  Box,
+  RadioGroup,
+  Slider,
+  Button,
+  FormControl,
+} from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../contexts/UserContext";
@@ -106,7 +113,7 @@ export default function TastingSheet() {
   };
 
   return (
-    <>
+    <FormControl>
       <Box flexDirection="row" display="flex" marginBottom="2rem">
         <img src={logo} alt="logo" />
         <Typography
@@ -160,7 +167,7 @@ export default function TastingSheet() {
                 Couleur et nuance
               </Typography>
               <Box flexDirection="row" display="flex">
-                <FormGroup>
+                <RadioGroup>
                   <ControlLabel value="Framboise" label="Framboise" />
                   <ControlLabel value="Cerise" label="Cerise" />
                   <ControlLabel value="Rubis" label="Rubis" />
@@ -168,9 +175,9 @@ export default function TastingSheet() {
                   <ControlLabel value="Violet" label="Violet" />
                   <ControlLabel value="Grenat" label="Grenat" />
                   <ControlLabel value="Tuilé" label="Tuilé" />
-                </FormGroup>
+                </RadioGroup>
 
-                <FormGroup>
+                <RadioGroup>
                   <ControlLabel value="Jaune vert" label="Jaune vert" />
                   <ControlLabel value="Jaune paille" label="Jaune paille" />
                   <ControlLabel value="Or vert" label="Or vert" />
@@ -178,7 +185,7 @@ export default function TastingSheet() {
                   <ControlLabel value="Roux" label="Roux" />
                   <ControlLabel value="Ambré" label="Ambré" />
                   <ControlLabel value="Doré" label="Doré" />
-                </FormGroup>
+                </RadioGroup>
               </Box>
             </Box>
 
@@ -195,12 +202,12 @@ export default function TastingSheet() {
                 Intensité de la couleur
               </Typography>
               <Box flexDirection="column" display="flex">
-                <FormGroup>
+                <RadioGroup>
                   <ControlLabel value="Claire" label="Claire" />
                   <ControlLabel value="Moyenne" label="Moyenne" />
                   <ControlLabel value="Trouble" label="Trouble" />
                   <ControlLabel value="Opaque" label="Opaque" />
-                </FormGroup>
+                </RadioGroup>
                 <Typography
                   variant="h5"
                   marginTop="1.5rem"
@@ -213,7 +220,7 @@ export default function TastingSheet() {
                   {" "}
                   Fluidité des larmes
                 </Typography>
-                <FormGroup>
+                <RadioGroup>
                   <ControlLabel
                     value="Fines et fluides"
                     label="Fines et fluides"
@@ -222,7 +229,7 @@ export default function TastingSheet() {
                     value="Larges et visqueuses"
                     label="Larges et visqueuses"
                   />
-                </FormGroup>
+                </RadioGroup>
               </Box>
             </Box>
           </Box>
@@ -265,11 +272,11 @@ export default function TastingSheet() {
                 Intensité des arômes
               </Typography>
               <Box flexDirection="row" display="flex">
-                <FormGroup>
+                <RadioGroup>
                   <ControlLabel value="Faible" label="Faible" />
                   <ControlLabel value="Moyenne" label="Moyenne" />
                   <ControlLabel value="Forte" label="Forte" />
-                </FormGroup>
+                </RadioGroup>
               </Box>
             </Box>
             <Box flexDirection="column" display="flex" marginLeft="5rem">
@@ -285,7 +292,7 @@ export default function TastingSheet() {
                 Familles aromatiques
               </Typography>
               <Box flexDirection="row" display="flex">
-                <FormGroup>
+                <RadioGroup>
                   <ControlLabel value="Fruits" label="Fruits" />
                   <ControlLabel value="Fleurs" label="Fleurs" />
 
@@ -294,13 +301,13 @@ export default function TastingSheet() {
                     value="Empyreumatique"
                     label="Empyreutmatique"
                   />
-                </FormGroup>
+                </RadioGroup>
 
-                <FormGroup>
+                <RadioGroup>
                   <ControlLabel value="Végétaux" label="Végétaux" />
                   <ControlLabel value="Animal" label="Animal" />
                   <ControlLabel value="Défauts" label="Défauts" />
-                </FormGroup>
+                </RadioGroup>
               </Box>
             </Box>
           </Box>
@@ -345,13 +352,13 @@ export default function TastingSheet() {
                 Saveurs
               </Typography>
               <Box flexDirection="row" display="flex">
-                <FormGroup>
+                <RadioGroup>
                   <ControlLabel value="Acidité" label="Acidité" />
                   <ControlLabel value="Amer" label="Amer" />
                   <ControlLabel value="Sucré" label="Sucré" />
                   <ControlLabel value="Gras" label="Gras" />
                   <ControlLabel value="Alcool" label="Alcool" />
-                </FormGroup>
+                </RadioGroup>
               </Box>
             </Box>
             <Box flexDirection="column" display="flex" marginLeft="4rem">
@@ -367,11 +374,11 @@ export default function TastingSheet() {
                 Structure
               </Typography>
               <Box flexDirection="row" display="flex">
-                <FormGroup>
+                <RadioGroup>
                   <ControlLabel value="Léger" label="Léger" />
                   <ControlLabel value="Fluide" label="Fluide" />
                   <ControlLabel value="Charpenté" label="Charpenté" />
-                </FormGroup>
+                </RadioGroup>
               </Box>
             </Box>
 
@@ -388,11 +395,11 @@ export default function TastingSheet() {
                 Persistance aromatique
               </Typography>
               <Box flexDirection="row" display="flex">
-                <FormGroup>
+                <RadioGroup>
                   <ControlLabel value="Courte" label="Courte" />
                   <ControlLabel value="Moyenne" label="Moyenne" />
                   <ControlLabel value="Persistante" label="Persistante" />
-                </FormGroup>
+                </RadioGroup>
               </Box>
             </Box>
           </Box>
@@ -468,6 +475,6 @@ export default function TastingSheet() {
           </Typography>
         </Button>
       </Box>
-    </>
+    </FormControl>
   );
 }
