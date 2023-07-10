@@ -11,15 +11,16 @@ export default function Tasting() {
   const style = {
     button: {
       p: 2,
-      width: "60%",
+      width: "75%",
       borderRadius: 2,
       fontFamily: "EB Garamond",
+      // margin: "auto",
       "&.Mui-disabled": {
         background: "#FFFDCC",
         color: "grey",
       },
     },
-    gridItem: {
+    griditem: {
       display: "flex",
       justifyContent: "center",
     },
@@ -51,12 +52,12 @@ export default function Tasting() {
     }
   }, []);
 
-  // }
-  // }, []);
-
-  const handleClick = (event) => {
+  const handleClickWine = (event) => {
     setUserPick(event.target.value);
     navigate("/tasting/tastingsheet");
+  };
+  const handleClickProfile = () => {
+    navigate("/tasting/tastingprofile");
   };
 
   return (
@@ -88,66 +89,82 @@ export default function Tasting() {
       >
         Choisissez votre vin
       </Typography>
-      <Grid
-        container
-        rowSpacing={2}
-        columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-        sx={{ width: "60vw", mb: "2.5rem" }}
-      >
-        <Grid item xs={6} sx={style.gridItem}>
-          <Button
-            onClick={handleClick}
-            disabled={userWines[0].isRated}
-            variant="contained"
-            value={0}
-            size="large"
-            sx={style.button}
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid
+          container
+          rowSpacing={3}
+          sx={{
+            width: "60vw",
+            "&.MuiGrid-container": {
+              width: "65vw",
+              margin: "auto",
+              mb: "2.5rem",
+            },
+          }}
+        >
+          <Grid item xs={6} sx={style.griditem}>
+            <Button
+              onClick={handleClickWine}
+              disabled={userWines[0].isRated}
+              variant="contained"
+              value={0}
+              size="large"
+              sx={style.button}
+            >
+              {" "}
+              Vin 1{" "}
+            </Button>
+          </Grid>
+          <Grid item xs={6} sx={style.griditem}>
+            <Button
+              onClick={handleClickWine}
+              disabled={userWines[1].isRated}
+              variant="contained"
+              value={1}
+              size="large"
+              sx={style.button}
+            >
+              {" "}
+              Vin 2{" "}
+            </Button>
+          </Grid>
+          <Grid item xs={6} sx={style.griditem}>
+            <Button
+              onClick={handleClickWine}
+              disabled={userWines[2].isRated}
+              variant="contained"
+              size="large"
+              value={2}
+              sx={style.button}
+            >
+              {" "}
+              Vin 3{" "}
+            </Button>
+          </Grid>
+          <Grid
+            item
+            xs={6}
+            sx={
+              style.griditem
+            } /* sx={{ display: "flex", justifyContent: "center" }} */
           >
-            {" "}
-            Vin 1{" "}
-          </Button>
+            <Button
+              onClick={handleClickWine}
+              disabled={userWines[3].isRated}
+              variant="contained"
+              size="large"
+              value={3}
+              sx={style.button}
+            >
+              {" "}
+              Vin 4{" "}
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item xs={6} sx={style.gridItem}>
-          <Button
-            onClick={handleClick}
-            disabled={userWines[1].isRated}
-            variant="contained"
-            value={1}
-            size="large"
-            sx={style.button}
-          >
-            {" "}
-            Vin 2{" "}
-          </Button>
-        </Grid>
-        <Grid item xs={6} sx={style.gridItem}>
-          <Button
-            onClick={handleClick}
-            disabled={userWines[2].isRated}
-            variant="contained"
-            size="large"
-            value={2}
-            sx={style.button}
-          >
-            {" "}
-            Vin 3{" "}
-          </Button>
-        </Grid>
-        <Grid item xs={6} sx={style.gridItem}>
-          <Button
-            onClick={handleClick}
-            disabled={userWines[3].isRated}
-            variant="contained"
-            size="large"
-            value={3}
-            sx={style.button}
-          >
-            {" "}
-            Vin 4{" "}
-          </Button>
-        </Grid>
-      </Grid>
+      </Box>
       <Box
+        display="flex"
+        justifyContent="center"
         sx={{
           height: "30dvh",
           width: "45dvw",
@@ -175,6 +192,7 @@ export default function Tasting() {
         variant="contained"
         size="large"
         disabled={uncompleteTasting}
+        onClick={handleClickProfile}
         sx={{
           p: 2,
           margin: "0 auto",
