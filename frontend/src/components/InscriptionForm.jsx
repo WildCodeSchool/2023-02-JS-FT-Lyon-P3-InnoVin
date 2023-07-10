@@ -308,11 +308,11 @@ export default function InscriptionForm() {
                 type="select"
               >
                 <option value="">Sélectionner une saveur </option>
-                <option value={1}>Acide </option>
-                <option value={2}>Gras </option>
-                <option value={3}>Amer </option>
-                <option value={4}>Alcool </option>
-                <option value={5}>Sucré </option>
+                <option value={1}> {}</option>
+                <option value={2}>{} </option>
+                <option value={3}>{} </option>
+                <option value={4}>{} </option>
+                <option value={5}>{} </option>
               </select>
             </div>
             <div className={styles.inputContainer}>

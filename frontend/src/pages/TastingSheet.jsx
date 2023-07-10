@@ -12,10 +12,13 @@ import { useUserContext } from "../contexts/UserContext";
 import logo from "../assets/logo.svg";
 import ControlLabel from "../components/ControlLabel";
 import styles from "./TastingSheet.module.css";
+import handleRadioChange from "../services/validatorTastingSheet";
 
 export default function TastingSheet() {
   const [rate, setRate] = useState(0);
   const navigate = useNavigate();
+  // const [validateForm, setValidateForm] = useState(false);
+
   const { tastedWines, setTastedWines, userPick } = useUserContext();
 
   const style = {
@@ -111,7 +114,9 @@ export default function TastingSheet() {
 
     navigate("/tasting");
   };
-
+  const handleChange = () => {
+    handleRadioChange();
+  };
   return (
     <FormControl>
       <Box flexDirection="row" display="flex" marginBottom="2rem">
@@ -167,7 +172,7 @@ export default function TastingSheet() {
                 Couleur et nuance
               </Typography>
               <Box flexDirection="row" display="flex">
-                <RadioGroup>
+                <RadioGroup onChange={handleChange} name="color">
                   <ControlLabel value="Framboise" label="Framboise" />
                   <ControlLabel value="Cerise" label="Cerise" />
                   <ControlLabel value="Rubis" label="Rubis" />
@@ -177,7 +182,7 @@ export default function TastingSheet() {
                   <ControlLabel value="Tuilé" label="Tuilé" />
                 </RadioGroup>
 
-                <RadioGroup>
+                <RadioGroup onChange={handleChange} name="color">
                   <ControlLabel value="Jaune vert" label="Jaune vert" />
                   <ControlLabel value="Jaune paille" label="Jaune paille" />
                   <ControlLabel value="Or vert" label="Or vert" />
@@ -202,7 +207,7 @@ export default function TastingSheet() {
                 Intensité de la couleur
               </Typography>
               <Box flexDirection="column" display="flex">
-                <RadioGroup>
+                <RadioGroup onChange={handleChange} name="intensity">
                   <ControlLabel value="Claire" label="Claire" />
                   <ControlLabel value="Moyenne" label="Moyenne" />
                   <ControlLabel value="Trouble" label="Trouble" />
@@ -220,7 +225,7 @@ export default function TastingSheet() {
                   {" "}
                   Fluidité des larmes
                 </Typography>
-                <RadioGroup>
+                <RadioGroup onChange={handleChange} name="fluidity">
                   <ControlLabel
                     value="Fines et fluides"
                     label="Fines et fluides"
@@ -272,7 +277,7 @@ export default function TastingSheet() {
                 Intensité des arômes
               </Typography>
               <Box flexDirection="row" display="flex">
-                <RadioGroup>
+                <RadioGroup onChange={handleChange} name="aroma">
                   <ControlLabel value="Faible" label="Faible" />
                   <ControlLabel value="Moyenne" label="Moyenne" />
                   <ControlLabel value="Forte" label="Forte" />
@@ -292,7 +297,7 @@ export default function TastingSheet() {
                 Familles aromatiques
               </Typography>
               <Box flexDirection="row" display="flex">
-                <RadioGroup>
+                <RadioGroup onChange={handleChange} name="family">
                   <ControlLabel value="Fruits" label="Fruits" />
                   <ControlLabel value="Fleurs" label="Fleurs" />
 
@@ -303,7 +308,7 @@ export default function TastingSheet() {
                   />
                 </RadioGroup>
 
-                <RadioGroup>
+                <RadioGroup onChange={handleChange} name="family">
                   <ControlLabel value="Végétaux" label="Végétaux" />
                   <ControlLabel value="Animal" label="Animal" />
                   <ControlLabel value="Défauts" label="Défauts" />
@@ -352,7 +357,7 @@ export default function TastingSheet() {
                 Saveurs
               </Typography>
               <Box flexDirection="row" display="flex">
-                <RadioGroup>
+                <RadioGroup onChange={handleChange} name="flavor">
                   <ControlLabel value="Acidité" label="Acidité" />
                   <ControlLabel value="Amer" label="Amer" />
                   <ControlLabel value="Sucré" label="Sucré" />
@@ -374,7 +379,7 @@ export default function TastingSheet() {
                 Structure
               </Typography>
               <Box flexDirection="row" display="flex">
-                <RadioGroup>
+                <RadioGroup onChange={handleChange} name="structure">
                   <ControlLabel value="Léger" label="Léger" />
                   <ControlLabel value="Fluide" label="Fluide" />
                   <ControlLabel value="Charpenté" label="Charpenté" />
@@ -395,7 +400,7 @@ export default function TastingSheet() {
                 Persistance aromatique
               </Typography>
               <Box flexDirection="row" display="flex">
-                <RadioGroup>
+                <RadioGroup onChange={handleChange} name="persistence">
                   <ControlLabel value="Courte" label="Courte" />
                   <ControlLabel value="Moyenne" label="Moyenne" />
                   <ControlLabel value="Persistante" label="Persistante" />
