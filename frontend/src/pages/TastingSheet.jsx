@@ -12,14 +12,46 @@ import { useUserContext } from "../contexts/UserContext";
 import logo from "../assets/logo.svg";
 import ControlLabel from "../components/ControlLabel";
 import styles from "./TastingSheet.module.css";
-import handleRadioChange from "../services/validatorTastingSheet";
 
 export default function TastingSheet() {
-  const [rate, setRate] = useState(0);
+  const [rate, setRate] = useState(5);
   const navigate = useNavigate();
-  // const [validateForm, setValidateForm] = useState(false);
+  const [value, setValue] = useState({
+    color: "",
+    intensity: "",
+    fluidity: "",
+    aroma: "",
+    family: "",
+    flavor: "",
+    structure: "",
+    persistence: "",
+  });
 
   const { tastedWines, setTastedWines, userPick } = useUserContext();
+
+  const handleChange = (event) => {
+    const { name, value: selectedValue } = event.target;
+    setValue((prevState) => ({
+      ...prevState,
+      [name]: selectedValue,
+    }));
+  };
+
+  function canBeSubmit() {
+    if (
+      value.color &&
+      value.intensity &&
+      value.fluidity &&
+      value.aroma &&
+      value.family &&
+      value.flavor &&
+      value.structure &&
+      value.persistence
+    ) {
+      return false;
+    }
+    return true;
+  }
 
   const style = {
     button: {
@@ -114,9 +146,7 @@ export default function TastingSheet() {
 
     navigate("/tasting");
   };
-  const handleChange = () => {
-    handleRadioChange();
-  };
+
   return (
     <FormControl>
       <Box flexDirection="row" display="flex" marginBottom="2rem">
@@ -172,24 +202,31 @@ export default function TastingSheet() {
                 Couleur et nuance
               </Typography>
               <Box flexDirection="row" display="flex">
-                <RadioGroup onChange={handleChange} name="color">
-                  <ControlLabel value="Framboise" label="Framboise" />
-                  <ControlLabel value="Cerise" label="Cerise" />
-                  <ControlLabel value="Rubis" label="Rubis" />
-                  <ControlLabel value="Pourpre" label="Pourpre" />
-                  <ControlLabel value="Violet" label="Violet" />
-                  <ControlLabel value="Grenat" label="Grenat" />
-                  <ControlLabel value="Tuilé" label="Tuilé" />
-                </RadioGroup>
-
-                <RadioGroup onChange={handleChange} name="color">
-                  <ControlLabel value="Jaune vert" label="Jaune vert" />
-                  <ControlLabel value="Jaune paille" label="Jaune paille" />
-                  <ControlLabel value="Or vert" label="Or vert" />
-                  <ControlLabel value="Or jaune" label="Or jaune" />
-                  <ControlLabel value="Roux" label="Roux" />
-                  <ControlLabel value="Ambré" label="Ambré" />
-                  <ControlLabel value="Doré" label="Doré" />
+                <RadioGroup
+                  onChange={handleChange}
+                  name="color"
+                  value={value.color}
+                >
+                  <div className={styles.colorContainer}>
+                    <div>
+                      <ControlLabel value="Framboise" label="Framboise" />
+                      <ControlLabel value="Cerise" label="Cerise" />
+                      <ControlLabel value="Rubis" label="Rubis" />
+                      <ControlLabel value="Pourpre" label="Pourpre" />
+                      <ControlLabel value="Violet" label="Violet" />
+                      <ControlLabel value="Grenat" label="Grenat" />
+                      <ControlLabel value="Tuilé" label="Tuilé" />
+                    </div>
+                    <div>
+                      <ControlLabel value="Jaune vert" label="Jaune vert" />
+                      <ControlLabel value="Jaune paille" label="Jaune paille" />
+                      <ControlLabel value="Or vert" label="Or vert" />
+                      <ControlLabel value="Or jaune" label="Or jaune" />
+                      <ControlLabel value="Roux" label="Roux" />
+                      <ControlLabel value="Ambré" label="Ambré" />
+                      <ControlLabel value="Doré" label="Doré" />
+                    </div>
+                  </div>
                 </RadioGroup>
               </Box>
             </Box>
@@ -207,7 +244,11 @@ export default function TastingSheet() {
                 Intensité de la couleur
               </Typography>
               <Box flexDirection="column" display="flex">
-                <RadioGroup onChange={handleChange} name="intensity">
+                <RadioGroup
+                  onChange={handleChange}
+                  name="intensity"
+                  value={value.intensity}
+                >
                   <ControlLabel value="Claire" label="Claire" />
                   <ControlLabel value="Moyenne" label="Moyenne" />
                   <ControlLabel value="Trouble" label="Trouble" />
@@ -225,7 +266,11 @@ export default function TastingSheet() {
                   {" "}
                   Fluidité des larmes
                 </Typography>
-                <RadioGroup onChange={handleChange} name="fluidity">
+                <RadioGroup
+                  onChange={handleChange}
+                  name="fluidity"
+                  value={value.fluidity}
+                >
                   <ControlLabel
                     value="Fines et fluides"
                     label="Fines et fluides"
@@ -277,7 +322,11 @@ export default function TastingSheet() {
                 Intensité des arômes
               </Typography>
               <Box flexDirection="row" display="flex">
-                <RadioGroup onChange={handleChange} name="aroma">
+                <RadioGroup
+                  onChange={handleChange}
+                  name="aroma"
+                  value={value.aroma}
+                >
                   <ControlLabel value="Faible" label="Faible" />
                   <ControlLabel value="Moyenne" label="Moyenne" />
                   <ControlLabel value="Forte" label="Forte" />
@@ -297,21 +346,29 @@ export default function TastingSheet() {
                 Familles aromatiques
               </Typography>
               <Box flexDirection="row" display="flex">
-                <RadioGroup onChange={handleChange} name="family">
-                  <ControlLabel value="Fruits" label="Fruits" />
-                  <ControlLabel value="Fleurs" label="Fleurs" />
+                <RadioGroup
+                  onChange={handleChange}
+                  name="family"
+                  value={value.family}
+                >
+                  <div className={styles.familyContainer}>
+                    <div>
+                      <ControlLabel value="Fruits" label="Fruits" />
+                      <ControlLabel value="Fleurs" label="Fleurs" />
 
-                  <ControlLabel value="Epices" label="Epices" />
-                  <ControlLabel
-                    value="Empyreumatique"
-                    label="Empyreutmatique"
-                  />
-                </RadioGroup>
+                      <ControlLabel value="Epices" label="Epices" />
+                      <ControlLabel
+                        value="Empyreumatique"
+                        label="Empyreutmatique"
+                      />
+                    </div>
 
-                <RadioGroup onChange={handleChange} name="family">
-                  <ControlLabel value="Végétaux" label="Végétaux" />
-                  <ControlLabel value="Animal" label="Animal" />
-                  <ControlLabel value="Défauts" label="Défauts" />
+                    <div>
+                      <ControlLabel value="Végétaux" label="Végétaux" />
+                      <ControlLabel value="Animal" label="Animal" />
+                      <ControlLabel value="Défauts" label="Défauts" />
+                    </div>
+                  </div>
                 </RadioGroup>
               </Box>
             </Box>
@@ -357,7 +414,11 @@ export default function TastingSheet() {
                 Saveurs
               </Typography>
               <Box flexDirection="row" display="flex">
-                <RadioGroup onChange={handleChange} name="flavor">
+                <RadioGroup
+                  onChange={handleChange}
+                  name="flavor"
+                  value={value.flavor}
+                >
                   <ControlLabel value="Acidité" label="Acidité" />
                   <ControlLabel value="Amer" label="Amer" />
                   <ControlLabel value="Sucré" label="Sucré" />
@@ -379,7 +440,11 @@ export default function TastingSheet() {
                 Structure
               </Typography>
               <Box flexDirection="row" display="flex">
-                <RadioGroup onChange={handleChange} name="structure">
+                <RadioGroup
+                  onChange={handleChange}
+                  name="structure"
+                  value={value.structure}
+                >
                   <ControlLabel value="Léger" label="Léger" />
                   <ControlLabel value="Fluide" label="Fluide" />
                   <ControlLabel value="Charpenté" label="Charpenté" />
@@ -400,7 +465,11 @@ export default function TastingSheet() {
                 Persistance aromatique
               </Typography>
               <Box flexDirection="row" display="flex">
-                <RadioGroup onChange={handleChange} name="persistence">
+                <RadioGroup
+                  onChange={handleChange}
+                  name="persistence"
+                  value={value.persistence}
+                >
                   <ControlLabel value="Courte" label="Courte" />
                   <ControlLabel value="Moyenne" label="Moyenne" />
                   <ControlLabel value="Persistante" label="Persistante" />
@@ -453,8 +522,8 @@ export default function TastingSheet() {
                 min={0}
                 max={10}
                 size="large"
-                marks={marks}
                 value={rate}
+                marks={marks}
                 onChange={handleRate}
               />
             </Box>
@@ -474,6 +543,7 @@ export default function TastingSheet() {
           size="large"
           sx={style.button}
           onClick={handleSubmit}
+          disabled={canBeSubmit()}
         >
           <Typography variant="button" fontSize={24}>
             Valider{" "}
