@@ -3,6 +3,8 @@ import { differenceInYears, parse } from "date-fns";
 import { toast } from "react-toastify";
 import { Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import validationSchema from "../services/validator";
 import rouge from "../assets/redwinepicture.png";
 import rose from "../assets/rosewinepicture.png";
@@ -10,8 +12,12 @@ import blanc from "../assets/whitewinepicture.png";
 import APIService from "../services/APIService";
 import styles from "./InscriptionForm.module.css";
 
+const apiBaseUrl = import.meta.env.VITE_BACKEND_URL;
+
 export default function InscriptionForm() {
   const navigate = useNavigate();
+  const [aromas, setAromas] = useState([]);
+  const [flavours, setFlavours] = useState([]);
 
   const formik = useFormik({
     initialValues: {
@@ -78,7 +84,23 @@ export default function InscriptionForm() {
   const style = {
     button: { p: 2, width: 0.9, borderRadius: 2 },
   };
+  useEffect(() => {
+    axios
+      .get(`${apiBaseUrl}/aromas`)
+      .then((response) => {
+        setAromas(response.data);
+      })
+      .catch((err) => console.error(err));
+  }, []);
 
+  useEffect(() => {
+    axios
+      .get(`${apiBaseUrl}/flavours`)
+      .then((response) => {
+        setFlavours(response.data);
+      })
+      .catch((err) => console.error(err));
+  }, []);
   return (
     <div>
       <form onSubmit={formik.handleSubmit}>
@@ -307,11 +329,12 @@ export default function InscriptionForm() {
                 value={formik.values.flavourId}
                 type="select"
               >
-                <option value="">Sélectionner une saveur </option>
-                <option value={1}>choix1 </option>
-                <option value={2}>choix2 </option>
-                <option value={3}>choix3 </option>
-                <option value={4}>choix4 </option>
+                <option value="">Sélectionner un arôme </option>
+                {flavours.map((flavour) => (
+                  <option key={flavour.id} value={flavour.id}>
+                    {flavour.name}
+                  </option>
+                ))}
               </select>
             </div>
             <div className={styles.inputContainer}>
@@ -328,10 +351,11 @@ export default function InscriptionForm() {
                 type="select"
               >
                 <option value="">Sélectionner un arôme </option>
-                <option value={1}>choix1 </option>
-                <option value={2}>choix2 </option>
-                <option value={3}>choix3 </option>
-                <option value={4}>choix4 </option>
+                {aromas.map((aroma) => (
+                  <option key={aroma.id} value={aroma.id}>
+                    {aroma.name}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
