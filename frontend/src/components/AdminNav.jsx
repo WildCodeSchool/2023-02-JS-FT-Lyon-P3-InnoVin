@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAdminContext } from "../contexts/AdminContext";
 import styles from "./AdminNav.module.css";
 /* --- pictures --- */
 import logo from "../assets/logo.svg";
@@ -9,12 +10,15 @@ import session from "../assets/session.svg";
 import grape from "../assets/grape.svg";
 
 export default function AdminNav() {
-  const [nav, setNav] = useState("users");
+  const { nav, setNav } = useAdminContext();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate(`/admin/${nav}`);
+  }, [nav]);
 
   const handleClick = (e) => {
     setNav(e.target.id);
-    navigate(`/admin/${nav}`);
   };
 
   const navIcons = [

@@ -1,7 +1,7 @@
 const models = require("../models");
 
 const browse = (req, res) => {
-  models.user
+  models.country
     .findAll()
     .then(([rows]) => {
       res.send(rows);
@@ -14,7 +14,7 @@ const browse = (req, res) => {
 
 const read = (req, res) => {
   const id = parseInt(req.params.id, 10);
-  models.user
+  models.country
     .find(id)
     .then(([rows]) => {
       if (rows[0] == null) {
@@ -30,14 +30,14 @@ const read = (req, res) => {
 };
 
 const edit = (req, res) => {
-  const user = req.body;
+  const country = req.body;
 
   // TODO validations (length, format...)
 
-  user.id = parseInt(req.params.id, 10);
+  country.id = parseInt(req.params.id, 10);
 
-  models.user
-    .update(user)
+  models.country
+    .update(country)
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);
@@ -52,14 +52,14 @@ const edit = (req, res) => {
 };
 
 const add = (req, res) => {
-  const user = req.body;
+  const country = req.body;
 
-  // registerTODO validations (length, format...)
+  // TODO validations (length, format...)
 
-  models.user
-    .insert(user)
+  models.country
+    .insert(country)
     .then(([result]) => {
-      res.location(`/users/${result.insertId}`).sendStatus(201);
+      res.location(`/countrys/${result.insertId}`).sendStatus(201);
     })
     .catch((err) => {
       console.error(err);
@@ -70,7 +70,7 @@ const add = (req, res) => {
 const destroy = (req, res) => {
   const id = parseInt(req.params.id, 10);
 
-  models.user
+  models.country
     .delete(id)
     .then(([result]) => {
       if (result.affectedRows === 0) {

@@ -8,6 +8,9 @@ export default UserContext;
 export function UserContextProvider({ children }) {
   // on utilise un hook personnalisé
   const [user, setUser] = useState({});
+  const [userWines, setUserWines] = useState([]);
+  const [userPick, setUserPick] = useState(null);
+  const [preferredWines, setPreferredWines] = useState();
 
   const logout = async () => {
     try {
@@ -24,10 +27,17 @@ export function UserContextProvider({ children }) {
   const memo = useMemo(() => {
     return {
       user,
+      userWines,
+      userPick,
+      preferredWines,
+      setUser,
+      setUserPick,
+      setUserWines,
+      setPreferredWines,
       logout,
       login,
     };
-  }, [user]);
+  }, [user, userWines, userPick, preferredWines]);
 
   return <UserContext.Provider value={memo}>{children}</UserContext.Provider>;
 }

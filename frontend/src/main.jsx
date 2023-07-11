@@ -5,6 +5,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import App from "./App";
 import { UserContextProvider } from "./contexts/UserContext";
+import { SessionContextProvider } from "./contexts/SessionContext";
+import { AdminContextProvider } from "./contexts/AdminContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -52,10 +54,14 @@ root.render(
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <UserContextProvider>
-          <App />
-        </UserContextProvider>
+        <AdminContextProvider>
+          <UserContextProvider>
+            <SessionContextProvider>
+              <App />
+            </SessionContextProvider>
+          </UserContextProvider>
+        </AdminContextProvider>
       </ThemeProvider>
-    </BrowserRouter>
+    </BrowserRouter>{" "}
   </React.StrictMode>
 );

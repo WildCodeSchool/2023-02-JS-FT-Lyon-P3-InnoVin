@@ -1,7 +1,7 @@
 const models = require("../models");
 
 const browse = (req, res) => {
-  models.user
+  models.wine
     .findAll()
     .then(([rows]) => {
       res.send(rows);
@@ -14,7 +14,7 @@ const browse = (req, res) => {
 
 const read = (req, res) => {
   const id = parseInt(req.params.id, 10);
-  models.user
+  models.wine
     .find(id)
     .then(([rows]) => {
       if (rows[0] == null) {
@@ -30,14 +30,14 @@ const read = (req, res) => {
 };
 
 const edit = (req, res) => {
-  const user = req.body;
+  const wine = req.body;
 
   // TODO validations (length, format...)
 
-  user.id = parseInt(req.params.id, 10);
+  wine.id = parseInt(req.params.id, 10);
 
-  models.user
-    .update(user)
+  models.wine
+    .update(wine)
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);
@@ -52,14 +52,14 @@ const edit = (req, res) => {
 };
 
 const add = (req, res) => {
-  const user = req.body;
+  const wine = req.body;
 
-  // registerTODO validations (length, format...)
+  // TODO validations (length, format...)
 
-  models.user
-    .insert(user)
+  models.wine
+    .insert(wine)
     .then(([result]) => {
-      res.location(`/users/${result.insertId}`).sendStatus(201);
+      res.location(`/wines/${result.insertId}`).sendStatus(201);
     })
     .catch((err) => {
       console.error(err);
@@ -70,7 +70,7 @@ const add = (req, res) => {
 const destroy = (req, res) => {
   const id = parseInt(req.params.id, 10);
 
-  models.user
+  models.wine
     .delete(id)
     .then(([result]) => {
       if (result.affectedRows === 0) {
@@ -85,10 +85,28 @@ const destroy = (req, res) => {
     });
 };
 
+const getWinesBySessionIdMiddleWare = (req, res, next) => {
+  models.wine
+    .findWinesBySessionId(req.session.id)
+    .then((wines) => {
+      if (wines[0]) {
+        [req.session.wines] = wines;
+        next();
+      } else {
+        res.sendStatus(401);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.sendStatus(500);
+    });
+};
+
 module.exports = {
   browse,
   read,
   edit,
   add,
   destroy,
+  getWinesBySessionIdMiddleWare,
 };
