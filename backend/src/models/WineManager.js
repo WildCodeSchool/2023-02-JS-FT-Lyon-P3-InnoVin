@@ -65,9 +65,11 @@ class WineManager extends AbstractManager {
 
   findWinesBySessionId(sessionId) {
     return this.database.query(
-      `SELECT w.name, w.id, vintage
+      `SELECT w.name AS wine_name, w.id AS wine_id, vintage, aroma.name AS aroma, flavour.name AS flavour
     FROM ${this.table} AS w
     JOIN session_has_wine AS shw ON w.id = shw.wine_id
+    JOIN aroma ON aroma.id = w.aroma_id
+    JOIN flavour ON flavour.id = w.flavour_id
     WHERE shw.session_id = ?`,
       [sessionId]
     );

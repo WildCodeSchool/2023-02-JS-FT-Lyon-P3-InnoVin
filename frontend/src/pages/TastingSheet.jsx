@@ -16,6 +16,7 @@ import styles from "./TastingSheet.module.css";
 export default function TastingSheet() {
   const [rate, setRate] = useState(5);
   const navigate = useNavigate();
+  const { userPick, userWines } = useUserContext();
   const [value, setValue] = useState({
     color: "",
     intensity: "",
@@ -26,8 +27,6 @@ export default function TastingSheet() {
     structure: "",
     persistence: "",
   });
-
-  const { tastedWines, setTastedWines, userPick } = useUserContext();
 
   const handleChange = (event) => {
     const { name, value: selectedValue } = event.target;
@@ -116,33 +115,8 @@ export default function TastingSheet() {
     setRate(newRate);
   };
   const handleSubmit = () => {
-    switch (userPick) {
-      case "Wine 1":
-        setTastedWines({
-          ...tastedWines,
-          wine1: { isDisabled: true, tastingNote: rate },
-        });
-        break;
-      case "Wine 2":
-        setTastedWines({
-          ...tastedWines,
-          wine2: { isDisabled: true, tastingNote: rate },
-        });
-        break;
-      case "Wine 3":
-        setTastedWines({
-          ...tastedWines,
-          wine3: { isDisabled: true, tastingNote: rate },
-        });
-        break;
-      case "Wine 4":
-        setTastedWines({
-          ...tastedWines,
-          wine4: { isDisabled: true, tastingNote: rate },
-        });
-        break;
-      default:
-    }
+    userWines[userPick].isRated = true;
+    userWines[userPick].tastingNote = rate;
 
     navigate("/tasting");
   };
