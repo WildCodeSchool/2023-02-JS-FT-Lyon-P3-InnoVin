@@ -1,5 +1,5 @@
 import React from "react";
-import { FormControlLabel, Checkbox } from "@mui/material";
+import { FormControlLabel, Radio } from "@mui/material";
 import PropTypes from "prop-types";
 import styles from "./ControlLabel.module.css";
 
@@ -9,7 +9,7 @@ export default function ControlLabel({ value, label }) {
       <FormControlLabel
         value={value}
         control={
-          <Checkbox
+          <Radio
             sx={{ "& .MuiSvgIcon-root": { fontSize: 50 } }}
             style={{
               color: "#FFFDCC",

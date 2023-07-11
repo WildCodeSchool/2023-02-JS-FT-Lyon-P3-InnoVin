@@ -53,7 +53,7 @@ export default function InscriptionForm() {
     },
 
     onSubmit: () => {
-      APIService.post(`/register`, formik.values)
+      APIService.post(`/users`, formik.values)
         .then(() => {
           navigate("/login");
         })
