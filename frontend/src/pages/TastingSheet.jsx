@@ -118,35 +118,6 @@ export default function TastingSheet() {
     userWines[userPick].isRated = true;
     userWines[userPick].tastingNote = rate;
 
-    // switch (userPick) {
-    //   case 0:
-    //     setUserWines([
-    //       ...userWines,
-    //       userWines[userPick].isTasted === true,
-    //       userWines[userPick].tastingNote === rate,
-    //     ]);
-    //     break;
-    //   case "Wine 2":
-    //     setTastedWines({
-    //       ...tastedWines,
-    //       wine2: { isDisabled: true, tastingNote: rate },
-    //     });
-    //     break;
-    //   case "Wine 3":
-    //     setTastedWines({
-    //       ...tastedWines,
-    //       wine3: { isDisabled: true, tastingNote: rate },
-    //     });
-    //     break;
-    //   case "Wine 4":
-    //     setTastedWines({
-    //       ...tastedWines,
-    //       wine4: { isDisabled: true, tastingNote: rate },
-    //     });
-    //     break;
-    //   default:
-    // }
-
     navigate("/tasting");
   };
 
