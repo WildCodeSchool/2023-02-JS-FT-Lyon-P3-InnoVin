@@ -21,7 +21,7 @@ class GrapeManager extends AbstractManager {
 
   findGrapesBySessionId(sessionId) {
     return this.database.query(
-      `SELECT grape_variety.name, grape_variety.picture
+      `SELECT grape_variety.name AS grapename, grape_variety.picture as grapepicture
     FROM ${this.table} 
     JOIN wine as w ON grape_variety.id = w.grape_variety_id
     JOIN session_has_wine AS shw ON w.id = shw.wine_id

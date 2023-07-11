@@ -2,7 +2,7 @@ const AbstractManager = require("./AbstractManager");
 
 class SessionManager extends AbstractManager {
   constructor() {
-    super({ table: "Session" });
+    super({ table: "session" });
   }
 
   // Override
