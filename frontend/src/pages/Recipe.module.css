@@ -1,61 +1,10 @@
-.bottle {
-  width: 200px;
-  height: 200px;
-  background-color: #f9f9f9;
-  position: relative;
-  overflow: hidden;
-}
-
-.wine {
-  width: 100%;
-  background-color: #8b0000;
-  position: absolute;
-  bottom: 0;
-  transition: height 0.5s ease;
-  height: 0;
-}
 .wineBottle {
   width: 600px;
   height: 800px;
   margin-left: -150px;
   margin-top: 80px;
 }
-.inputContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 40vh;
-  margin-top: 300px;
-  margin-left: -70px;
-}
-.inputContainer input {
-  width: 145px;
-  height: 64px;
-  background-color: #fffdcc;
-  margin-right: 10px;
-  border-radius: 10px;
-  border: none;
-  padding: 10px;
-  font-size: 28px;
-}
-.wineContainer {
-  display: flex;
-  flex-direction: row;
-}
-.input label {
-  font-size: 28px;
-}
-.wineDescription p {
-  font-size: 28px;
-  color: white;
-}
-.wineDescription {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  height: 50px;
-}
+
 .tooltip img {
   width: 50px;
 }
