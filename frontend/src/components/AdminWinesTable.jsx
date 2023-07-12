@@ -1,12 +1,10 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   DataGrid,
   GridActionsCellItem,
   GridRowEditStopReasons,
   GridRowModes,
-  gridClasses,
 } from "@mui/x-data-grid";
-import { styled } from "@mui/material/styles";
 import { Cancel, Delete, Edit, Save } from "@mui/icons-material";
 import { useAdminContext } from "../contexts/AdminContext";
 // --- Services ---
@@ -68,12 +66,12 @@ export default function AdminWinesTable() {
     fetch();
   }, []);
 
-  // --- Personnalisation du header des colonnes ---
-  const StripedWinesDataGrid = styled(DataGrid)(({ theme }) => ({
-    [`& .${gridClasses.row}.odd`]: {
-      backgroundColor: theme.palette.secondary.light,
-    },
-  }));
+  // // --- Personnalisation du header des colonnes ---
+  // const StripedWinesDataGrid = styled(DataGrid)(({ theme }) => ({
+  //   [`& .${gridClasses.row}.odd`]: {
+  //     backgroundColor: theme.palette.secondary.light,
+  //   },
+  // }));
 
   // --- Déclaration des valeurs des selects ---
   const grapeSelect = grapesData.map((grape) => ({
@@ -114,8 +112,13 @@ export default function AdminWinesTable() {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
-  const handleDeleteClick = (id) => () => {
-    setWinesData(winesData.filter((wine) => wine.id !== id));
+  const handleDeleteClick = (id) => async () => {
+    try {
+      await WineService.deleteWine(id);
+      setWinesData(winesData.filter((wine) => wine.id !== id));
+    } catch (err) {
+      console.error("Deletion failed :", err);
+    }
   };
 
   const handleCancelClick = (id) => () => {
@@ -135,14 +138,14 @@ export default function AdminWinesTable() {
     }
   };
 
-  const processRowUpdate = async (newRow) => {
+  const processRowUpdate = useCallback(async (newRow) => {
     try {
-      const updatedWine = await WineService.updateWine(newRow);
-      console.info(updatedWine);
+      await WineService.updateWine(newRow);
     } catch (err) {
       console.error("Update failed");
     }
-  };
+    return newRow;
+  });
 
   const onProcessRowUpdateError = (error) => {
     console.error(error);
@@ -242,13 +245,17 @@ export default function AdminWinesTable() {
               icon={<Save />}
               label="Save"
               onClick={handleSaveClick(id)}
-              color="inherit"
+              sx={{
+                color: "secondary.main",
+              }}
             />,
             <GridActionsCellItem
               icon={<Cancel />}
               label="Cancel"
               onClick={handleCancelClick(id)}
-              color="inherit"
+              sx={{
+                color: "primary.main",
+              }}
             />,
           ];
         }
@@ -274,7 +281,7 @@ export default function AdminWinesTable() {
   ];
 
   return (
-    <StripedWinesDataGrid
+    <DataGrid
       rows={winesData}
       columns={columnsWines}
       editMode="row"
@@ -284,9 +291,6 @@ export default function AdminWinesTable() {
       processRowUpdate={processRowUpdate}
       onProcessRowUpdateError={onProcessRowUpdateError}
       sx={{ backgroundColor: "text.primary", color: "background.default" }}
-      getRowClassName={(params) =>
-        params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
-      }
     />
   );
 }

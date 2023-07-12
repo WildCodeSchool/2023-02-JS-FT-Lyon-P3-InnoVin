@@ -414,11 +414,13 @@ CREATE TABLE IF NOT EXISTS `session_has_wine` (
 
   CONSTRAINT `fk_session_has_wine_session`
     FOREIGN KEY (`session_id`)
-    REFERENCES `session` (`id`),
+    REFERENCES `session` (`id`)
+    ON DELETE CASCADE,
 
   CONSTRAINT `fk_session_has_wine_wine`
     FOREIGN KEY (`wine_id`)
-    REFERENCES `wine` (`id`))
+    REFERENCES `wine` (`id`)
+    ON DELETE CASCADE)
 
 ENGINE = InnoDB;
  INSERT INTO session_has_wine (session_id, wine_id) VALUE 
