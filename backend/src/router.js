@@ -9,10 +9,6 @@ const { verifyPassword } = require("./services/auth");
 const { getUserByEmailMiddleWare } = require("./controllers/authControllers");
 
 const {
-  getSessionIdByDateMiddleWare,
-} = require("./controllers/sessionControllers");
-
-const {
   getWinesBySessionIdMiddleWare,
 } = require("./controllers/wineControllers");
 
@@ -27,7 +23,6 @@ router.post(
   validateLogin,
   getUserByEmailMiddleWare,
   verifyPassword,
-  getSessionIdByDateMiddleWare,
   getWinesBySessionIdMiddleWare,
   getGrapesBySessionIdMiddleWare
 );

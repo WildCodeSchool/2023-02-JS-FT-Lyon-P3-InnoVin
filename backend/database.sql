@@ -297,10 +297,11 @@ INSERT INTO wine (country_id, region_id, type_id, domain_id, grape_variety_id, f
 CREATE TABLE IF NOT EXISTS `session` (
   `Id` INT NOT NULL AUTO_INCREMENT,
   `date` DATE NOT NULL,
+  `time` TIME NOT NULL, 
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-INSERT INTO session (date) VALUES ("2023-07-04"), ("2023-07-10"), ("2023-07-15"), ("2023-07-20"), ("2023-07-28");
+INSERT INTO session (date, time) VALUES ("2023-07-28", "10:00"), ("2023-08-10", "14:00"), ("2023-08-15", "16:00"), ("2023-08-20", "14:00"), ("2023-08-24", "09:00");
 
 -- -----------------------------------------------------
 -- Table `recipe`

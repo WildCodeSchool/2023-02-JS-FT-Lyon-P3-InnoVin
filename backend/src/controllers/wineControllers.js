@@ -86,8 +86,9 @@ const destroy = (req, res) => {
 };
 
 const getWinesBySessionIdMiddleWare = (req, res, next) => {
+  req.session = {};
   models.wine
-    .findWinesBySessionId(req.session.id)
+    .findWinesBySessionId(req.body.sessionTime)
     .then((wines) => {
       if (wines[0]) {
         [req.session.wines] = wines;
