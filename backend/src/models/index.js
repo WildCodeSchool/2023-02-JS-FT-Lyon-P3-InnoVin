@@ -92,6 +92,16 @@ const FlavourManager = require("./FlavourManager");
 models.flavour = new FlavourManager();
 models.flavour.setDatabase(pool);
 
+const RecipeManager = require("./RecipeManager");
+
+models.recipe = new RecipeManager();
+models.recipe.setDatabase(pool);
+
+const RecipeHasWineManager = require("./RecipeHasWineManager");
+
+models.recipehaswine = new RecipeHasWineManager();
+models.recipehaswine.setDatabase(pool);
+
 // bonus: use a proxy to personalize error message,
 // when asking for a non existing model
 
