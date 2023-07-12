@@ -1,0 +1,160 @@
+.wineBottle img {
+  width: 600px;
+  height: 800px;
+  margin-left: -150px;
+  margin-top: 80px;
+}
+
+.wineBottle {
+  position: absolute;
+  z-index: 2;
+}
+.pageContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  height: 80vh;
+}
+
+.vertical-slider {
+  height: 525px;
+  width: 178px;
+  border-radius: 60px 60px 20px 20px;
+  z-index: 0;
+  margin-left: 62px;
+  margin-top: 306px;
+}
+.vertical-slider .example-track {
+  left: 20px;
+  width: 10px;
+}
+.example-track.example-track-0 {
+  background: #4a0019;
+  width: 100%;
+  margin-left: -20px;
+  border-radius: 25px 25px;
+}
+.example-track.example-track-1 {
+  background: #50032b;
+  width: 100%;
+  margin-left: -20px;
+  border-radius: 45px 45px 0px 0px;
+}
+.example-track.example-track-2 {
+  background: #981448;
+  width: 100%;
+  margin-left: -20px;
+  border-radius: 60px 60px 0px 0px;
+}
+
+.example-thumb {
+  width: 100px;
+  margin-left: 400px;
+}
+/*
+.vertical-slider{
+  width: 178px;
+  height: 520px;
+  border-radius: 60px 60px 20px 20px;
+  z-index: 10;
+  margin-left: 62px;
+  margin-top: 312px;
+  background-color: green;
+}
+
+.vertical-slider .example-track {
+  top: 20px;
+  height: 10px;
+}
+
+.example-track.example-track-0 {
+  background: blue;
+}
+
+.example-track.example-track-1 {
+  background: red;
+}
+
+.example-track.example-track-2 {
+  background: grey;
+}
+
+.slider {
+  height: 10px;
+  width: 100%;
+  background-color: #ddd;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+/* Styles for the slider thumb */
+.slider .thumb {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background-color: #007bff;
+  cursor: grab;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Styles for the slider active state */
+.slider .thumb.active {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+.tooltip img {
+  width: 50px;
+}
+
+.tooltip {
+  display: inline-block;
+  position: relative;
+  border-bottom: 1px dotted #666;
+  text-align: left;
+}
+
+.tooltip .right {
+  min-width: 200px;
+  top: 50%;
+  left: 100%;
+  margin-left: 20px;
+  transform: translate(0, -50%);
+  padding: 10px 20px;
+  color: #d8b024;
+  background-color: transparent;
+  font-weight: normal;
+  font-size: 13px;
+  border-radius: 8px;
+  position: absolute;
+  z-index: 99999999;
+  box-sizing: border-box;
+  border: 1px solid #d8b024;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+  display: none;
+}
+
+.tooltip:hover .right {
+  display: block;
+}
+
+.tooltip .right i {
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-top: -16px;
+  width: 16px;
+  height: 32px;
+  overflow: hidden;
+}
+
+.tooltip .right i::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  left: 0;
+  top: 50%;
+  transform: translate(50%, -50%) rotate(-45deg);
+  background-color: transparent;
+  border: 1px solid #d8b024;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+}
