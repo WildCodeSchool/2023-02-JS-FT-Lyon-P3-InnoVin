@@ -11,8 +11,7 @@ const validateLogin = (req, res, next) => {
       .min(8, "Le mot de passe doit être de 8 caractères minimum")
       .max(30, "Le mot de passe ne doit pas dépasser 30 caractères")
       .required("Le mot de passe est requis"),
-    sessionName: yup.string().required("Un nom de session est requis"),
-    sessionDate: yup.date().required("Une date de session est requise"),
+    sessionTime: yup.number().required("Une date de session est requise"),
   });
 
   validationSchema

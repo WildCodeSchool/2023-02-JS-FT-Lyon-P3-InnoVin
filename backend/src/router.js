@@ -9,10 +9,6 @@ const { verifyPassword } = require("./services/auth");
 const { getUserByEmailMiddleWare } = require("./controllers/authControllers");
 
 const {
-  getSessionIdByDateMiddleWare,
-} = require("./controllers/sessionControllers");
-
-const {
   getWinesBySessionIdMiddleWare,
 } = require("./controllers/wineControllers");
 
@@ -27,7 +23,6 @@ router.post(
   validateLogin,
   getUserByEmailMiddleWare,
   verifyPassword,
-  getSessionIdByDateMiddleWare,
   getWinesBySessionIdMiddleWare,
   getGrapesBySessionIdMiddleWare
 );
@@ -148,5 +143,22 @@ router.get("/flavours/:id", flavourControllers.read);
 router.put("/flavours/:id", flavourControllers.edit);
 router.post("/flavours", flavourControllers.add);
 router.delete("/flavours/:id", flavourControllers.destroy);
+
+// Recipes
+const recipeControllers = require("./controllers/recipeControllers");
+
+router.get("/recipes", recipeControllers.browse);
+router.get("/recipes/:id", recipeControllers.read);
+router.put("/recipe/:id", recipeControllers.edit);
+router.post("/recipe", recipeControllers.add);
+router.delete("/recipe/:id", recipeControllers.destroy);
+// Recipe has wine
+const recipeHasWineControllers = require("./controllers/recipeHasWineControllers");
+
+router.get("/recipehaswine", recipeHasWineControllers.browse);
+router.get("/recipehaswine/:id", recipeHasWineControllers.read);
+router.put("/recipehaswine/:id", recipeHasWineControllers.edit);
+router.post("/recipehaswine", recipeHasWineControllers.add);
+router.delete("/recipehaswine/:id", recipeHasWineControllers.destroy);
 
 module.exports = router;

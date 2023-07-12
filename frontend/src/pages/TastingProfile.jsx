@@ -44,7 +44,7 @@ export default function TastingProfile() {
       >
         {preferredWines.map((wine) => (
           <GrapeCard
-            key={wine.id}
+            key={wine.wine_id}
             grapename={wine.grapename}
             grapepicture={wine.grapepicture}
             flavour={wine.flavour}

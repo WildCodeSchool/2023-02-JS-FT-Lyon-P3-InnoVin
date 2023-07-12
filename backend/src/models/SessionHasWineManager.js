@@ -2,7 +2,7 @@ const AbstractManager = require("./AbstractManager");
 
 class SessionHasWineManager extends AbstractManager {
   constructor() {
-    super({ table: "Session_has_Wine" });
+    super({ table: "session_has_wine" });
   }
 
   // Override

@@ -14,7 +14,6 @@ export default function Tasting() {
       width: "75%",
       borderRadius: 2,
       fontFamily: "EB Garamond",
-      // margin: "auto",
       "&.Mui-disabled": {
         background: "#FFFDCC",
         color: "grey",
