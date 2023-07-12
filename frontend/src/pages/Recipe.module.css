@@ -5,8 +5,31 @@
   margin-top: 80px;
 }
 
+.pageContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.verticalSlider {
+  width: 50px;
+  height: 40vh;
+  background-color: red;
+}
+.verticalSlider .exampleTrack {
+  top: 20px;
+  height: 10px;
+}
+.exampleTrack .example-thumb example-thumb-1 {
+  background-color: blue;
+}
 .tooltip img {
   width: 50px;
+}
+.wineSliders {
+  height: 40vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
 .tooltip {

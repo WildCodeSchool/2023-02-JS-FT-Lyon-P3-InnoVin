@@ -1,38 +1,16 @@
 import { Box, Typography } from "@mui/material";
 import React, { useState } from "react";
+import ReactSlider from "react-slider";
 import logo from "../assets/logo.svg";
 import styles from "./Recipe.module.css";
 import winebottle from "../assets/winebottle.svg";
 
 export default function Recipe() {
-  const [wine1, setWine1] = useState(0);
-  const [wine2, setWine2] = useState(0);
-  const [wine3, setWine3] = useState(0);
+  const [valueWine, setValueWine] = useState([50, 100]);
 
-  const handleChangeWine1 = (event) => {
-    const wineValue = parseInt(event.target.value, 10);
-    const total = wineValue + wine2 + wine3;
-    if (total <= 250) {
-      setWine1(wineValue);
-    }
-  };
-
-  const handleChangeWine2 = (event) => {
-    const wineValue = parseInt(event.target.value, 10);
-    const total = wine1 + wineValue + wine3;
-    if (total <= 250) {
-      setWine2(wineValue);
-    }
-  };
-
-  const handleChangeWine3 = (event) => {
-    const wineValue = parseInt(event.target.value, 10);
-    const total = wine1 + wine2 + wineValue;
-    if (total <= 250) {
-      setWine3(wineValue);
-    }
-  };
-
+  const totalWine3 = valueWine[0] - 0;
+  const totalWine2 = valueWine[1] - valueWine[0];
+  const totalWine1 = 250 - valueWine[1];
   return (
     <>
       <Box flexDirection="row" display="flex" marginBottom="2rem">
@@ -66,55 +44,29 @@ export default function Recipe() {
           Veuillez rentrer les dosages{" "}
         </Typography>
       </Box>
-      <img className={styles.wineBottle} src={winebottle} alt="winebottle" />
-      <div className={styles.wineSliders}>
-        <div className={styles.sliderContainer}>
-          {" "}
-          <p>Wine 1</p>
-          <div className={styles.inputContainer}>
-            <input
-              type="range"
-              min="0"
-              max="250"
-              value={wine1}
-              onChange={handleChangeWine1}
-              className="slider-horizontal"
-            />
-          </div>
-          <div>{wine1} ml</div>
-        </div>
+      <div className={styles.pageContainer}>
+        <img className={styles.wineBottle} src={winebottle} alt="winebottle" />
 
-        <div className={styles.sliderContainer}>
-          <p>Wine 2</p>
+        <ReactSlider
+          className={styles.verticalSlider}
+          thumbClassName="example-thumb"
+          trackClassName={styles.exampleTrack}
+          defaultValue={[50, 100]}
+          max={250}
+          min={0}
+          ariaLabel={["Lowest thumb", "Middle thumb", "Top thumb"]}
+          /* eslint-disable-next-line react/jsx-props-no-spreading */
+          renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
+          orientation="vertical"
+          invert
+          pearling
+          minDistance={10}
+          onChange={(value) => setValueWine(value)}
+        />
 
-          <div className={styles.inputContainer}>
-            <input
-              type="range"
-              min="0"
-              max="250"
-              value={wine2}
-              onChange={handleChangeWine2}
-              className="slider-horizontal"
-            />
-          </div>
-          <div>{wine2} ml</div>
-        </div>
-
-        <div className={styles.sliderContainer}>
-          <p>Wine 3</p>
-
-          <div className={styles.inputContainer}>
-            <input
-              type="range"
-              min="0"
-              max="250"
-              value={wine3}
-              onChange={handleChangeWine3}
-              className="slider-horizontal"
-            />
-          </div>
-          <div>{wine3} ml</div>
-        </div>
+        <p>Vin 1 : {totalWine1}</p>
+        <p>Vin 2 : {totalWine2}</p>
+        <p>Vin 3 : {totalWine3}</p>
       </div>
     </>
   );
