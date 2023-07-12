@@ -85,27 +85,6 @@ const destroy = (req, res) => {
     });
 };
 
-// const getSessionIdByDateMiddleWare = (req, res, next) => {
-//   // We just wanna check if session exist with this date
-//   const { sessionDate } = req.body;
-//   models.session
-//     .findSessionIdByDate(sessionDate)
-//     .then(([sessions]) => {
-//       if (sessions[0]) {
-//         // if session exist, push it to req.session so we can access like req.user.id, req.user.firstname, etc
-//         [req.session] = sessions;
-//         next();
-//       } else {
-//         // If session with this date doesnt exist
-//         res.status(465).send("Aucune session n'est prévue pour cette date");
-//       }
-//     })
-//     .catch((error) => {
-//       console.error(error);
-//       res.sendStatus(500);
-//     });
-// };
-
 module.exports = {
   browse,
   read,

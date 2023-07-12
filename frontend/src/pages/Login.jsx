@@ -53,7 +53,6 @@ export default function Login() {
       .min(8, "Le mot de passe doit être de 8 caractères minimum")
       .max(30, "Le mot de passe ne doit pas dépasser 30 caractères")
       .required("Le mot de passe est requis"),
-    sessionTime: yup.number().required("Merci de choisir une session"),
   });
 
   const { login } = useUserContext();
@@ -128,11 +127,6 @@ export default function Login() {
     }
     if (formik.errors.password) {
       toast.error(`${formik.errors.password}`, {
-        position: toast.POSITION.TOP_CENTER,
-      });
-    }
-    if (formik.errors.sessionTime) {
-      toast.error(`${formik.errors.sessionTime}`, {
         position: toast.POSITION.TOP_CENTER,
       });
     }
@@ -221,7 +215,6 @@ export default function Login() {
               sx={style.formlabels}
             />
             <Select
-              // className={styles.select}
               label="sessionTime_id"
               name="sessionTime"
               sx={{
@@ -237,11 +230,7 @@ export default function Login() {
               onChange={formik.handleChange}
             >
               {sessions?.map((session) => (
-                <MenuItem
-                  // className={styles.option}
-                  key={session.id}
-                  value={session.id}
-                >
+                <MenuItem key={session.id} value={session.id}>
                   {session.date}, {session.time}
                 </MenuItem>
               ))}
