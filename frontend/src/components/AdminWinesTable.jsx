@@ -6,6 +6,8 @@ import {
   GridRowModes,
 } from "@mui/x-data-grid";
 import { Cancel, Delete, Edit, Save } from "@mui/icons-material";
+import { Box } from "@mui/system";
+import { Button } from "@mui/material";
 import { useAdminContext } from "../contexts/AdminContext";
 // --- Services ---
 import WineService from "../services/WineService";
@@ -16,9 +18,11 @@ import FlavourService from "../services/FlavourService";
 import DomainService from "../services/DomainService";
 import RegionService from "../services/RegionService";
 import CountryService from "../services/CountryService";
+import SearchBar from "./SearchBar";
 
 export default function AdminWinesTable() {
   const {
+    query,
     winesData,
     setWinesData,
     grapesData,
@@ -66,13 +70,6 @@ export default function AdminWinesTable() {
     fetch();
   }, []);
 
-  // // --- Personnalisation du header des colonnes ---
-  // const StripedWinesDataGrid = styled(DataGrid)(({ theme }) => ({
-  //   [`& .${gridClasses.row}.odd`]: {
-  //     backgroundColor: theme.palette.secondary.light,
-  //   },
-  // }));
-
   // --- Déclaration des valeurs des selects ---
   const grapeSelect = grapesData.map((grape) => ({
     value: grape.id,
@@ -103,32 +100,72 @@ export default function AdminWinesTable() {
     label: country.name,
   }));
 
-  // --- Gestion de l'édition des champs ---
-  const handleEditClick = (id) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
-  };
-
-  const handleSaveClick = (id) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-  };
-
+  // --- Gestion de la suppression ---
   const handleDeleteClick = (id) => async () => {
     try {
       await WineService.deleteWine(id);
+      // Met le state winesData à jour en retirant le vin correspondant à l'id supprimé
       setWinesData(winesData.filter((wine) => wine.id !== id));
     } catch (err) {
       console.error("Deletion failed :", err);
     }
   };
 
+  // --- Gestion de l'ajout ---
+  const handleAddClick = () => {
+    // Génère un id temporaire en string le temps d'insérer les nouvelles données
+    const id = `new${winesData[winesData.length - 1].id + 1}`;
+    // Crée un nouvel objet dans le state winesData pour stocker les nouvelles données
+    setWinesData((wines) => [
+      ...wines,
+      {
+        id,
+        name: "",
+        country_id: "",
+        region_id: "",
+        domain_id: "",
+        type_id: "",
+        grape_variety_id: "",
+        vintage: "",
+        aroma_id: "",
+        flavour_id: "",
+        isNew: true,
+      },
+    ]);
+    // Passe la nouvelle ligne en mode édition
+    setRowModesModel((oldModel) => ({
+      ...oldModel,
+      [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
+    }));
+  };
+
+  // --- Gestion de l'édition ---
+  const handleEditClick = (id) => () => {
+    // Passe la ligne en mode édition
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+  };
+
+  const handleSaveClick = (id) => () => {
+    // Remet la ligne en mode "view" et déclenche le processRowUpdate
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+  };
+
   const handleCancelClick = (id) => () => {
+    // Si on cancel un ajout, ça le vire du state car il n'a pas encore été entré dans la DB
+    if (typeof id === "string") {
+      setWinesData(winesData.filter((wine) => wine.id !== id));
+      return;
+    }
+    // Sinon, remet la ligne en mode "view" et ignore les éventuelles modifs
     setRowModesModel({
       ...rowModesModel,
       [id]: { mode: GridRowModes.View, ignoreModifications: true },
     });
   };
 
+  // --- Gestion de l'update des données ---
   const handleRowModesModelChange = (newRowModesModel) => {
+    // S'occupe de mettre à jour les modes des lignes lorsqu'elles changent entre "view" et "edit"
     setRowModesModel(newRowModesModel);
   };
 
@@ -140,11 +177,16 @@ export default function AdminWinesTable() {
 
   const processRowUpdate = useCallback(async (newRow) => {
     try {
+      if (typeof newRow.id === "string") {
+        // Si c'est un ajout, l'id est une string et on utilise cette particularité pour déclencher un insert au lieu d'un update
+        await WineService.addWine(newRow);
+        return newRow;
+      }
       await WineService.updateWine(newRow);
+      return newRow;
     } catch (err) {
-      console.error("Update failed");
+      return console.error("Update failed");
     }
-    return newRow;
   });
 
   const onProcessRowUpdateError = (error) => {
@@ -157,7 +199,7 @@ export default function AdminWinesTable() {
       field: "name",
       headerClassName: "super-app-theme--header",
       headerName: "Vin",
-      width: 150,
+      width: 250,
       editable: true,
     },
     {
@@ -280,17 +322,44 @@ export default function AdminWinesTable() {
     },
   ];
 
+  // --- Filtre pour la recherche ---
+  const winesDataFiltered = winesData.filter((wine) =>
+    wine.name.toLowerCase().includes(query.toLowerCase())
+  );
+
   return (
-    <DataGrid
-      rows={winesData}
-      columns={columnsWines}
-      editMode="row"
-      rowModesModel={rowModesModel}
-      onRowModesModelChange={handleRowModesModelChange}
-      onRowEditStop={handleRowEditStop}
-      processRowUpdate={processRowUpdate}
-      onProcessRowUpdateError={onProcessRowUpdateError}
-      sx={{ backgroundColor: "text.primary", color: "background.default" }}
-    />
+    <>
+      <Box
+        sx={{
+          width: 1,
+          maxWidth: "900px",
+          height: 0.1,
+          display: "flex",
+          justifyContent: "space-evenly",
+          alignItems: "center",
+          marginBlock: "5vh",
+        }}
+      >
+        <SearchBar />
+        <Button
+          variant="contained"
+          sx={{ width: 0.2, minWidth: 80 }}
+          onClick={handleAddClick}
+        >
+          Ajouter
+        </Button>
+      </Box>
+      <DataGrid
+        rows={!query ? winesData : winesDataFiltered}
+        columns={columnsWines}
+        editMode="row"
+        rowModesModel={rowModesModel}
+        onRowModesModelChange={handleRowModesModelChange}
+        onRowEditStop={handleRowEditStop}
+        processRowUpdate={processRowUpdate}
+        onProcessRowUpdateError={onProcessRowUpdateError}
+        sx={{ backgroundColor: "text.primary", color: "background.default" }}
+      />
+    </>
   );
 }
