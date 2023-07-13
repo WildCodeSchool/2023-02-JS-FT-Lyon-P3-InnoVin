@@ -8,6 +8,7 @@ import {
 import { Cancel, Delete, Edit, Save } from "@mui/icons-material";
 import { Box } from "@mui/system";
 import { Button } from "@mui/material";
+import { ToastContainer, toast } from "react-toastify";
 import { useAdminContext } from "../contexts/AdminContext";
 // --- Services ---
 import WineService from "../services/WineService";
@@ -48,7 +49,7 @@ export default function AdminWinesTable() {
     async function fetch() {
       try {
         const wine = await WineService.getWines();
-        setWinesData(wine.data);
+        setWinesData(wine.data.reverse());
         const grape = await GrapeService.getGrapes();
         setGrapesData(grape.data);
         const type = await TypeService.getTypes();
@@ -69,6 +70,15 @@ export default function AdminWinesTable() {
     }
     fetch();
   }, []);
+
+  const winesDataUpdate = async () => {
+    try {
+      const wine = await WineService.getWines();
+      setWinesData(wine.data.reverse());
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   // --- Déclaration des valeurs des selects ---
   const grapeSelect = grapesData.map((grape) => ({
@@ -103,9 +113,22 @@ export default function AdminWinesTable() {
   // --- Gestion de la suppression ---
   const handleDeleteClick = (id) => async () => {
     try {
+      // Va chercher le vin supprimé pour le toast
+      const deletedWine = winesData.filter((wine) => wine.id === id);
+      // Supprime le vin de la BDD
       await WineService.deleteWine(id);
-      // Met le state winesData à jour en retirant le vin correspondant à l'id supprimé
-      setWinesData(winesData.filter((wine) => wine.id !== id));
+      // Met le state winesData à jour après la suppression
+      winesDataUpdate();
+      toast.success(`${deletedWine[0].name} a été supprimé`, {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     } catch (err) {
       console.error("Deletion failed :", err);
     }
@@ -117,7 +140,6 @@ export default function AdminWinesTable() {
     const id = `new${winesData[winesData.length - 1].id + 1}`;
     // Crée un nouvel objet dans le state winesData pour stocker les nouvelles données
     setWinesData((wines) => [
-      ...wines,
       {
         id,
         name: "",
@@ -131,6 +153,7 @@ export default function AdminWinesTable() {
         flavour_id: "",
         isNew: true,
       },
+      ...wines,
     ]);
     // Passe la nouvelle ligne en mode édition
     setRowModesModel((oldModel) => ({
@@ -180,9 +203,31 @@ export default function AdminWinesTable() {
       if (typeof newRow.id === "string") {
         // Si c'est un ajout, l'id est une string et on utilise cette particularité pour déclencher un insert au lieu d'un update
         await WineService.addWine(newRow);
+        winesDataUpdate();
+        // setWinesData(winesData.filter((wine) => wine.id !== newRow.id));
+        toast.success(`${newRow.name} a bien été enregistré`, {
+          position: "bottom-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         return newRow;
       }
       await WineService.updateWine(newRow);
+      toast.success(`${newRow.name} a bien été mis à jour`, {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       return newRow;
     } catch (err) {
       return console.error("Update failed");
@@ -358,8 +403,13 @@ export default function AdminWinesTable() {
         onRowEditStop={handleRowEditStop}
         processRowUpdate={processRowUpdate}
         onProcessRowUpdateError={onProcessRowUpdateError}
-        sx={{ backgroundColor: "text.primary", color: "background.default" }}
+        hideFooter
+        sx={{
+          backgroundColor: "text.primary",
+          color: "background.default",
+        }}
       />
+      <ToastContainer />
     </>
   );
 }
