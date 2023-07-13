@@ -14,7 +14,6 @@ export default function Tasting() {
       width: "75%",
       borderRadius: 2,
       fontFamily: "EB Garamond",
-      // margin: "auto",
       "&.Mui-disabled": {
         background: "#FFFDCC",
         color: "grey",
@@ -141,13 +140,7 @@ export default function Tasting() {
               Vin 3{" "}
             </Button>
           </Grid>
-          <Grid
-            item
-            xs={6}
-            sx={
-              style.griditem
-            } /* sx={{ display: "flex", justifyContent: "center" }} */
-          >
+          <Grid item xs={6} sx={style.griditem}>
             <Button
               onClick={handleClickWine}
               disabled={userWines[3].isRated}

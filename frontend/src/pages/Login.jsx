@@ -1,4 +1,4 @@
-import { React } from "react";
+import { React, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Typography,
@@ -6,36 +6,40 @@ import {
   Button,
   FormLabel,
   InputLabel,
-  MenuItem,
   InputBase,
   Select,
+  MenuItem,
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { toast } from "react-toastify";
 import { useSessionContext } from "../contexts/SessionContext";
 import { useUserContext } from "../contexts/UserContext";
+import SessionService from "../services/SessionService";
 import APIService from "../services/APIService";
 import "react-toastify/dist/ReactToastify.css";
 import logo from "../assets/logo.svg";
 import styles from "./Login.module.css";
 
 export default function Login() {
+  const [sessions, setSessions] = useState();
+
   const style = {
     formlabels: {
       textAlign: "left",
       color: "secondary.main",
       fontSize: "1em",
       width: "75vw",
+      fontFamily: "EB Garamond",
     },
     textfields: {
       backgroundColor: "#FFFDCC",
       height: "5vh",
       borderRadius: "5px",
-      marginBottom: "2vh",
+      marginBottom: "2rem",
       fontSize: "1.5rem",
       color: "black",
-      paddingLeft: "0.5em",
+      paddingLeft: "0.5rem",
     },
   };
 
@@ -49,8 +53,6 @@ export default function Login() {
       .min(8, "Le mot de passe doit être de 8 caractères minimum")
       .max(30, "Le mot de passe ne doit pas dépasser 30 caractères")
       .required("Le mot de passe est requis"),
-    sessionName: yup.string().required("Un nom de session est requis"),
-    sessionDate: yup.date().required("Une date de session est requise"),
   });
 
   const { login } = useUserContext();
@@ -62,8 +64,7 @@ export default function Login() {
     initialValues: {
       email: "",
       password: "",
-      sessionName: "",
-      sessionDate: "",
+      sessionTime: "",
     },
     validationSchema,
 
@@ -104,10 +105,6 @@ export default function Login() {
             toast.error("Email et/ou mot de passe incorrect(s)", {
               position: toast.POSITION.TOP_CENTER,
             });
-          } else if (error.response?.status === 465) {
-            toast.error("Aucune session n'est prévue pour cette date", {
-              position: toast.POSITION.TOP_CENTER,
-            });
           } else {
             toast.error("Veuillez réessayer plus tard", {
               position: toast.POSITION.TOP_CENTER,
@@ -116,7 +113,12 @@ export default function Login() {
         });
     },
   });
-
+  useEffect(() => {
+    SessionService.getSessions().then((result) => {
+      setSessions(result.data);
+      if (result.data.length) formik.values.sessionTime = result.data[0].id;
+    });
+  }, []);
   const handleClick = () => {
     if (formik.errors.email) {
       toast.error(`${formik.errors.email}`, {
@@ -125,16 +127,6 @@ export default function Login() {
     }
     if (formik.errors.password) {
       toast.error(`${formik.errors.password}`, {
-        position: toast.POSITION.TOP_CENTER,
-      });
-    }
-    if (formik.errors.sessionName) {
-      toast.error(`${formik.errors.sessionName}`, {
-        position: toast.POSITION.TOP_CENTER,
-      });
-    }
-    if (formik.errors.sessionDate) {
-      toast.error(`${formik.errors.sessionDate}`, {
         position: toast.POSITION.TOP_CENTER,
       });
     }
@@ -200,17 +192,9 @@ export default function Login() {
             />
           </Box>
           <Typography
-            variant="h4"
-            sx={{ textDecoration: "underline", mt: "0.5em" }}
-            color="#C42727"
-          >
-            J'ai oublié mon mot de passe
-          </Typography>
-          <Typography
             variant="h3"
             sx={{
-              p: 3,
-              mt: 2,
+              mt: "4rem",
               color: "secondary.main",
               fontSize: "calc(2.5rem + 1vmin)",
             }}
@@ -223,54 +207,48 @@ export default function Login() {
             alignSelf="center"
             display="flex"
             flexDirection="column"
+            marginTop="2rem"
           >
-            <InputLabel id="sessionName_id" sx={style.formlabels}>
-              {" "}
-              Nom{" "}
-            </InputLabel>
+            <InputLabel
+              id="sessionTime_id"
+              name="sessionTime"
+              sx={style.formlabels}
+            />
             <Select
-              labelId="sessionName_id"
-              name="sessionName"
-              value={formik.values.sessionName}
-              onChange={formik.handleChange}
-              select
+              label="sessionTime_id"
+              name="sessionTime"
               sx={{
                 backgroundColor: "#FFFDCC",
                 fontSize: "1.5rem",
                 height: "5vh",
-                marginBottom: "1.5vh",
+                marginBottom: "5rem",
                 color: "black",
+                width: "100%",
+                fontFamily: "Gill sans",
               }}
-            >
-              <MenuItem value=""> Sélectionnez le nom </MenuItem>
-              <MenuItem value="choix 1"> choix 1 </MenuItem>
-              <MenuItem value="choix 2"> choix 2 </MenuItem>
-              <MenuItem value="choix 3"> choix 3 </MenuItem>
-            </Select>
-            <FormLabel htmlFor="sessionDate_id" sx={style.formlabels}>
-              {" "}
-              Date{" "}
-            </FormLabel>
-            <InputBase
-              id="sessionDate_id"
-              type="date"
-              name="sessionDate"
-              value={formik.values.sessionDate}
+              value={formik.values.sessionTime}
               onChange={formik.handleChange}
-              sx={style.textfields}
-            />
+            >
+              {sessions?.map((session) => (
+                <MenuItem key={session.id} value={session.id}>
+                  {session.date}, {session.time}
+                </MenuItem>
+              ))}
+            </Select>
           </Box>
-          <Button
-            color="error"
-            variant="contained"
-            sx={{ mt: 12, width: "30vw", height: "5vh" }}
-            type="submit"
-            onClick={handleClick}
-          >
-            <Typography variant="button" fontSize={24}>
-              Valider
-            </Typography>
-          </Button>
+          <div className={styles.validateButton}>
+            <Button
+              color="error"
+              variant="contained"
+              sx={{ mb: "3rem", width: "30vw", height: "5vh" }}
+              type="submit"
+              onClick={handleClick}
+            >
+              <Typography variant="button" fontSize={24}>
+                Valider
+              </Typography>
+            </Button>
+          </div>
         </Box>
       </form>
     </div>

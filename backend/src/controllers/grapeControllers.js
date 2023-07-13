@@ -86,7 +86,7 @@ const destroy = (req, res) => {
 };
 const getGrapesBySessionIdMiddleWare = (req, res) => {
   models.grape
-    .findGrapesBySessionId(req.session.id)
+    .findGrapesBySessionId(req.body.sessionTime)
     .then((grapes) => {
       if (grapes[0]) {
         [req.session.grapes] = grapes;
