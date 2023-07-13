@@ -171,24 +171,24 @@ ENGINE = InnoDB;
 
 INSERT INTO grape_variety (name, picture) 
 VALUES 
-("Cabernet Sauvignon", "https://upload.wikimedia.org/wikipedia/commons/a/a7/Lithographie_de_Cabernet_Sauvignon.jpg?uselang=fr"),
-("Gamay", "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Gamay_Fr%C3%A9aux_-_Amp%C3%A9lographie.jpg/640px-Gamay_Fr%C3%A9aux_-_Amp%C3%A9lographie.jpg"),
-("Pinot Noir", "https://upload.wikimedia.org/wikipedia/commons/1/12/Lithographie_du_Pinot_noir.jpg?uselang=fr"),
-("Merlot", "https://upload.wikimedia.org/wikipedia/commons/2/26/Merlot_-_Ampl%C3%A9lographie.jpg?uselang=fr"),
-("Négrette", "https://upload.wikimedia.org/wikipedia/commons/d/d6/N%C3%A9grette_-_Amp%C3%A9lographie.jpg?uselang=fr"),
-("Syrah", "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Syrah_-_Amp%C3%A9lographie.jpg/640px-Syrah_-_Amp%C3%A9lographie.jpg"),
-("Chardonnay", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Pinot_blanc_Chardonnay_-_Amp%C3%A9lographie.jpg/600px-Pinot_blanc_Chardonnay_-_Amp%C3%A9lographie.jpg?20191120131539"),
-("Chenin", "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Chenin_blanc_-_Amp%C3%A9lographie.jpg/605px-Chenin_blanc_-_Amp%C3%A9lographie.jpg?20191120151219"),
-("Sauvignon", "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Sauvignon_-_Amp%C3%A9lographie.jpg/605px-Sauvignon_-_Amp%C3%A9lographie.jpg?20191120173240"), 
-("Grenache", "https://upload.wikimedia.org/wikipedia/commons/b/bd/Grenache_N.jpg?uselang=fr"),
-("Riesling", "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Riesling_-_Amp%C3%A9lographie.jpg/605px-Riesling_-_Amp%C3%A9lographie.jpg?20191120145753"),
-("Aligoté", "https://upload.wikimedia.org/wikipedia/commons/b/b3/Aligot%C3%A9_Viala_Vermorel.jpg"),
-("Chasselas", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Chasselas_dor%C3%A9_-_Amp%C3%A9lographie.jpg/605px-Chasselas_dor%C3%A9_-_Amp%C3%A9lographie.jpg?20191120183439"), 
-("Muscadelle", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Muscadelle_-_Amp%C3%A9lographie.jpg/605px-Muscadelle_-_Amp%C3%A9lographie.jpg?20191125103251"),
-("Mourvèdre", "https://upload.wikimedia.org/wikipedia/commons/0/08/Mourv%C3%A8dre_-_Amp%C3%A9lographie.jpg?uselang=fr"), 
-("Cinsault", "https://upload.wikimedia.org/wikipedia/commons/8/8a/Cinsaut_-_Amp%C3%A9lographie.jpg"), 
-("Sangiovese", "https://upload.wikimedia.org/wikipedia/commons/c/cb/Nieluccio_-_Amp%C3%A9lographie.png"), 
-("Malbec", "https://upload.wikimedia.org/wikipedia/commons/a/a5/C%C3%B4t_-_Amp%C3%A9lographie.jpg"); 
+("Cabernet Sauvignon", "https://i.goopics.net/2avy00.png"),
+("Gamay", "https://i.goopics.net/e633oh.png"),
+("Pinot Noir", "https://i.goopics.net/pzyf6k.jpg"),
+("Merlot", "https://i.goopics.net/8b3ruk.png"),
+("Négrette", "https://i.goopics.net/kemfxb.png"),
+("Syrah", "https://i.goopics.net/ltkeci.png"),
+("Chardonnay", "https://i.goopics.net/hdadve.png"),
+("Chenin", "https://i.goopics.net/su717j.png"),
+("Sauvignon", "https://i.goopics.net/6nqsrs.png"), 
+("Grenache", "https://i.goopics.net/cbl6ny.png"),
+("Riesling", "https://i.goopics.net/3lfdpx.png"),
+("Aligoté", "https://i.goopics.net/93z37d.png"),
+("Chasselas", "https://i.goopics.net/9yppkj.png"), 
+("Muscadelle", "https://i.goopics.net/tczok4.png"),
+("Mourvèdre", "https://i.goopics.net/oa7pmt.png"), 
+("Cinsault", "https://i.goopics.net/rbosaf.png"), 
+("Sangiovese", "https://i.goopics.net/lear5e.png"), 
+("Malbec", "https://i.goopics.net/qhs467.png"); 
 
 -- -----------------------------------------------------
 -- Table `wine`
@@ -430,7 +430,7 @@ ENGINE = InnoDB;
  (1, 43), 
  (2, 20), 
  (2, 22), 
- (2, 3), 
+ (2, 10), 
  (2, 44), 
  (3, 4), 
  (3, 22), 
