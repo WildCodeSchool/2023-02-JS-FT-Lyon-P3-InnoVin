@@ -1,6 +1,14 @@
-import { useEffect } from "react";
-import { DataGrid, gridClasses } from "@mui/x-data-grid";
-import { styled } from "@mui/material/styles";
+import { useCallback, useEffect, useState } from "react";
+import {
+  DataGrid,
+  GridActionsCellItem,
+  GridRowEditStopReasons,
+  GridRowModes,
+} from "@mui/x-data-grid";
+import { Cancel, Delete, Edit, Save } from "@mui/icons-material";
+import { Box } from "@mui/system";
+import { Button } from "@mui/material";
+import { ToastContainer, toast } from "react-toastify";
 import { useAdminContext } from "../contexts/AdminContext";
 // --- Services ---
 import WineService from "../services/WineService";
@@ -11,9 +19,11 @@ import FlavourService from "../services/FlavourService";
 import DomainService from "../services/DomainService";
 import RegionService from "../services/RegionService";
 import CountryService from "../services/CountryService";
+import SearchBar from "./SearchBar";
 
 export default function AdminWinesTable() {
   const {
+    query,
     winesData,
     setWinesData,
     grapesData,
@@ -32,12 +42,14 @@ export default function AdminWinesTable() {
     setCountriesData,
   } = useAdminContext();
 
+  const [rowModesModel, setRowModesModel] = useState({});
+
   // --- Fetch des données au montage du composant ---
   useEffect(() => {
     async function fetch() {
       try {
         const wine = await WineService.getWines();
-        setWinesData(wine.data);
+        setWinesData(wine.data.reverse());
         const grape = await GrapeService.getGrapes();
         setGrapesData(grape.data);
         const type = await TypeService.getTypes();
@@ -59,14 +71,16 @@ export default function AdminWinesTable() {
     fetch();
   }, []);
 
-  // --- Personnalisation du header des colonnes ---
-  const StripedWinesDataGrid = styled(DataGrid)(({ theme }) => ({
-    [`& .${gridClasses.row}.odd`]: {
-      backgroundColor: theme.palette.secondary.light,
-    },
-  }));
+  const winesDataUpdate = async () => {
+    try {
+      const wine = await WineService.getWines();
+      setWinesData(wine.data.reverse());
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  // --- Déclaration des selects ---
+  // --- Déclaration des valeurs des selects ---
   const grapeSelect = grapesData.map((grape) => ({
     value: grape.id,
     label: grape.name,
@@ -96,17 +110,145 @@ export default function AdminWinesTable() {
     label: country.name,
   }));
 
+  // --- Gestion de la suppression ---
+  const handleDeleteClick = (id) => async () => {
+    try {
+      // Va chercher le vin supprimé pour le toast
+      const deletedWine = winesData.filter((wine) => wine.id === id);
+      // Supprime le vin de la BDD
+      await WineService.deleteWine(id);
+      // Met le state winesData à jour après la suppression
+      winesDataUpdate();
+      toast.success(`${deletedWine[0].name} a été supprimé`, {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (err) {
+      console.error("Deletion failed :", err);
+    }
+  };
+
+  // --- Gestion de l'ajout ---
+  const handleAddClick = () => {
+    // Génère un id temporaire en string le temps d'insérer les nouvelles données
+    const id = `new${winesData[winesData.length - 1].id + 1}`;
+    // Crée un nouvel objet dans le state winesData pour stocker les nouvelles données
+    setWinesData((wines) => [
+      {
+        id,
+        name: "",
+        country_id: "",
+        region_id: "",
+        domain_id: "",
+        type_id: "",
+        grape_variety_id: "",
+        vintage: "",
+        aroma_id: "",
+        flavour_id: "",
+        isNew: true,
+      },
+      ...wines,
+    ]);
+    // Passe la nouvelle ligne en mode édition
+    setRowModesModel((oldModel) => ({
+      ...oldModel,
+      [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
+    }));
+  };
+
+  // --- Gestion de l'édition ---
+  const handleEditClick = (id) => () => {
+    // Passe la ligne en mode édition
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+  };
+
+  const handleSaveClick = (id) => () => {
+    // Remet la ligne en mode "view" et déclenche le processRowUpdate
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+  };
+
+  const handleCancelClick = (id) => () => {
+    // Si on cancel un ajout, ça le vire du state car il n'a pas encore été entré dans la DB
+    if (typeof id === "string") {
+      setWinesData(winesData.filter((wine) => wine.id !== id));
+      return;
+    }
+    // Sinon, remet la ligne en mode "view" et ignore les éventuelles modifs
+    setRowModesModel({
+      ...rowModesModel,
+      [id]: { mode: GridRowModes.View, ignoreModifications: true },
+    });
+  };
+
+  // --- Gestion de l'update des données ---
+  const handleRowModesModelChange = (newRowModesModel) => {
+    // S'occupe de mettre à jour les modes des lignes lorsqu'elles changent entre "view" et "edit"
+    setRowModesModel(newRowModesModel);
+  };
+
+  const handleRowEditStop = (params, e) => {
+    if (params.reason === GridRowEditStopReasons.rowFocusOut) {
+      e.defaultMuiPrevented = true;
+    }
+  };
+
+  const processRowUpdate = useCallback(async (newRow) => {
+    try {
+      if (typeof newRow.id === "string") {
+        // Si c'est un ajout, l'id est une string et on utilise cette particularité pour déclencher un insert au lieu d'un update
+        await WineService.addWine(newRow);
+        winesDataUpdate();
+        // setWinesData(winesData.filter((wine) => wine.id !== newRow.id));
+        toast.success(`${newRow.name} a bien été enregistré`, {
+          position: "bottom-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        return newRow;
+      }
+      await WineService.updateWine(newRow);
+      toast.success(`${newRow.name} a bien été mis à jour`, {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return newRow;
+    } catch (err) {
+      return console.error("Update failed");
+    }
+  });
+
+  const onProcessRowUpdateError = (error) => {
+    console.error(error);
+  };
+
   // --- Définition des colonnes ---
   const columnsWines = [
     {
-      field: "wine",
+      field: "name",
       headerClassName: "super-app-theme--header",
       headerName: "Vin",
-      width: 150,
+      width: 250,
       editable: true,
     },
     {
-      field: "country",
+      field: "country_id",
       headerClassName: "super-app-theme--header",
       type: "singleSelect",
       valueOptions: countrySelect,
@@ -115,7 +257,7 @@ export default function AdminWinesTable() {
       editable: true,
     },
     {
-      field: "region",
+      field: "region_id",
       headerClassName: "super-app-theme--header",
       headerName: "Région",
       type: "singleSelect",
@@ -124,7 +266,7 @@ export default function AdminWinesTable() {
       editable: true,
     },
     {
-      field: "domain",
+      field: "domain_id",
       headerClassName: "super-app-theme--header",
       headerName: "Domaine",
       type: "singleSelect",
@@ -133,7 +275,7 @@ export default function AdminWinesTable() {
       editable: true,
     },
     {
-      field: "type",
+      field: "type_id",
       headerClassName: "super-app-theme--header",
       headerName: "Type",
       type: "singleSelect",
@@ -142,7 +284,7 @@ export default function AdminWinesTable() {
       editable: true,
     },
     {
-      field: "grape_variety",
+      field: "grape_variety_id",
       headerClassName: "super-app-theme--header",
       headerName: "Cépage",
       type: "singleSelect",
@@ -158,7 +300,7 @@ export default function AdminWinesTable() {
       editable: true,
     },
     {
-      field: "aroma",
+      field: "aroma_id",
       headerClassName: "super-app-theme--header",
       headerName: "Arôme",
       type: "singleSelect",
@@ -167,7 +309,7 @@ export default function AdminWinesTable() {
       editable: true,
     },
     {
-      field: "flavour",
+      field: "flavour_id",
       headerClassName: "super-app-theme--header",
       headerName: "Saveur",
       type: "singleSelect",
@@ -175,28 +317,99 @@ export default function AdminWinesTable() {
       width: 150,
       editable: true,
     },
+    {
+      field: "actions",
+      headerClassName: "super-app-theme--header",
+      headerName: "Actions",
+      type: "actions",
+      width: 150,
+      getActions: ({ id }) => {
+        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+
+        if (isInEditMode) {
+          return [
+            <GridActionsCellItem
+              icon={<Save />}
+              label="Save"
+              onClick={handleSaveClick(id)}
+              sx={{
+                color: "secondary.main",
+              }}
+            />,
+            <GridActionsCellItem
+              icon={<Cancel />}
+              label="Cancel"
+              onClick={handleCancelClick(id)}
+              sx={{
+                color: "primary.main",
+              }}
+            />,
+          ];
+        }
+
+        return [
+          <GridActionsCellItem
+            icon={<Edit />}
+            label="Edit"
+            onClick={handleEditClick(id)}
+            color="inherit"
+          />,
+          <GridActionsCellItem
+            icon={<Delete />}
+            label="Delete"
+            sx={{
+              color: "primary.main",
+            }}
+            onClick={handleDeleteClick(id)}
+          />,
+        ];
+      },
+    },
   ];
 
-  // --- Gestion de l'édition des champs ---
-  const processRowUpdate = (newRow, oldRow) => {
-    console.info(newRow, oldRow);
-  };
-
-  const onProcessRowUpdateError = (error) => {
-    console.error(error);
-  };
+  // --- Filtre pour la recherche ---
+  const winesDataFiltered = winesData.filter((wine) =>
+    wine.name.toLowerCase().includes(query.toLowerCase())
+  );
 
   return (
-    <StripedWinesDataGrid
-      rows={winesData}
-      columns={columnsWines}
-      editMode="row"
-      processRowUpdate={processRowUpdate}
-      onProcessRowUpdateError={onProcessRowUpdateError}
-      sx={{ backgroundColor: "text.primary", color: "background.default" }}
-      getRowClassName={(params) =>
-        params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
-      }
-    />
+    <>
+      <Box
+        sx={{
+          width: 1,
+          maxWidth: "900px",
+          height: 0.1,
+          display: "flex",
+          justifyContent: "space-evenly",
+          alignItems: "center",
+          marginBlock: "5vh",
+        }}
+      >
+        <SearchBar />
+        <Button
+          variant="contained"
+          sx={{ width: 0.2, minWidth: 80 }}
+          onClick={handleAddClick}
+        >
+          Ajouter
+        </Button>
+      </Box>
+      <DataGrid
+        rows={!query ? winesData : winesDataFiltered}
+        columns={columnsWines}
+        editMode="row"
+        rowModesModel={rowModesModel}
+        onRowModesModelChange={handleRowModesModelChange}
+        onRowEditStop={handleRowEditStop}
+        processRowUpdate={processRowUpdate}
+        onProcessRowUpdateError={onProcessRowUpdateError}
+        hideFooter
+        sx={{
+          backgroundColor: "text.primary",
+          color: "background.default",
+        }}
+      />
+      <ToastContainer />
+    </>
   );
 }

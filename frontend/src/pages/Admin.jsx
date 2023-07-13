@@ -1,6 +1,4 @@
 import { Box } from "@mui/system";
-import { Button } from "@mui/material";
-import SearchBar from "../components/SearchBar";
 import AdminNav from "../components/AdminNav";
 import { useAdminContext } from "../contexts/AdminContext";
 import AdminWinesTable from "../components/AdminWinesTable";
@@ -21,21 +19,6 @@ export default function Admin() {
       }}
     >
       <AdminNav />
-      <Box
-        sx={{
-          width: 1,
-          maxWidth: "900px",
-          height: 0.1,
-          display: "flex",
-          justifyContent: "space-evenly",
-          alignItems: "center",
-        }}
-      >
-        <SearchBar />
-        <Button variant="contained" sx={{ width: 0.2, minWidth: 80 }}>
-          Ajouter
-        </Button>
-      </Box>
       <Box
         sx={{
           width: 0.9,
