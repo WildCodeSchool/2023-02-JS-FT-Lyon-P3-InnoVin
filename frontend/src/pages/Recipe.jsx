@@ -1,8 +1,8 @@
 import "./Recipe.css";
-// import { Box, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import React, { useState } from "react";
 import ReactSlider from "react-slider";
-// import logo from "../assets/logo.svg";
+import logo from "../assets/logo.svg";
 import winebottle from "../assets/winebottle.svg";
 
 export default function Recipe() {
@@ -14,7 +14,7 @@ export default function Recipe() {
 
   return (
     <>
-      {/* <Box flexDirection="row" display="flex" marginBottom="2rem">
+      <Box flexDirection="row" display="flex" marginBottom="2rem">
         <img src={logo} alt="logo" />
         <Typography
           sx={{
@@ -45,12 +45,12 @@ export default function Recipe() {
           {" "}
           Veuillez rentrer les dosages{" "}
         </Typography>
-        </Box> */}
+      </Box>
       <div className="pageContainer">
         <div className="wineBottle">
           <img src={winebottle} alt="winebottle" />
         </div>
-        <div className="sliderContainer">
+        <div className="slider-container">
           <ReactSlider
             className="vertical-slider"
             thumbClassName="example-thumb"
@@ -59,10 +59,10 @@ export default function Recipe() {
             max={250}
             min={0}
             ariaLabel={["Lowest thumb", "Top thumb"]}
-            renderThumb={(props, state) => (
-              /* eslint-disable-next-line react/jsx-props-no-spreading */
-              <div {...props}>{state.valueNow}</div>
-            )}
+            // renderThumb={(props, state) => (
+            /* eslint-disable-next-line react/jsx-props-no-spreading */
+            // <div {...props}>{state.valueNow}</div>
+            // )}
             orientation="vertical"
             invert
             pearling
@@ -70,9 +70,16 @@ export default function Recipe() {
             onChange={(value) => setValueWine(value)}
           />
         </div>
-        <p>Vin 1 : {totalWine1}</p>
-        <p>Vin 2 : {totalWine2}</p>
-        <p>Vin 3 : {totalWine3}</p>
+        <div className="vertical-slider-image">
+          <p className="max-value">250</p>
+          <p className="min-value">0</p>
+        </div>
+
+        <div className="totalWinesContainer">
+          <p>Vin 1 : {totalWine1} mL</p>
+          <p>Vin 2 : {totalWine2} mL</p>
+          <p>Vin 3 : {totalWine3} mL</p>
+        </div>
       </div>
     </>
   );

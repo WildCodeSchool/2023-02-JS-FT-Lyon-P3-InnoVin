@@ -7,7 +7,8 @@
 
 .wineBottle {
   position: absolute;
-  z-index: 2;
+  z-index: 1;
+  width: 250px;
 }
 .pageContainer {
   display: flex;
@@ -17,13 +18,15 @@
 }
 
 .vertical-slider {
-  height: 525px;
+  height: 500px;
   width: 178px;
-  border-radius: 60px 60px 20px 20px;
+  border-radius: 30px 30px 20px 20px;
   z-index: 0;
-  margin-left: 62px;
-  margin-top: 306px;
+  margin-left: 64px;
+  margin-top: 330px;
+  background-color: #981448;
 }
+
 .vertical-slider .example-track {
   left: 20px;
   width: 10px;
@@ -32,75 +35,54 @@
   background: #4a0019;
   width: 100%;
   margin-left: -20px;
-  border-radius: 25px 25px;
+  border-radius: 0px 0px 25px 25px;
 }
 .example-track.example-track-1 {
   background: #50032b;
   width: 100%;
   margin-left: -20px;
-  border-radius: 45px 45px 0px 0px;
-}
-.example-track.example-track-2 {
-  background: #981448;
-  width: 100%;
-  margin-left: -20px;
-  border-radius: 60px 60px 0px 0px;
+  border-radius: 22px 22px 10px 10px;
 }
 
 .example-thumb {
-  width: 100px;
-  margin-left: 400px;
-}
-/*
-.vertical-slider{
-  width: 178px;
-  height: 520px;
-  border-radius: 60px 60px 20px 20px;
-  z-index: 10;
-  margin-left: 62px;
-  margin-top: 312px;
-  background-color: green;
-}
-
-.vertical-slider .example-track {
-  top: 20px;
-  height: 10px;
-}
-
-.example-track.example-track-0 {
-  background: blue;
-}
-
-.example-track.example-track-1 {
-  background: red;
-}
-
-.example-track.example-track-2 {
-  background: grey;
-}
-
-.slider {
-  height: 10px;
-  width: 100%;
-  background-color: #ddd;
-  border-radius: 5px;
-  margin-top: 10px;
-}
-
-/* Styles for the slider thumb */
-.slider .thumb {
-  height: 20px;
-  width: 20px;
+  width: 30px;
+  height: 30px;
+  margin-left: 380px;
+  text-align: center;
+  background-color: #fffdcc;
   border-radius: 50%;
-  background-color: #007bff;
-  cursor: grab;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Styles for the slider active state */
-.slider .thumb.active {
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+.totalWinesContainer {
+  align-items: center;
+  height: 40vh;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-top: 350px;
+  margin-left: 70px;
 }
+.totalWinesContainer p {
+  font-size: 1.5rem;
+}
+.vertical-slider-image {
+  background-color: #fffdcc;
+  width: 2px;
+  height: 500px;
+  margin-top: 320px;
+  margin-left: 215px;
+  display: flex;
+}
+.vertical-slider-image .max-value {
+  margin-top: -50px;
+  margin-left: -10px;
+}
+.vertical-slider-image .min-value {
+  margin-top: 520px;
+  margin-left: -17px;
+}
+
 .tooltip img {
   width: 50px;
 }
