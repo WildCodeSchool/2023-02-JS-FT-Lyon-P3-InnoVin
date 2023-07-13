@@ -1,11 +1,11 @@
 import APIService from "./APIService";
 
 const getUsers = () => {
-  return APIService.get(`/register`);
+  return APIService.get(`/users`);
 };
 
 const getUserById = (id) => {
-  return APIService.get(`/register/${id}`);
+  return APIService.get(`/users/${id}`);
 };
 
 export default {

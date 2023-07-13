@@ -2,19 +2,7 @@ const AbstractManager = require("./AbstractManager");
 
 class SessionHasWineManager extends AbstractManager {
   constructor() {
-    super({ table: "Session_has_Wine" });
-  }
-
-  // Override
-  find(id) {
-    return this.database.query(`select * from  ${this.table} where id = ?`, [
-      id,
-    ]);
-  }
-
-  // Override
-  findAll() {
-    return this.database.query(`select * from  ${this.table}`);
+    super({ table: "session_has_wine" });
   }
 
   insert(sessionHasWine) {

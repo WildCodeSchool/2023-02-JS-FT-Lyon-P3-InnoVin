@@ -9,3 +9,12 @@
     width: 67vw;
   }
 }
+
+.colorContainer {
+  display: flex;
+  flex-direction: row;
+}
+.familyContainer {
+  display: flex;
+  flex-direction: row;
+}

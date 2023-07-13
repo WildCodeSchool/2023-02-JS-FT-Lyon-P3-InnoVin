@@ -1,7 +1,7 @@
 const models = require("../models");
 
 const browse = (req, res) => {
-  models.wine
+  models.recipe
     .findAll()
     .then(([rows]) => {
       res.send(rows);
@@ -11,10 +11,9 @@ const browse = (req, res) => {
       res.sendStatus(500);
     });
 };
-
 const read = (req, res) => {
   const id = parseInt(req.params.id, 10);
-  models.wine
+  models.recipe
     .find(id)
     .then(([rows]) => {
       if (rows[0] == null) {
@@ -28,16 +27,12 @@ const read = (req, res) => {
       res.sendStatus(500);
     });
 };
-
 const edit = (req, res) => {
-  const wine = req.body;
-
+  const recipe = req.body;
   // TODO validations (length, format...)
-
-  wine.id = parseInt(req.params.id, 10);
-
-  models.wine
-    .update(wine)
+  recipe.id = parseInt(req.params.id, 10);
+  models.recipe
+    .update(recipe)
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);
@@ -50,27 +45,22 @@ const edit = (req, res) => {
       res.sendStatus(500);
     });
 };
-
 const add = (req, res) => {
-  const wine = req.body;
-
+  const recipe = req.body;
   // TODO validations (length, format...)
-
-  models.wine
-    .insert(wine)
+  models.recipe
+    .insert(recipe)
     .then(([result]) => {
-      res.location(`/wines/${result.insertId}`).sendStatus(201);
+      res.location(`/recipes/${result.insertId}`).sendStatus(201);
     })
     .catch((err) => {
       console.error(err);
       res.sendStatus(500);
     });
 };
-
 const destroy = (req, res) => {
   const id = parseInt(req.params.id, 10);
-
-  models.wine
+  models.recipe
     .delete(id)
     .then(([result]) => {
       if (result.affectedRows === 0) {
@@ -84,30 +74,10 @@ const destroy = (req, res) => {
       res.sendStatus(500);
     });
 };
-
-const getWinesBySessionIdMiddleWare = (req, res, next) => {
-  req.session = {};
-  models.wine
-    .findWinesBySessionId(req.body.sessionTime)
-    .then((wines) => {
-      if (wines[0]) {
-        [req.session.wines] = wines;
-        next();
-      } else {
-        res.sendStatus(401);
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      res.sendStatus(500);
-    });
-};
-
 module.exports = {
   browse,
   read,
   edit,
   add,
   destroy,
-  getWinesBySessionIdMiddleWare,
 };

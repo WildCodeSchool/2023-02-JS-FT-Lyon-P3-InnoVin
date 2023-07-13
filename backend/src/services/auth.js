@@ -32,10 +32,7 @@ const hashPassword = (req, res, next) => {
 const verifyPassword = async (req, res, next) => {
   argon2
 
-    .verify(
-      "$argon2id$v=19$m=16,t=2,p=1$cXFnN2s1ZHU0aTAwMDAwMA$XFP3Vrp4/huxiy9p4p2EAw",
-      req.body.password
-    )
+    .verify(req.user.hashed_password, req.body.password)
 
     .then((isVerified) => {
       if (isVerified) {

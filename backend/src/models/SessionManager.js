@@ -2,31 +2,29 @@ const AbstractManager = require("./AbstractManager");
 
 class SessionManager extends AbstractManager {
   constructor() {
-    super({ table: "Session" });
+    super({ table: "session" });
   }
 
   // Override
   find(id) {
-    return this.database.query(`select * from  ${this.table} where id = ?`, [
-      id,
-    ]);
+    return this.database.query(
+      `select DATE_FORMAT(date, "%d/%m/%Y") as date, TIME_FORMAT(time, "%H:%i") as time from  ${this.table} where id = ?`,
+      [id]
+    );
   }
 
   // Override
   findAll() {
-    return this.database.query(`select * from  ${this.table}`);
+    return this.database.query(
+      `select id, DATE_FORMAT(date, "%d/%m/%Y") as date, TIME_FORMAT(time, "%H:%i") as time from  ${this.table}`
+    );
   }
 
   insert(session) {
-    return this.database.query(`insert into ${this.table} (date) values (?)`, [
-      session.date,
-    ]);
-  }
-
-  findSessionIdByDate(date) {
-    return this.database.query(`SELECT id FROM ${this.table} WHERE date = ?`, [
-      date,
-    ]);
+    return this.database.query(
+      `insert into ${this.table} (date, time) values (?, ?)`,
+      [session.date, session.time]
+    );
   }
 }
 

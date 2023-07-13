@@ -8,6 +8,7 @@ import Admin from "./pages/Admin";
 import Tasting from "./pages/Tasting";
 import "react-toastify/dist/ReactToastify.css";
 import TastingSheet from "./pages/TastingSheet";
+import TastingProfile from "./pages/TastingProfile";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/tasting" element={<Outlet />}>
           <Route index element={<Tasting />} />
           <Route path="tastingsheet" element={<TastingSheet />} />
+          <Route path="tastingprofile" element={<TastingProfile />} />
         </Route>
       </Routes>
       <ToastContainer />
