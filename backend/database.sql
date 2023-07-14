@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `address` VARCHAR(80) NULL,
   `postcode` INT NULL, 
   `city` VARCHAR(45) NULL,
-  `role` VARCHAR(45) DEFAULT 'User',
+  `role` VARCHAR(45) DEFAULT 'Utilisateur',
   PRIMARY KEY (`id`),
 
   CONSTRAINT `fk_user_aroma`
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 ENGINE = InnoDB;
 
 INSERT INTO user (aroma_id, flavour_id, type_id, firstname, lastname, birthdate, email, hashed_password, address, postcode, city, role) 
-VALUES (1, 1, 1, "Yann", "Richard", "1989-07-12", "yann.richard9@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$cXFnN2s1ZHU0aTAwMDAwMA$XFP3Vrp4/huxiy9p4p2EAw", "Rue de l'exemple", 69000, "Lyon", "User"),
+VALUES (1, 1, 1, "Yann", "Richard", "1989-07-12", "yann.richard9@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$cXFnN2s1ZHU0aTAwMDAwMA$XFP3Vrp4/huxiy9p4p2EAw", "Rue de l'exemple", 69000, "Lyon", "Utilisateur"),
 (2, 2, 2, "Cédric", "Boriat", "1982-06-25", "cedric@exemple.com", "$argon2id$v=19$m=12,t=2,p=1$bXFkenRzdmVmM2EwMDAwMA$W8Njzcn6wAiAJEETUHmkSQ", "Rue de l'exemple", 48000, "Mende", "Admin");
 
 -- -----------------------------------------------------
@@ -89,10 +89,16 @@ INSERT INTO country (name) VALUES ('France'), ('Suisse'), ('Italie'), ('Argentin
 CREATE TABLE IF NOT EXISTS `region` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(80) NOT NULL,
-  PRIMARY KEY (`id`))
+  `country_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+
+  CONSTRAINT `fk_region_country`
+    FOREIGN KEY (`country_id`)
+    REFERENCES `country` (`id`))
+
 ENGINE = InnoDB;
 
-INSERT INTO region (name) VALUES ('Bordeaux'), ('Beaujolais'), ('Bourgogne'), ('Sud-Ouest'), ('Vallée du Rhône'), ('Vallée de la Loire'), ('Alsace'), ('Vaud'), ('Provence'), ('Languedoc'), ('Toscane'), ('Mendoza');
+INSERT INTO region (name, country_id) VALUES ('Bordeaux', 1), ('Beaujolais', 1), ('Bourgogne', 1), ('Sud-Ouest', 1), ('Vallée du Rhône', 1), ('Vallée de la Loire', 1), ('Alsace', 1), ('Vaud', 2), ('Provence', 1), ('Languedoc', 1), ('Toscane', 3), ('Mendoza', 4);
 
 -- -----------------------------------------------------
 -- Table `domain`
@@ -100,64 +106,70 @@ INSERT INTO region (name) VALUES ('Bordeaux'), ('Beaujolais'), ('Bourgogne'), ('
 CREATE TABLE IF NOT EXISTS `domain` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(80) NULL,
-  PRIMARY KEY (`id`))
+  `region_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+
+ CONSTRAINT `fk_domain_region`
+    FOREIGN KEY (`region_id`)
+    REFERENCES `region` (`id`))
+
 ENGINE = InnoDB;
 
-INSERT INTO domain (name)
+INSERT INTO domain (name, region_id)
 VALUES
-    ('Château Margaux'),
-    ('Château Lafite Rothschild'),
-    ('Château Latour'),
-    ("Domaine de la Grand'Cour"),
-    ('Domaine Marcel Lapierre'),
-    ('Domaine Jean Foillard'),
-    ('Domaine de la Romanée-Conti'),
-    ('Domaine Leroy'),
-    ('Domaine Armand Rousseau'),
-    ('Château Pétrus'),
-    ('Château Le Pin'),
-    ('Château Angélus'),
-    ('Domaine Le Roc'),
-    ('Château Boujac'),
-    ('Domaine Ribiera'),
-    ('Domaine Jean-Louis Chave'),
-    ('Guigal'),
-    ('Chapoutier'),
-    ('Domaine Leflaive'),
-    ('Domaine Coche-Dury'),
-    ('Bouchard Père & Fils'),
-    ('Domaine Huet'),
-    ('Domaine des Baumard'),
-    ('François Chidaine'),
-    ('Domaine Didier Dagueneau'),
-    ('Pascal Jolivet'),
-    ('Henri Bourgeois'),
-    ('Château Rayas'),
-    ('Domaine de la Mordorée'),
-    ('Clos des Papes'),
-    ('Trimbach'),
-    ('Domaine Zind-Humbrecht'),
-    ('Albert Mann'),
-    ('Domaine Roulot'),
-    ('Domaine Prieur-Brunet'),
-    ('Domaine Henri Cruchon'),
-    ('Domaine du Daley'), 
-    ('Cave de la Côte'), 
-    ('Château Coutet'), 
-    ('Château de Malle'), 
-    ('Château de Rayne Vigneau'), 
-    ('Domaine de la Bastide Blanche'), 
-    ('Domaine de la Marotte'), 
-    ('Domaines Ott'), 
-    ('Domaine de la Vallongue'), 
-    ("Domaine de l'Hermitage"), 
-    ("Domaine de la Marfée"), 
-    ('Tenuta La Fuga'), 
-    ('Podere II Palazzino'), 
-    ("Villa Sant'Anna"), 
-    ('Domaine de la Vallée'), 
-    ('Vina del Sol'), 
-    ('Domaine de la Roseraie') ;
+    ('Château Margaux', 1),
+    ('Château Lafite Rothschild', 1),
+    ('Château Latour', 1),
+    ("Domaine de la Grand'Cour", 2),
+    ('Domaine Marcel Lapierre', 2),
+    ('Domaine Jean Foillard', 2),
+    ('Domaine de la Romanée-Conti', 3),
+    ('Domaine Leroy', 3),
+    ('Domaine Armand Rousseau', 3),
+    ('Château Pétrus', 1),
+    ('Château Le Pin', 1),
+    ('Château Angélus', 1),
+    ('Domaine Le Roc', 4),
+    ('Château Boujac', 4),
+    ('Domaine Ribiera', 4),
+    ('Domaine Jean-Louis Chave', 5),
+    ('Guigal', 5),
+    ('Chapoutier', 5),
+    ('Domaine Leflaive', 3),
+    ('Domaine Coche-Dury', 3),
+    ('Bouchard Père & Fils', 3),
+    ('Domaine Huet', 6),
+    ('Domaine des Baumard', 6),
+    ('François Chidaine', 6),
+    ('Domaine Didier Dagueneau', 6),
+    ('Pascal Jolivet', 6),
+    ('Henri Bourgeois', 6),
+    ('Château Rayas', 5),
+    ('Domaine de la Mordorée', 5),
+    ('Clos des Papes', 5),
+    ('Trimbach', 7),
+    ('Domaine Zind-Humbrecht', 7),
+    ('Albert Mann', 7),
+    ('Domaine Roulot', 3),
+    ('Domaine Prieur-Brunet', 3),
+    ('Domaine Henri Cruchon', 8),
+    ('Domaine du Daley', 8), 
+    ('Cave de la Côte', 8), 
+    ('Château Coutet', 1), 
+    ('Château de Malle', 1), 
+    ('Château de Rayne Vigneau', 1), 
+    ('Domaine de la Bastide Blanche', 9), 
+    ('Domaine de la Marotte', 9), 
+    ('Domaines Ott', 9), 
+    ('Domaine de la Vallongue', 9), 
+    ("Domaine de l'Hermitage", 9), 
+    ("Domaine de la Marfée", 10), 
+    ('Tenuta La Fuga', 11), 
+    ('Podere II Palazzino', 11), 
+    ("Villa Sant'Anna", 11), 
+    ('Domaine de la Vallée', 4), 
+    ('Vina del Sol', 12), 
+    ('Domaine de la Roseraie', 10) ;
 
 -- -----------------------------------------------------
 -- Table `grape_variety`

@@ -80,36 +80,6 @@ export default function AdminWinesTable() {
     }
   };
 
-  // --- Déclaration des valeurs des selects ---
-  const grapeSelect = grapesData.map((grape) => ({
-    value: grape.id,
-    label: grape.name,
-  }));
-  const typeSelect = typesData.map((type) => ({
-    value: type.id,
-    label: type.name,
-  }));
-  const aromaSelect = aromasData.map((aroma) => ({
-    value: aroma.id,
-    label: aroma.name,
-  }));
-  const flavourSelect = flavoursData.map((flavour) => ({
-    value: flavour.id,
-    label: flavour.name,
-  }));
-  const domainSelect = domainsData.map((domain) => ({
-    value: domain.id,
-    label: domain.name,
-  }));
-  const regionSelect = regionsData.map((region) => ({
-    value: region.id,
-    label: region.name,
-  }));
-  const countrySelect = countriesData.map((country) => ({
-    value: country.id,
-    label: country.name,
-  }));
-
   // --- Gestion de la suppression ---
   const handleDeleteClick = (id) => async () => {
     try {
@@ -237,6 +207,36 @@ export default function AdminWinesTable() {
   const onProcessRowUpdateError = (error) => {
     console.error(error);
   };
+
+  // --- Déclaration des valeurs des selects ---
+  const grapeSelect = grapesData.map((grape) => ({
+    value: grape.id,
+    label: grape.name,
+  }));
+  const typeSelect = typesData.map((type) => ({
+    value: type.id,
+    label: type.name,
+  }));
+  const aromaSelect = aromasData.map((aroma) => ({
+    value: aroma.id,
+    label: aroma.name,
+  }));
+  const flavourSelect = flavoursData.map((flavour) => ({
+    value: flavour.id,
+    label: flavour.name,
+  }));
+  const domainSelect = domainsData.map((domain) => ({
+    value: domain.id,
+    label: domain.name,
+  }));
+  const regionSelect = regionsData.map((region) => ({
+    value: region.id,
+    label: region.name,
+  }));
+  const countrySelect = countriesData.map((country) => ({
+    value: country.id,
+    label: country.name,
+  }));
 
   // --- Définition des colonnes ---
   const columnsWines = [

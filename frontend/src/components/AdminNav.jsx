@@ -10,7 +10,7 @@ import session from "../assets/session.svg";
 import grape from "../assets/grape.svg";
 
 export default function AdminNav() {
-  const { nav, setNav } = useAdminContext();
+  const { nav, setNav, setQuery } = useAdminContext();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,6 +19,7 @@ export default function AdminNav() {
 
   const handleClick = (e) => {
     setNav(e.target.id);
+    setQuery("");
   };
 
   const navIcons = [
