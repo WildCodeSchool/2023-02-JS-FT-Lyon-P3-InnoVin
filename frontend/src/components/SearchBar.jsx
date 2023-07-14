@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { Search } from "@mui/icons-material";
-import { InputBase, IconButton, Divider, Paper } from "@mui/material";
+import { Cancel, Search } from "@mui/icons-material";
+import { InputBase, IconButton, Paper } from "@mui/material";
+import { useAdminContext } from "../contexts/AdminContext";
 
 export default function SearchBar() {
-  const [search, setSearch] = useState("");
+  const { query, setQuery } = useAdminContext();
 
   const handleChangeSearch = (e) => {
-    setSearch(e.target.value);
+    setQuery(e.target.value);
   };
 
   return (
@@ -23,20 +23,27 @@ export default function SearchBar() {
       <InputBase
         sx={{ flex: 1, color: "background.default" }}
         placeholder="Rechercher"
-        value={search}
+        value={query}
         onChange={handleChangeSearch}
       />
-      <Divider
-        sx={{ height: 0.6, m: 0.5, backgroundColor: "background.default" }}
-        orientation="vertical"
-      />
-      <IconButton
-        type="button"
-        sx={{ color: "background.default", p: "10px" }}
-        aria-label="search"
-      >
-        <Search />
-      </IconButton>
+      {query ? (
+        <IconButton
+          type="button"
+          sx={{ color: "background.default", p: "10px" }}
+          aria-label="cancel"
+          onClick={() => setQuery("")}
+        >
+          <Cancel />
+        </IconButton>
+      ) : (
+        <IconButton
+          type="button"
+          sx={{ color: "background.default", p: "10px" }}
+          aria-label="search"
+        >
+          <Search />
+        </IconButton>
+      )}
     </Paper>
   );
 }

@@ -6,8 +6,13 @@ const AdminContext = createContext();
 export default AdminContext;
 
 export function AdminContextProvider({ children }) {
+  // Nav
   const [nav, setNav] = useState("users");
+  // Search
+  const [query, setQuery] = useState("");
+  // Users
   const [usersData, setUsersData] = useState([]);
+  // Wines
   const [winesData, setWinesData] = useState([]);
   const [grapesData, setGrapesData] = useState([]);
   const [typesData, setTypesData] = useState([]);
@@ -22,6 +27,8 @@ export function AdminContextProvider({ children }) {
     return {
       nav,
       setNav,
+      query,
+      setQuery,
       usersData,
       setUsersData,
       winesData,
@@ -45,6 +52,7 @@ export function AdminContextProvider({ children }) {
     };
   }, [
     nav,
+    query,
     usersData,
     winesData,
     grapesData,
