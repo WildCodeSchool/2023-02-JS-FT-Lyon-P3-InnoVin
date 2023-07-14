@@ -74,7 +74,7 @@ export default function Login() {
           login(user);
           setSessionWines(session.wines);
           setSessionGrapes(session.grapes);
-          if (user.role === "User") {
+          if (user.role === "Utilisateur") {
             toast.success(
               `Bienvenue ${user.firstname}! Vous allez être redirigé vers la page d'accueil.`,
               {
