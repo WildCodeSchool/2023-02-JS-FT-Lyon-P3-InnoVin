@@ -5,18 +5,6 @@ class SessionHasWineManager extends AbstractManager {
     super({ table: "session_has_wine" });
   }
 
-  // Override
-  find(id) {
-    return this.database.query(`select * from  ${this.table} where id = ?`, [
-      id,
-    ]);
-  }
-
-  // Override
-  findAll() {
-    return this.database.query(`select * from  ${this.table}`);
-  }
-
   insert(sessionHasWine) {
     return this.database.query(
       `insert into ${this.table} (session_id, wine_id) values (?, ?)`,
