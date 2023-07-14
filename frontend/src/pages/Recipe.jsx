@@ -1,16 +1,30 @@
 import "./Recipe.css";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Button } from "@mui/material";
 import React, { useState } from "react";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
 import ReactSlider from "react-slider";
 import logo from "../assets/logo.svg";
+import Tooltip from "../components/Tooltip";
+import info from "../assets/info.svg";
+
 import winebottle from "../assets/winebottle.svg";
+import { useUserContext } from "../contexts/UserContext";
 
 export default function Recipe() {
   const [valueWine, setValueWine] = useState([50, 100]);
-
+  const { preferredWines } = useUserContext();
   const totalWine3 = valueWine[0] - 0;
   const totalWine2 = valueWine[1] - valueWine[0];
   const totalWine1 = 250 - valueWine[1];
+  const style = {
+    button: {
+      p: 2,
+      width: 0.3,
+      borderRadius: 2,
+      marginBottom: 5,
+      marginTop: 5,
+    },
+  };
 
   return (
     <>
@@ -43,7 +57,7 @@ export default function Recipe() {
           }}
         >
           {" "}
-          Veuillez rentrer les dosages{" "}
+          Veuillez sélectionner les dosages{" "}
         </Typography>
       </Box>
       <div className="pageContainer">
@@ -76,10 +90,59 @@ export default function Recipe() {
         </div>
 
         <div className="totalWinesContainer">
-          <p>Vin 1 : {totalWine1} mL</p>
-          <p>Vin 2 : {totalWine2} mL</p>
-          <p>Vin 3 : {totalWine3} mL</p>
+          {preferredWines && preferredWines.length >= 3 && (
+            <>
+              <div className="tooltip-content">
+                <ClickAwayListener>
+                  <Tooltip
+                    imageSrc={info}
+                    aroma={preferredWines[0].aroma}
+                    flavour={preferredWines[0].flavour}
+                  />
+                </ClickAwayListener>
+                <p>
+                  {preferredWines[0].grapename} <br /> {totalWine1} mL
+                </p>
+              </div>
+              <div className="tooltip-content">
+                <ClickAwayListener>
+                  <Tooltip
+                    imageSrc={info}
+                    aroma={preferredWines[1].aroma}
+                    flavour={preferredWines[1].flavour}
+                  />
+                </ClickAwayListener>
+                <p>
+                  {preferredWines[1].grapename} <br /> {totalWine2} mL
+                </p>
+              </div>
+              <div className="tooltip-content">
+                <ClickAwayListener>
+                  <Tooltip
+                    imageSrc={info}
+                    aroma={preferredWines[2].aroma}
+                    flavour={preferredWines[2].flavour}
+                  />
+                </ClickAwayListener>
+                <p>
+                  {preferredWines[2].grapename} <br /> {totalWine3} mL
+                </p>
+              </div>
+            </>
+          )}
         </div>
+      </div>
+      <div className="button-style">
+        <Button
+          type="submit"
+          variant="contained"
+          size="large"
+          sx={style.button}
+        >
+          <Typography variant="button" fontSize={24}>
+            Valider{" "}
+          </Typography>
+        </Button>
       </div>
     </>
   );

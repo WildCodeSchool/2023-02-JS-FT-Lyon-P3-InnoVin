@@ -26,8 +26,8 @@ function App() {
           <Route index element={<Tasting />} />
           <Route path="tastingsheet" element={<TastingSheet />} />
           <Route path="tastingprofile" element={<TastingProfile />} />
+          <Route path="recipe" element={<Recipe />} />
         </Route>
-        <Route path="/recipe" element={<Recipe />} />
       </Routes>
       <ToastContainer />
     </div>

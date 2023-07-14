@@ -1,10 +1,13 @@
 import { Box, Typography, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.svg";
 import { useUserContext } from "../contexts/UserContext";
 import GrapeCard from "../components/GrapeCard";
 
 export default function TastingProfile() {
   const { preferredWines } = useUserContext();
+  const navigate = useNavigate();
+  const handleClick = () => navigate("/tasting/recipe");
 
   return (
     <div>
@@ -54,6 +57,7 @@ export default function TastingProfile() {
         <Button
           variant="contained"
           size="large"
+          onClick={handleClick}
           sx={{
             p: 2,
             margin: "0 auto",
