@@ -24,8 +24,8 @@ function App() {
         </Route>
         <Route path="/admin/users" element={<Admin />} />
         <Route path="/admin/wines" element={<Admin />} />
-        <Route path="/admin/grapes" element={<Admin />} />
         <Route path="/admin/sessions" element={<Admin />} />
+        <Route path="/admin/recipes" element={<Admin />} />
       </Routes>
       <ToastContainer />
     </div>

@@ -140,11 +140,11 @@ export default function AdminUsersTable() {
       width: 100,
     },
     {
-      field: "actions",
+      field: "delete",
       headerClassName: "super-app-theme--header",
-      headerName: "Actions",
+      headerName: "Supprimer",
       type: "actions",
-      width: 150,
+      width: 100,
       getActions: ({ id }) => {
         return [
           <GridActionsCellItem
