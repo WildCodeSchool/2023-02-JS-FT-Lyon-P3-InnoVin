@@ -1,4 +1,5 @@
 .grapepicture {
     height: 17vh;
     width: auto;
+    filter: drop-shadow(0 0 3.3rem rgb(95, 91, 91));
 }
