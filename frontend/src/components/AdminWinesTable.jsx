@@ -7,7 +7,7 @@ import {
 } from "@mui/x-data-grid";
 import { Cancel, Delete, Edit, Save, Settings } from "@mui/icons-material";
 import { Box } from "@mui/system";
-import { Button, IconButton, Modal } from "@mui/material";
+import { Button, SpeedDial, SpeedDialAction } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import { useAdminContext } from "../contexts/AdminContext";
 // --- Services ---
@@ -20,6 +20,10 @@ import DomainService from "../services/DomainService";
 import RegionService from "../services/RegionService";
 import CountryService from "../services/CountryService";
 import SearchBar from "./SearchBar";
+import CountryModal from "./CountryModal";
+import RegionModal from "./RegionModal";
+import DomainModal from "./DomainModal";
+import GrapeModal from "./GrapeModal";
 
 export default function AdminWinesTable() {
   const {
@@ -43,7 +47,10 @@ export default function AdminWinesTable() {
   } = useAdminContext();
 
   const [rowModesModel, setRowModesModel] = useState({});
-  const [openModal, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState({
+    isOpen: false,
+    data: "",
+  });
 
   // --- Fetch des données au montage du composant ---
   useEffect(() => {
@@ -81,7 +88,20 @@ export default function AdminWinesTable() {
     }
   };
 
-  const handleOpenModal = () => setOpenModal(!openModal);
+  // --- Ouverture de la modal ---
+  const handleOpenModal = (e) =>
+    setOpenModal({
+      isOpen: true,
+      data: e.target.textContent,
+    });
+
+  // --- Fermeture de la modal ---
+  const handleCloseModal = () => {
+    setOpenModal({
+      isOpen: false,
+      data: "",
+    });
+  };
 
   // --- Gestion de la suppression ---
   const handleDeleteClick = (id) => async () => {
@@ -374,6 +394,9 @@ export default function AdminWinesTable() {
     wine.name.toLowerCase().includes(query.toLowerCase())
   );
 
+  // --- Défintion des actions pour le speed dial ---
+  const actions = ["Pays", "Région", "Domaine", "Cépage"];
+
   return (
     <>
       <Box
@@ -390,81 +413,69 @@ export default function AdminWinesTable() {
         <SearchBar />
         <Button
           variant="contained"
-          sx={{ width: 0.2, minWidth: 80 }}
+          sx={{ width: 0.2, minWidth: 80, marginLeft: "50px" }}
+          size="large"
           onClick={handleAddClick}
         >
-          Nouveau vin
+          Ajouter
         </Button>
-        <IconButton
-          aria-label="settings"
-          color="secondary"
-          onClick={handleOpenModal}
+        <SpeedDial
+          ariaLabel="settings"
+          icon={<Settings fontSize="large" />}
+          direction="down"
+          sx={{ marginTop: "233px" }}
         >
-          <Settings fontSize="large" />
-        </IconButton>
-        <Modal open={openModal}>
-          <Box
-            sx={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              bgcolor: "RGBA(32,32,32,0.95)",
-              borderRadius: 1,
-              width: "90vw",
-              height: "90vh",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <IconButton
-              aria-label="settings"
-              color="primary"
+          {actions.map((action) => (
+            <SpeedDialAction
+              key={action}
+              icon={action}
+              sx={{
+                color: "white",
+                borderRadius: 5,
+                width: "100px",
+              }}
               onClick={handleOpenModal}
-              sx={{ position: "absolute", top: 0, right: 0 }}
-            >
-              <Cancel fontSize="large" />
-            </IconButton>
-            <Box
-              sx={{
-                width: 1,
-                maxWidth: "900px",
-                height: 0.1,
-                display: "flex",
-                justifyContent: "space-evenly",
-                alignItems: "center",
-                marginBlock: "5vh",
-              }}
-            >
-              <SearchBar />
-              <Button
-                variant="contained"
-                sx={{ width: 0.2, minWidth: 80 }}
-                onClick={handleAddClick}
-              >
-                Nouveau
-              </Button>
-            </Box>
-            <DataGrid
-              rows={!query ? winesData : winesDataFiltered}
-              columns={columnsWines}
-              editMode="row"
-              rowModesModel={rowModesModel}
-              onRowModesModelChange={handleRowModesModelChange}
-              onRowEditStop={handleRowEditStop}
-              processRowUpdate={processRowUpdate}
-              onProcessRowUpdateError={onProcessRowUpdateError}
-              hideFooter
-              sx={{
-                backgroundColor: "text.primary",
-                color: "background.default",
-                width: "90%",
-              }}
             />
-          </Box>
-        </Modal>
+          ))}
+        </SpeedDial>
+        {openModal.data === "Pays" && (
+          <CountryModal
+            openModal={openModal}
+            handleCloseModal={handleCloseModal}
+            countriesData={countriesData}
+            setCountriesData={setCountriesData}
+            winesDataUpdate={winesDataUpdate}
+          />
+        )}
+        {openModal.data === "Région" && (
+          <RegionModal
+            openModal={openModal}
+            handleCloseModal={handleCloseModal}
+            regionsData={regionsData}
+            setRegionsData={setRegionsData}
+            winesDataUpdate={winesDataUpdate}
+            countrySelect={countrySelect}
+          />
+        )}
+        {openModal.data === "Domaine" && (
+          <DomainModal
+            openModal={openModal}
+            handleCloseModal={handleCloseModal}
+            domainsData={domainsData}
+            setDomainsData={setDomainsData}
+            winesDataUpdate={winesDataUpdate}
+            regionSelect={regionSelect}
+          />
+        )}
+        {openModal.data === "Cépage" && (
+          <GrapeModal
+            openModal={openModal}
+            handleCloseModal={handleCloseModal}
+            grapesData={grapesData}
+            setGrapesData={setGrapesData}
+            winesDataUpdate={winesDataUpdate}
+          />
+        )}
       </Box>
       <DataGrid
         rows={!query ? winesData : winesDataFiltered}
