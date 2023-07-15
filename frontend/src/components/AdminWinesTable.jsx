@@ -5,9 +5,9 @@ import {
   GridRowEditStopReasons,
   GridRowModes,
 } from "@mui/x-data-grid";
-import { Cancel, Delete, Edit, Save } from "@mui/icons-material";
+import { Cancel, Delete, Edit, Save, Settings } from "@mui/icons-material";
 import { Box } from "@mui/system";
-import { Button } from "@mui/material";
+import { Button, IconButton, Modal } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import { useAdminContext } from "../contexts/AdminContext";
 // --- Services ---
@@ -43,6 +43,7 @@ export default function AdminWinesTable() {
   } = useAdminContext();
 
   const [rowModesModel, setRowModesModel] = useState({});
+  const [openModal, setOpenModal] = useState(false);
 
   // --- Fetch des données au montage du composant ---
   useEffect(() => {
@@ -79,6 +80,8 @@ export default function AdminWinesTable() {
       console.error(error);
     }
   };
+
+  const handleOpenModal = () => setOpenModal(!openModal);
 
   // --- Gestion de la suppression ---
   const handleDeleteClick = (id) => async () => {
@@ -174,7 +177,6 @@ export default function AdminWinesTable() {
         // Si c'est un ajout, l'id est une string et on utilise cette particularité pour déclencher un insert au lieu d'un update
         await WineService.addWine(newRow);
         winesDataUpdate();
-        // setWinesData(winesData.filter((wine) => wine.id !== newRow.id));
         toast.success(`${newRow.name} a bien été enregistré`, {
           position: "bottom-right",
           autoClose: 3000,
@@ -391,8 +393,78 @@ export default function AdminWinesTable() {
           sx={{ width: 0.2, minWidth: 80 }}
           onClick={handleAddClick}
         >
-          Ajouter
+          Nouveau vin
         </Button>
+        <IconButton
+          aria-label="settings"
+          color="secondary"
+          onClick={handleOpenModal}
+        >
+          <Settings fontSize="large" />
+        </IconButton>
+        <Modal open={openModal}>
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              bgcolor: "RGBA(32,32,32,0.95)",
+              borderRadius: 1,
+              width: "90vw",
+              height: "90vh",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <IconButton
+              aria-label="settings"
+              color="primary"
+              onClick={handleOpenModal}
+              sx={{ position: "absolute", top: 0, right: 0 }}
+            >
+              <Cancel fontSize="large" />
+            </IconButton>
+            <Box
+              sx={{
+                width: 1,
+                maxWidth: "900px",
+                height: 0.1,
+                display: "flex",
+                justifyContent: "space-evenly",
+                alignItems: "center",
+                marginBlock: "5vh",
+              }}
+            >
+              <SearchBar />
+              <Button
+                variant="contained"
+                sx={{ width: 0.2, minWidth: 80 }}
+                onClick={handleAddClick}
+              >
+                Nouveau
+              </Button>
+            </Box>
+            <DataGrid
+              rows={!query ? winesData : winesDataFiltered}
+              columns={columnsWines}
+              editMode="row"
+              rowModesModel={rowModesModel}
+              onRowModesModelChange={handleRowModesModelChange}
+              onRowEditStop={handleRowEditStop}
+              processRowUpdate={processRowUpdate}
+              onProcessRowUpdateError={onProcessRowUpdateError}
+              hideFooter
+              sx={{
+                backgroundColor: "text.primary",
+                color: "background.default",
+                width: "90%",
+              }}
+            />
+          </Box>
+        </Modal>
       </Box>
       <DataGrid
         rows={!query ? winesData : winesDataFiltered}
