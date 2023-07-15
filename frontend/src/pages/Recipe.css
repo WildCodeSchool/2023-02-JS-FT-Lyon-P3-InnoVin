@@ -2,7 +2,7 @@
   width: 500px;
   height: 700px;
   margin-left: -100px;
-  margin-top: 100px;
+  margin-top: 60px;
 }
 
 .wineBottle {
@@ -24,7 +24,7 @@
   border-radius: 30px 30px 20px 20px;
   z-index: 0;
   margin-left: 73px;
-  margin-top: 358px;
+  margin-top: 320px;
   background-color: #981448;
 }
 
@@ -66,6 +66,7 @@
 .totalWinesContainer p {
   font-size: 1.7rem;
   font-family: "EB Garamond";
+  padding-top: 10px;
 }
 .vertical-slider-image {
   background-color: #fffdcc;
@@ -78,10 +79,15 @@
 .vertical-slider-image .max-value {
   margin-top: -30px;
   margin-left: -10px;
+  display: flex;
 }
 .vertical-slider-image .min-value {
   margin-top: 430px;
-  margin-left: -17px;
+  margin-left: -50px;
+}
+.value-container{
+  display: flex;
+  flex-direction: row;
 }
 
 
@@ -93,6 +99,7 @@
 .tooltip-content {
   display: flex;
   flex-direction: column;
+  font-size: 1.3rem;
 }
 .tooltip-content p {
   margin-top: -10px;
@@ -109,17 +116,17 @@
   display: flex;
   justify-content: center;
   margin-top: 20px;
+  
   z-index: 15;
 }
 .input-container input{
-  height: 50px;
-  width: 400px;
-  background-color: transparent;
-  border-radius: 20px;
-  border: solid #fffdcc;
-  color: #fffdcc;
-  font-size: 1.5rem;
+  height: 73px;
+  width: 350px;
+  background-color: #fffdcc;
+  border-radius: 10px;
+  font-size: 1.7rem;
   padding: 10px;
 }
 .input-container input::placeholder{
-color: #fffdcc;}
+color: #202020;
+}

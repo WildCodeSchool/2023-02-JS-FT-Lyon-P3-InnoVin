@@ -2,7 +2,7 @@ const AbstractManager = require("./AbstractManager");
 
 class RecipeHasWineManager extends AbstractManager {
   constructor() {
-    super({ table: "recipehaswine" });
+    super({ table: "recipe_has_wine" });
   }
 
   insert(recipehaswine) {

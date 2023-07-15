@@ -1,10 +1,10 @@
 import "./Recipe.css";
 import { Box, Typography, Button } from "@mui/material";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import ReactSlider from "react-slider";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.svg";
 import Tooltip from "../components/Tooltip";
 import info from "../assets/info.svg";
@@ -16,13 +16,16 @@ import { useSessionContext } from "../contexts/SessionContext";
 
 export default function Recipe() {
   const [valueWine, setValueWine] = useState([50, 100]);
-  const { preferredWines } = useUserContext();
   const totalWine3 = valueWine[0] - 0;
   const totalWine2 = valueWine[1] - valueWine[0];
   const totalWine1 = 250 - valueWine[1];
+
+  const { preferredWines } = useUserContext();
   const userContext = useUserContext();
   const sessionContext = useSessionContext();
   const navigate = useNavigate();
+  const { logout } = useUserContext();
+
   const style = {
     button: {
       p: 2,
@@ -39,28 +42,88 @@ export default function Recipe() {
     setIsRecipeName(event.target.value !== "");
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
     if (!isRecipeName) {
       toast.error("Veuillez entrer un nom pour la recette !");
     } else {
       const recipeData = {
-        user_id: userContext.user_id,
-        session_id: sessionContext.session_id,
+        user_id: userContext.user.id,
+        session_id: sessionContext.sessionId,
         name: recipeName,
       };
-      APIService.post(`/recipe`, recipeData).then(() => {
-        toast.success("Votre recette a bien été enregistrée ! 👍", {
-          position: toast.POSITION.TOP_CENTER,
-          autoClose: 2000,
-        });
-        setTimeout(() => {
-          navigate("/login");
-        }, 3000);
-      });
+
+      if (!recipeData.user_id || !recipeData.session_id) {
+        toast.error(
+          "Les informations d'utilisateur ou de session sont manquantes !"
+        );
+      } else {
+        try {
+          await APIService.post(`/recipe`, recipeData);
+          toast.success("recette postée!");
+
+          const handleLogout = () => {
+            logout();
+            toast.success("Déconnexion réussie !");
+            navigate("/login");
+          };
+
+          handleLogout();
+        } catch (error) {
+          toast.error(
+            "Une erreur s'est produite lors de l'enregistrement des vins de la recette !"
+          );
+          console.error(error);
+        }
+      }
     }
   };
+  /* eslint-disable */
+
+  {
+    /*
+          const response = await axios.get(`${apiBaseUrl}/recipes`);
+          const recipes = response.data;
+          const lastRecipe = recipes[recipes.length - 1];
+          const lastRecipeId = lastRecipe.id;
+
+          setRecipeId(lastRecipeId);
+      
+          console.log(response.data);
+          console.log(lastRecipe);
+          console.log(lastRecipeId);
+          const wineData = [
+            {
+              recipe_id: lastRecipeId,
+              wine_id: preferredWines[0].wineName,
+              dosage: totalWine1,
+            },
+            {
+              recipe_id: lastRecipeId,
+              wine_id: preferredWines[1].wineName,
+              dosage: totalWine2,
+            },
+            {
+              recipe_id: lastRecipeId,              wine_id: preferredWines[2].wineName,
+              dosage: totalWine3,
+            },
+          ];
+
+          await APIService.post(`/recipehaswine`, wineData);
+          toast.success("Votre recette a bien été enregistrée ! 👍", {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 2000,
+          });
+          setTimeout(() => {
+            navigate("/login");
+          }, 3000);
+        } catch (error) {
+          toast.error(
+            "Une erreur s'est produite lors de l'enregistrement des vins de la recette !"
+          );
+          console.error(error); */
+  }
+
   return (
     <>
       <Box flexDirection="row" display="flex" marginBottom="2rem">
@@ -127,8 +190,12 @@ export default function Recipe() {
         </div>
 
         <div className="vertical-slider-image">
-          <p className="max-value">250</p>
-          <p className="min-value">0</p>
+          <div className="value-container">
+            <p className="max-value">250mL</p>{" "}
+          </div>
+          <div className="value-container">
+            <p className="min-value">0mL </p>{" "}
+          </div>
         </div>
         <div className="totalWinesContainer">
           {preferredWines && preferredWines.length >= 3 && (
@@ -142,7 +209,7 @@ export default function Recipe() {
                   />
                 </ClickAwayListener>
                 <p>
-                  {preferredWines[0].grapename} <br /> {totalWine1} mL
+                  {preferredWines[0].grapeName} <br /> {totalWine1} mL
                 </p>
               </div>
               <div className="tooltip-content">
@@ -154,7 +221,7 @@ export default function Recipe() {
                   />
                 </ClickAwayListener>
                 <p>
-                  {preferredWines[1].grapename} <br /> {totalWine2} mL
+                  {preferredWines[1].grapeName} <br /> {totalWine2} mL
                 </p>
               </div>
               <div className="tooltip-content">
@@ -166,7 +233,7 @@ export default function Recipe() {
                   />
                 </ClickAwayListener>
                 <p>
-                  {preferredWines[2].grapename} <br /> {totalWine3} mL
+                  {preferredWines[2].grapeName} <br /> {totalWine3} mL
                 </p>
               </div>
             </>
