@@ -24,6 +24,10 @@ export default function AdminNav() {
 
   const navIcons = [
     {
+      img: logo,
+      alt: "home",
+    },
+    {
       img: users,
       alt: "users",
     },
@@ -45,9 +49,6 @@ export default function AdminNav() {
     <header className={styles.navbox}>
       <nav>
         <ul>
-          <li>
-            <img src={logo} alt="logo" />
-          </li>
           {navIcons.map((icon) => (
             <li
               key={icon.alt}

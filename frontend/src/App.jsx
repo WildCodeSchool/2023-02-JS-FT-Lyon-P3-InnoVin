@@ -22,6 +22,7 @@ function App() {
           <Route path="tastingsheet" element={<TastingSheet />} />
           <Route path="tastingprofile" element={<TastingProfile />} />
         </Route>
+        <Route path="/admin/home" element={<Admin />} />
         <Route path="/admin/users" element={<Admin />} />
         <Route path="/admin/wines" element={<Admin />} />
         <Route path="/admin/sessions" element={<Admin />} />
