@@ -5,7 +5,6 @@ import GrapeCard from "../components/GrapeCard";
 
 export default function TastingProfile() {
   const { preferredWines } = useUserContext();
-
   return (
     <div>
       <Box flexDirection="row" display="flex" marginBottom="1rem">
@@ -30,44 +29,51 @@ export default function TastingProfile() {
         sx={{
           textAlign: "center",
           color: "white",
-          marginBottom: "2.5rem",
+          marginBottom: { xs: "2.5rem", md: "3.5rem" },
         }}
       >
-        Les trois cépages qui vous correspondent le plus sont :
+        Les trois vins que vous avez le plus appréciés sont :
       </Typography>
       <Box
         display="flex"
-        flexDirection="column"
-        justifyContent="space-between"
-        width="80vw"
+        sx={{
+          flexDirection: { xs: "column", md: "row" },
+          width: { xs: "80vw", md: "100vw" },
+          marginBottom: { md: "2rem" },
+        }}
+        justifyContent="space-evenly"
         margin="auto"
       >
         {preferredWines.map((wine) => (
           <GrapeCard
-            key={wine.wine_id}
-            grapename={wine.grapename}
-            grapepicture={wine.grapepicture}
+            key={wine.wineId}
+            tastingNote={wine.tastingNote}
+            vintage={wine.vintage}
+            wineName={wine.wineName}
+            grapeName={wine.grapeName}
+            grapePicture={wine.grapePicture}
             flavour={wine.flavour}
             aroma={wine.aroma}
           />
         ))}
-        <Button
-          variant="contained"
-          size="large"
-          sx={{
-            p: 2,
-            margin: "0 auto",
-            display: "flex",
-            width: "30vw",
-            borderRadius: 2,
-            fontSize: "calc(0.6rem + 1vmin)",
-            color: "white",
-          }}
-        >
-          {" "}
-          Atelier de création{" "}
-        </Button>
       </Box>
+      <Button
+        variant="contained"
+        size="large"
+        sx={{
+          p: 2,
+          margin: "auto",
+          marginBottom: "3rem",
+          display: "flex",
+          width: "30vw",
+          borderRadius: 2,
+          fontSize: "calc(0.6rem + 1vmin)",
+          color: "white",
+        }}
+      >
+        {" "}
+        Atelier de création{" "}
+      </Button>
     </div>
   );
 }

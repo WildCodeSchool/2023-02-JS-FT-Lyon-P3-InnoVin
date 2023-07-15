@@ -56,7 +56,8 @@ export default function Login() {
   });
 
   const { login } = useUserContext();
-  const { setSessionWines, setSessionGrapes } = useSessionContext();
+  const { setSessionId, setSessionWines, setSessionGrapes } =
+    useSessionContext();
 
   const navigate = useNavigate();
 
@@ -64,7 +65,7 @@ export default function Login() {
     initialValues: {
       email: "",
       password: "",
-      sessionTime: "",
+      sessionId: "",
     },
     validationSchema,
 
@@ -72,9 +73,10 @@ export default function Login() {
       APIService.post(`/login`, values)
         .then(({ data: [user, session] }) => {
           login(user);
+          setSessionId(session.sessionId);
           setSessionWines(session.wines);
           setSessionGrapes(session.grapes);
-          if (user.role === "User") {
+          if (user.role === "Utilisateur") {
             toast.success(
               `Bienvenue ${user.firstname}! Vous allez être redirigé vers la page d'accueil.`,
               {
@@ -116,7 +118,7 @@ export default function Login() {
   useEffect(() => {
     SessionService.getSessions().then((result) => {
       setSessions(result.data);
-      if (result.data.length) formik.values.sessionTime = result.data[0].id;
+      if (result.data.length) formik.values.sessionId = result.data[0].id;
     });
   }, []);
   const handleClick = () => {
@@ -209,14 +211,10 @@ export default function Login() {
             flexDirection="column"
             marginTop="2rem"
           >
-            <InputLabel
-              id="sessionTime_id"
-              name="sessionTime"
-              sx={style.formlabels}
-            />
+            <InputLabel id="sessionId" name="sessionId" sx={style.formlabels} />
             <Select
-              label="sessionTime_id"
-              name="sessionTime"
+              label="sessionId"
+              name="sessionId"
               sx={{
                 backgroundColor: "#FFFDCC",
                 fontSize: "1.5rem",
@@ -226,7 +224,7 @@ export default function Login() {
                 width: "100%",
                 fontFamily: "Gill sans",
               }}
-              value={formik.values.sessionTime}
+              value={formik.values.sessionId}
               onChange={formik.handleChange}
             >
               {sessions?.map((session) => (

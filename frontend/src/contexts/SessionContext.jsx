@@ -7,17 +7,20 @@ export default SessionContext;
 
 export function SessionContextProvider({ children }) {
   // on utilise un hook personnalisé
+  const [sessionId, setSessionId] = useState();
   const [sessionWines, setSessionWines] = useState([]);
   const [sessionGrapes, setSessionGrapes] = useState([]);
 
   const memo = useMemo(() => {
     return {
+      sessionId,
+      setSessionId,
       sessionWines,
       setSessionWines,
       sessionGrapes,
       setSessionGrapes,
     };
-  }, [sessionWines, sessionGrapes]);
+  }, [sessionId, sessionWines, sessionGrapes]);
 
   return (
     <SessionContext.Provider value={memo}>{children}</SessionContext.Provider>

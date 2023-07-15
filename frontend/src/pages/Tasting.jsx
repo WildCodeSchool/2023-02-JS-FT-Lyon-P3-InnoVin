@@ -18,6 +18,7 @@ export default function Tasting() {
         background: "#FFFDCC",
         color: "grey",
       },
+      height: { md: "8.5vh" },
     },
     griditem: {
       display: "flex",
@@ -78,109 +79,126 @@ export default function Tasting() {
           Dégustation{" "}
         </Typography>
       </Box>
-      <Typography
-        variant="h4"
+      <Box
         sx={{
-          textAlign: "center",
-          color: "secondary.main",
-          marginBottom: "3.5rem",
+          display: { md: "flex" },
+          justifyContent: { md: "space-evenly" },
+          height: { md: "65vh" },
         }}
       >
-        Choisissez votre vin
-      </Typography>
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid
-          container
-          rowSpacing={3}
+        <Box>
+          <Typography
+            variant="h4"
+            sx={{
+              textAlign: "center",
+              color: "secondary.main",
+              marginBottom: "3.5rem",
+            }}
+          >
+            Choisissez votre vin
+          </Typography>
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid
+              container
+              rowSpacing={3}
+              sx={{
+                "&.MuiGrid-container": {
+                  width: { xs: "65vw", md: "25vw" },
+                  margin: "auto",
+                  mb: "2.5rem",
+                },
+              }}
+            >
+              <Grid item xs={6} md={12} sx={style.griditem}>
+                <Button
+                  onClick={handleClickWine}
+                  disabled={userWines[0].isRated}
+                  variant="contained"
+                  value={0}
+                  size="large"
+                  sx={style.button}
+                >
+                  {" "}
+                  Vin 1{" "}
+                </Button>
+              </Grid>
+              <Grid item xs={6} md={12} sx={style.griditem}>
+                <Button
+                  onClick={handleClickWine}
+                  disabled={userWines[1].isRated}
+                  variant="contained"
+                  value={1}
+                  size="large"
+                  sx={style.button}
+                >
+                  {" "}
+                  Vin 2{" "}
+                </Button>
+              </Grid>
+              <Grid item xs={6} md={12} sx={style.griditem}>
+                <Button
+                  onClick={handleClickWine}
+                  disabled={userWines[2].isRated}
+                  variant="contained"
+                  size="large"
+                  value={2}
+                  sx={style.button}
+                >
+                  {" "}
+                  Vin 3{" "}
+                </Button>
+              </Grid>
+              <Grid item xs={6} md={12} sx={style.griditem}>
+                <Button
+                  onClick={handleClickWine}
+                  disabled={userWines[3].isRated}
+                  variant="contained"
+                  size="large"
+                  value={3}
+                  sx={style.button}
+                >
+                  {" "}
+                  Vin 4{" "}
+                </Button>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+        <Box
           sx={{
-            width: "60vw",
-            "&.MuiGrid-container": {
-              width: "65vw",
-              margin: "auto",
-              mb: "2.5rem",
-            },
+            display: { md: "flex" },
+            flexDirection: { md: "column" },
+            maxWidth: { md: "55vw" },
           }}
         >
-          <Grid item xs={6} sx={style.griditem}>
-            <Button
-              onClick={handleClickWine}
-              disabled={userWines[0].isRated}
-              variant="contained"
-              value={0}
-              size="large"
-              sx={style.button}
-            >
-              {" "}
-              Vin 1{" "}
-            </Button>
-          </Grid>
-          <Grid item xs={6} sx={style.griditem}>
-            <Button
-              onClick={handleClickWine}
-              disabled={userWines[1].isRated}
-              variant="contained"
-              value={1}
-              size="large"
-              sx={style.button}
-            >
-              {" "}
-              Vin 2{" "}
-            </Button>
-          </Grid>
-          <Grid item xs={6} sx={style.griditem}>
-            <Button
-              onClick={handleClickWine}
-              disabled={userWines[2].isRated}
-              variant="contained"
-              size="large"
-              value={2}
-              sx={style.button}
-            >
-              {" "}
-              Vin 3{" "}
-            </Button>
-          </Grid>
-          <Grid item xs={6} sx={style.griditem}>
-            <Button
-              onClick={handleClickWine}
-              disabled={userWines[3].isRated}
-              variant="contained"
-              size="large"
-              value={3}
-              sx={style.button}
-            >
-              {" "}
-              Vin 4{" "}
-            </Button>
-          </Grid>
-        </Grid>
+          <Box
+            display="flex"
+            justifyContent="center"
+            sx={{
+              height: "30dvh",
+              width: "45dvw",
+              margin: "auto",
+              mb: { xs: "3rem", md: "0rem" },
+            }}
+          >
+            <img className={styles.tastingPic} src={pic} alt="winePic" />
+          </Box>
+          <Typography
+            variant="h4"
+            sx={{
+              textAlign: "center",
+              color: "secondary.main",
+              width: { xs: "80vw", md: "40vw" },
+              margin: "auto",
+              mb: "3rem",
+            }}
+          >
+            {" "}
+            Après avoir dégusté vos 4 vins, vous aurez accès à votre profil de
+            dégustation
+          </Typography>
+        </Box>
       </Box>
-      <Box
-        display="flex"
-        justifyContent="center"
-        sx={{
-          height: "30dvh",
-          width: "45dvw",
-          margin: "auto",
-          mb: "3rem",
-        }}
-      >
-        <img className={styles.tastingPic} src={pic} alt="winePic" />
-      </Box>
-      <Typography
-        variant="h4"
-        sx={{
-          textAlign: "center",
-          color: "secondary.main",
-          width: "80vw",
-          margin: "auto",
-          mb: "3rem",
-        }}
-      >
-        {" "}
-        Après avoir dégusté vos 4 vins, vous aurez accès à votre profil de
-        dégustation
-      </Typography>
       <Button
         variant="contained"
         size="large"
@@ -190,11 +208,14 @@ export default function Tasting() {
           p: 2,
           margin: "0 auto",
           display: "flex",
-          width: "40dvw",
+          width: { xs: "40vw", md: "25vw" },
+          fontFamily: "Gill Sans",
           borderRadius: 2,
+          marginTop: { md: "1.5rem" },
           "&.Mui-disabled": {
             background: "#FFFDCC",
             color: "grey",
+            fontFamily: "Gill Sans",
           },
         }}
       >
