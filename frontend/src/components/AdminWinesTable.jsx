@@ -28,6 +28,7 @@ import GrapeModal from "./GrapeModal";
 export default function AdminWinesTable() {
   const {
     query,
+    setQuery,
     winesData,
     setWinesData,
     grapesData,
@@ -101,6 +102,7 @@ export default function AdminWinesTable() {
       isOpen: false,
       data: "",
     });
+    setQuery("");
   };
 
   // --- Gestion de la suppression ---
