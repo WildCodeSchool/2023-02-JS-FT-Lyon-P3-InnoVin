@@ -3,6 +3,7 @@ import AdminNav from "../components/AdminNav";
 import { useAdminContext } from "../contexts/AdminContext";
 import AdminWinesTable from "../components/AdminWinesTable";
 import AdminUsersTable from "../components/AdminUsersTable";
+import AdminSessionsTable from "../components/AdminSessionsTable";
 
 export default function Admin() {
   const { nav } = useAdminContext();
@@ -31,6 +32,7 @@ export default function Admin() {
       >
         {nav === "users" && <AdminUsersTable />}
         {nav === "wines" && <AdminWinesTable />}
+        {nav === "sessions" && <AdminSessionsTable />}
       </Box>
     </div>
   );
