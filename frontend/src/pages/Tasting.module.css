@@ -1,5 +1,14 @@
-.tastingPic {
-  width: auto;
-  height: 90%;
-  margin: auto;
-}
+  .tastingPic {
+    width: auto;
+    height: 90%;
+    margin: auto;
+  }
+
+  @media screen and (min-width: 900px) { 
+
+    .tastingPic {
+      width: auto;
+      height: 100%;
+      margin: auto;
+    }
+  }

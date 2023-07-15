@@ -1,10 +1,9 @@
 import { Box } from "@mui/system";
-import { Button } from "@mui/material";
-import SearchBar from "../components/SearchBar";
 import AdminNav from "../components/AdminNav";
 import { useAdminContext } from "../contexts/AdminContext";
 import AdminWinesTable from "../components/AdminWinesTable";
 import AdminUsersTable from "../components/AdminUsersTable";
+import AdminSessionsTable from "../components/AdminSessionsTable";
 
 export default function Admin() {
   const { nav } = useAdminContext();
@@ -23,21 +22,6 @@ export default function Admin() {
       <AdminNav />
       <Box
         sx={{
-          width: 1,
-          maxWidth: "900px",
-          height: 0.1,
-          display: "flex",
-          justifyContent: "space-evenly",
-          alignItems: "center",
-        }}
-      >
-        <SearchBar />
-        <Button variant="contained" sx={{ width: 0.2, minWidth: 80 }}>
-          Ajouter
-        </Button>
-      </Box>
-      <Box
-        sx={{
           width: 0.9,
           maxWidth: "900px",
           height: 0.65,
@@ -48,6 +32,7 @@ export default function Admin() {
       >
         {nav === "users" && <AdminUsersTable />}
         {nav === "wines" && <AdminWinesTable />}
+        {nav === "sessions" && <AdminSessionsTable />}
       </Box>
     </div>
   );

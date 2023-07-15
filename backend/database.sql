@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `address` VARCHAR(80) NULL,
   `postcode` INT NULL, 
   `city` VARCHAR(45) NULL,
-  `role` VARCHAR(45) DEFAULT 'User',
+  `role` VARCHAR(45) DEFAULT 'Utilisateur',
   PRIMARY KEY (`id`),
 
   CONSTRAINT `fk_user_aroma`
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 ENGINE = InnoDB;
 
 INSERT INTO user (aroma_id, flavour_id, type_id, firstname, lastname, birthdate, email, hashed_password, address, postcode, city, role) 
-VALUES (1, 1, 1, "Yann", "Richard", "1989-07-12", "yann.richard9@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$cXFnN2s1ZHU0aTAwMDAwMA$XFP3Vrp4/huxiy9p4p2EAw", "Rue de l'exemple", 69000, "Lyon", "User"),
+VALUES (1, 1, 1, "Yann", "Richard", "1989-07-12", "yann.richard9@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$cXFnN2s1ZHU0aTAwMDAwMA$XFP3Vrp4/huxiy9p4p2EAw", "Rue de l'exemple", 69000, "Lyon", "Utilisateur"),
 (2, 2, 2, "Cédric", "Boriat", "1982-06-25", "cedric@exemple.com", "$argon2id$v=19$m=12,t=2,p=1$bXFkenRzdmVmM2EwMDAwMA$W8Njzcn6wAiAJEETUHmkSQ", "Rue de l'exemple", 48000, "Mende", "Admin");
 
 -- -----------------------------------------------------
@@ -89,10 +89,16 @@ INSERT INTO country (name) VALUES ('France'), ('Suisse'), ('Italie'), ('Argentin
 CREATE TABLE IF NOT EXISTS `region` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(80) NOT NULL,
-  PRIMARY KEY (`id`))
+  `country_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+
+  CONSTRAINT `fk_region_country`
+    FOREIGN KEY (`country_id`)
+    REFERENCES `country` (`id`))
+
 ENGINE = InnoDB;
 
-INSERT INTO region (name) VALUES ('Bordeaux'), ('Beaujolais'), ('Bourgogne'), ('Sud-Ouest'), ('Vallée du Rhône'), ('Vallée de la Loire'), ('Alsace'), ('Vaud'), ('Provence'), ('Languedoc'), ('Toscane'), ('Mendoza');
+INSERT INTO region (name, country_id) VALUES ('Bordeaux', 1), ('Beaujolais', 1), ('Bourgogne', 1), ('Sud-Ouest', 1), ('Vallée du Rhône', 1), ('Vallée de la Loire', 1), ('Alsace', 1), ('Vaud', 2), ('Provence', 1), ('Languedoc', 1), ('Toscane', 3), ('Mendoza', 4);
 
 -- -----------------------------------------------------
 -- Table `domain`
@@ -100,64 +106,70 @@ INSERT INTO region (name) VALUES ('Bordeaux'), ('Beaujolais'), ('Bourgogne'), ('
 CREATE TABLE IF NOT EXISTS `domain` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(80) NULL,
-  PRIMARY KEY (`id`))
+  `region_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+
+ CONSTRAINT `fk_domain_region`
+    FOREIGN KEY (`region_id`)
+    REFERENCES `region` (`id`))
+
 ENGINE = InnoDB;
 
-INSERT INTO domain (name)
+INSERT INTO domain (name, region_id)
 VALUES
-    ('Château Margaux'),
-    ('Château Lafite Rothschild'),
-    ('Château Latour'),
-    ("Domaine de la Grand'Cour"),
-    ('Domaine Marcel Lapierre'),
-    ('Domaine Jean Foillard'),
-    ('Domaine de la Romanée-Conti'),
-    ('Domaine Leroy'),
-    ('Domaine Armand Rousseau'),
-    ('Château Pétrus'),
-    ('Château Le Pin'),
-    ('Château Angélus'),
-    ('Domaine Le Roc'),
-    ('Château Boujac'),
-    ('Domaine Ribiera'),
-    ('Domaine Jean-Louis Chave'),
-    ('Guigal'),
-    ('Chapoutier'),
-    ('Domaine Leflaive'),
-    ('Domaine Coche-Dury'),
-    ('Bouchard Père & Fils'),
-    ('Domaine Huet'),
-    ('Domaine des Baumard'),
-    ('François Chidaine'),
-    ('Domaine Didier Dagueneau'),
-    ('Pascal Jolivet'),
-    ('Henri Bourgeois'),
-    ('Château Rayas'),
-    ('Domaine de la Mordorée'),
-    ('Clos des Papes'),
-    ('Trimbach'),
-    ('Domaine Zind-Humbrecht'),
-    ('Albert Mann'),
-    ('Domaine Roulot'),
-    ('Domaine Prieur-Brunet'),
-    ('Domaine Henri Cruchon'),
-    ('Domaine du Daley'), 
-    ('Cave de la Côte'), 
-    ('Château Coutet'), 
-    ('Château de Malle'), 
-    ('Château de Rayne Vigneau'), 
-    ('Domaine de la Bastide Blanche'), 
-    ('Domaine de la Marotte'), 
-    ('Domaines Ott'), 
-    ('Domaine de la Vallongue'), 
-    ("Domaine de l'Hermitage"), 
-    ("Domaine de la Marfée"), 
-    ('Tenuta La Fuga'), 
-    ('Podere II Palazzino'), 
-    ("Villa Sant'Anna"), 
-    ('Domaine de la Vallée'), 
-    ('Vina del Sol'), 
-    ('Domaine de la Roseraie') ;
+    ('Château Margaux', 1),
+    ('Château Lafite Rothschild', 1),
+    ('Château Latour', 1),
+    ("Domaine de la Grand'Cour", 2),
+    ('Domaine Marcel Lapierre', 2),
+    ('Domaine Jean Foillard', 2),
+    ('Domaine de la Romanée-Conti', 3),
+    ('Domaine Leroy', 3),
+    ('Domaine Armand Rousseau', 3),
+    ('Château Pétrus', 1),
+    ('Château Le Pin', 1),
+    ('Château Angélus', 1),
+    ('Domaine Le Roc', 4),
+    ('Château Boujac', 4),
+    ('Domaine Ribiera', 4),
+    ('Domaine Jean-Louis Chave', 5),
+    ('Guigal', 5),
+    ('Chapoutier', 5),
+    ('Domaine Leflaive', 3),
+    ('Domaine Coche-Dury', 3),
+    ('Bouchard Père & Fils', 3),
+    ('Domaine Huet', 6),
+    ('Domaine des Baumard', 6),
+    ('François Chidaine', 6),
+    ('Domaine Didier Dagueneau', 6),
+    ('Pascal Jolivet', 6),
+    ('Henri Bourgeois', 6),
+    ('Château Rayas', 5),
+    ('Domaine de la Mordorée', 5),
+    ('Clos des Papes', 5),
+    ('Trimbach', 7),
+    ('Domaine Zind-Humbrecht', 7),
+    ('Albert Mann', 7),
+    ('Domaine Roulot', 3),
+    ('Domaine Prieur-Brunet', 3),
+    ('Domaine Henri Cruchon', 8),
+    ('Domaine du Daley', 8), 
+    ('Cave de la Côte', 8), 
+    ('Château Coutet', 1), 
+    ('Château de Malle', 1), 
+    ('Château de Rayne Vigneau', 1), 
+    ('Domaine de la Bastide Blanche', 9), 
+    ('Domaine de la Marotte', 9), 
+    ('Domaines Ott', 9), 
+    ('Domaine de la Vallongue', 9), 
+    ("Domaine de l'Hermitage", 9), 
+    ("Domaine de la Marfée", 10), 
+    ('Tenuta La Fuga', 11), 
+    ('Podere II Palazzino', 11), 
+    ("Villa Sant'Anna", 11), 
+    ('Domaine de la Vallée', 4), 
+    ('Vina del Sol', 12), 
+    ('Domaine de la Roseraie', 10) ;
 
 -- -----------------------------------------------------
 -- Table `grape_variety`
@@ -171,24 +183,24 @@ ENGINE = InnoDB;
 
 INSERT INTO grape_variety (name, picture) 
 VALUES 
-("Cabernet Sauvignon", "https://upload.wikimedia.org/wikipedia/commons/a/a7/Lithographie_de_Cabernet_Sauvignon.jpg?uselang=fr"),
-("Gamay", "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Gamay_Fr%C3%A9aux_-_Amp%C3%A9lographie.jpg/640px-Gamay_Fr%C3%A9aux_-_Amp%C3%A9lographie.jpg"),
-("Pinot Noir", "https://upload.wikimedia.org/wikipedia/commons/1/12/Lithographie_du_Pinot_noir.jpg?uselang=fr"),
-("Merlot", "https://upload.wikimedia.org/wikipedia/commons/2/26/Merlot_-_Ampl%C3%A9lographie.jpg?uselang=fr"),
-("Négrette", "https://upload.wikimedia.org/wikipedia/commons/d/d6/N%C3%A9grette_-_Amp%C3%A9lographie.jpg?uselang=fr"),
-("Syrah", "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Syrah_-_Amp%C3%A9lographie.jpg/640px-Syrah_-_Amp%C3%A9lographie.jpg"),
-("Chardonnay", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Pinot_blanc_Chardonnay_-_Amp%C3%A9lographie.jpg/600px-Pinot_blanc_Chardonnay_-_Amp%C3%A9lographie.jpg?20191120131539"),
-("Chenin", "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Chenin_blanc_-_Amp%C3%A9lographie.jpg/605px-Chenin_blanc_-_Amp%C3%A9lographie.jpg?20191120151219"),
-("Sauvignon", "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Sauvignon_-_Amp%C3%A9lographie.jpg/605px-Sauvignon_-_Amp%C3%A9lographie.jpg?20191120173240"), 
-("Grenache", "https://upload.wikimedia.org/wikipedia/commons/b/bd/Grenache_N.jpg?uselang=fr"),
-("Riesling", "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Riesling_-_Amp%C3%A9lographie.jpg/605px-Riesling_-_Amp%C3%A9lographie.jpg?20191120145753"),
-("Aligoté", "https://upload.wikimedia.org/wikipedia/commons/b/b3/Aligot%C3%A9_Viala_Vermorel.jpg"),
-("Chasselas", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Chasselas_dor%C3%A9_-_Amp%C3%A9lographie.jpg/605px-Chasselas_dor%C3%A9_-_Amp%C3%A9lographie.jpg?20191120183439"), 
-("Muscadelle", "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Muscadelle_-_Amp%C3%A9lographie.jpg/605px-Muscadelle_-_Amp%C3%A9lographie.jpg?20191125103251"),
-("Mourvèdre", "https://upload.wikimedia.org/wikipedia/commons/0/08/Mourv%C3%A8dre_-_Amp%C3%A9lographie.jpg?uselang=fr"), 
-("Cinsault", "https://upload.wikimedia.org/wikipedia/commons/8/8a/Cinsaut_-_Amp%C3%A9lographie.jpg"), 
-("Sangiovese", "https://upload.wikimedia.org/wikipedia/commons/c/cb/Nieluccio_-_Amp%C3%A9lographie.png"), 
-("Malbec", "https://upload.wikimedia.org/wikipedia/commons/a/a5/C%C3%B4t_-_Amp%C3%A9lographie.jpg"); 
+("Cabernet Sauvignon", "https://i.goopics.net/2avy00.png"),
+("Gamay", "https://i.goopics.net/e633oh.png"),
+("Pinot Noir", "https://i.goopics.net/nqpwlc.png"),
+("Merlot", "https://i.goopics.net/8b3ruk.png"),
+("Négrette", "https://i.goopics.net/kemfxb.png"),
+("Syrah", "https://i.goopics.net/ltkeci.png"),
+("Chardonnay", "https://i.goopics.net/hdadve.png"),
+("Chenin", "https://i.goopics.net/su717j.png"),
+("Sauvignon", "https://i.goopics.net/6nqsrs.png"), 
+("Grenache", "https://i.goopics.net/cbl6ny.png"),
+("Riesling", "https://i.goopics.net/3lfdpx.png"),
+("Aligoté", "https://i.goopics.net/93z37d.png"),
+("Chasselas", "https://i.goopics.net/9yppkj.png"), 
+("Muscadelle", "https://i.goopics.net/tczok4.png"),
+("Mourvèdre", "https://i.goopics.net/oa7pmt.png"), 
+("Cinsault", "https://i.goopics.net/rbosaf.png"), 
+("Sangiovese", "https://i.goopics.net/lear5e.png"), 
+("Malbec", "https://i.goopics.net/qhs467.png"); 
 
 -- -----------------------------------------------------
 -- Table `wine`
@@ -257,7 +269,7 @@ INSERT INTO wine (country_id, region_id, type_id, domain_id, grape_variety_id, f
 	(1, 3, 1, 19, 7, 2, 1, 'Puligny-Montrachet Les Pucelles', 2017),
 	(1, 3, 1, 20, 7, 2, 2, 'Corton-Charlemagne Grand Cru', 2016),
 	(1, 3, 1, 21, 7, 2, 7, 'Meursault Genevrières 1er Cru', 2015),
-	(1, 6, 1, 22, 8, 5, 1, 'Vouvray Clos du Bourg Moelleux Première Trie', 2017),
+	(1, 6, 1, 22, 8, 5, 1, 'Vouvray Clos du Bourg Première Trie', 2017),
 	(1, 6, 1, 23, 8, 5, 3, 'Quarts de Chaume', 2016),
 	(1, 6, 1, 24, 8, 5, 7, 'Montlouis-sur-Loire Clos Baudoin', 2019),
 	(1, 6, 1, 25, 9, 1, 1, 'Pouilly-Fumé Silex', 2017),
@@ -267,7 +279,7 @@ INSERT INTO wine (country_id, region_id, type_id, domain_id, grape_variety_id, f
 	(1, 5, 2, 29, 10, 2, 5, 'La Reine des Bois Lirac', 2016),
 	(1, 5, 2, 30, 10, 2, 7, 'Châteauneuf-du-Pape', 2015),
 	(1, 7, 1, 31, 11, 1, 1, 'Clos Ste Hune Riesling', 2014),
-	(1, 7, 1, 32, 11, 1, 7, 'Riesling Rangen de Thann Clos Saint Urbain Grand Cru', 2016),
+	(1, 7, 1, 32, 11, 1, 7, 'Rangen de Thann Clos Saint Urbain', 2016),
 	(1, 7, 1, 33, 11, 1, 7, 'Riesling Schlossberg Grand Cru', 2015),
 	(1, 3, 1, 34, 12, 1, 1, 'Bourgogne Aligoté', 2018),
 	(1, 3, 1, 35, 12, 1, 7, 'Bourgogne Aligoté', 2019),
@@ -416,11 +428,13 @@ CREATE TABLE IF NOT EXISTS `session_has_wine` (
 
   CONSTRAINT `fk_session_has_wine_session`
     FOREIGN KEY (`session_id`)
-    REFERENCES `session` (`id`),
+    REFERENCES `session` (`id`)
+    ON DELETE CASCADE,
 
   CONSTRAINT `fk_session_has_wine_wine`
     FOREIGN KEY (`wine_id`)
-    REFERENCES `wine` (`id`))
+    REFERENCES `wine` (`id`)
+    ON DELETE CASCADE)
 
 ENGINE = InnoDB;
  INSERT INTO session_has_wine (session_id, wine_id) VALUE 
@@ -430,7 +444,7 @@ ENGINE = InnoDB;
  (1, 43), 
  (2, 20), 
  (2, 22), 
- (2, 3), 
+ (2, 10), 
  (2, 44), 
  (3, 4), 
  (3, 22), 

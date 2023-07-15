@@ -6,8 +6,13 @@ const AdminContext = createContext();
 export default AdminContext;
 
 export function AdminContextProvider({ children }) {
+  // Nav
   const [nav, setNav] = useState("users");
+  // Search
+  const [query, setQuery] = useState("");
+  // Users
   const [usersData, setUsersData] = useState([]);
+  // Wines
   const [winesData, setWinesData] = useState([]);
   const [grapesData, setGrapesData] = useState([]);
   const [typesData, setTypesData] = useState([]);
@@ -16,11 +21,14 @@ export function AdminContextProvider({ children }) {
   const [domainsData, setDomainsData] = useState([]);
   const [regionsData, setRegionsData] = useState([]);
   const [countriesData, setCountriesData] = useState([]);
+  const [sessionsData, setSessionsData] = useState([]);
 
   const memo = useMemo(() => {
     return {
       nav,
       setNav,
+      query,
+      setQuery,
       usersData,
       setUsersData,
       winesData,
@@ -39,9 +47,12 @@ export function AdminContextProvider({ children }) {
       setRegionsData,
       countriesData,
       setCountriesData,
+      sessionsData,
+      setSessionsData,
     };
   }, [
     nav,
+    query,
     usersData,
     winesData,
     grapesData,
@@ -51,6 +62,7 @@ export function AdminContextProvider({ children }) {
     domainsData,
     regionsData,
     countriesData,
+    sessionsData,
   ]);
 
   return <AdminContext.Provider value={memo}>{children}</AdminContext.Provider>;
