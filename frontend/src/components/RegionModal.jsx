@@ -123,9 +123,13 @@ export default function RegionModal({
 
   const processRowUpdate = useCallback(async (newRow) => {
     try {
+      // Avant tout chose, validateurs
+      await RegionService.regionSchema.validate(newRow);
+      // Si c'est un ajout, l'id est une string et on utilise cette particularité pour déclencher un insert au lieu d'un update
       if (typeof newRow.id === "string") {
-        // Si c'est un ajout, l'id est une string et on utilise cette particularité pour déclencher un insert au lieu d'un update
+        // Post
         await RegionService.addRegion(newRow);
+        // Refetch des données pour update le display
         regionsDataUpdate();
         winesDataUpdate();
         toast.success(`${newRow.name} a bien été enregistré`, {
@@ -155,7 +159,17 @@ export default function RegionModal({
       });
       return newRow;
     } catch (err) {
-      return console.error("Update failed");
+      console.error("Update failed", err);
+      return toast.error(`${err}`.split(" ").slice(1).join(" "), {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   });
 

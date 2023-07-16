@@ -195,6 +195,8 @@ export default function AdminWinesTable() {
 
   const processRowUpdate = useCallback(async (newRow) => {
     try {
+      // Avant tout chose, validateurs
+      await WineService.wineSchema.validate(newRow);
       if (typeof newRow.id === "string") {
         // Si c'est un ajout, l'id est une string et on utilise cette particularité pour déclencher un insert au lieu d'un update
         await WineService.addWine(newRow);
@@ -224,7 +226,17 @@ export default function AdminWinesTable() {
       });
       return newRow;
     } catch (err) {
-      return console.error("Update failed");
+      console.error("Update failed", err);
+      return toast.error(`${err}`.split(" ").slice(1).join(" "), {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   });
 
