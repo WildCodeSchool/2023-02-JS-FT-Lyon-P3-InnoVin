@@ -10,6 +10,7 @@ export function SessionContextProvider({ children }) {
   const [sessionId, setSessionId] = useState();
   const [sessionWines, setSessionWines] = useState([]);
   const [sessionGrapes, setSessionGrapes] = useState([]);
+  const [recipeId, setRecipeId] = useState();
 
   const memo = useMemo(() => {
     return {
@@ -19,8 +20,10 @@ export function SessionContextProvider({ children }) {
       setSessionWines,
       sessionGrapes,
       setSessionGrapes,
+      recipeId,
+      setRecipeId,
     };
-  }, [sessionId, sessionWines, sessionGrapes]);
+  }, [sessionId, sessionWines, sessionGrapes, recipeId]);
 
   return (
     <SessionContext.Provider value={memo}>{children}</SessionContext.Provider>

@@ -12,12 +12,9 @@ export function UserContextProvider({ children }) {
   const [userPick, setUserPick] = useState(null);
   const [preferredWines, setPreferredWines] = useState();
 
-  const logout = async () => {
-    try {
-      setUser({});
-    } catch (error) {
-      console.error(error);
-    }
+  const logout = () => {
+    setUser({});
+    localStorage.removeItem("user");
   };
 
   const login = (_user) => {

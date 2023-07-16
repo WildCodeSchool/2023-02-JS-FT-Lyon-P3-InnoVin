@@ -1,0 +1,220 @@
+/*image bouteille*/
+.wineBottle img {
+  width: 500px;
+  height: 700px;
+  margin-left: -100px;
+  margin-top: -8px;
+}
+
+.wineBottle {
+  position: absolute;
+  z-index: 1;
+  margin-top: 30px;
+}
+/* titre page*/
+.title-style{
+  text-align: center;
+}
+/*page hors titre et logo*/
+.pageContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-top: -30px;
+  height: 70vh;
+  margin-bottom: -60px;
+}
+/* slider dans bouteille pour avec couleur*/
+.vertical-slider {
+  height: 428px;
+  width: 158px;
+  border-radius: 30px 30px 20px 20px;
+  z-index: 0;
+  margin-left: 73px;
+  margin-top: 250px;
+  background-color: #981448;
+}
+
+.vertical-slider .example-track {
+  left: 20px;
+  width: 10px;
+}
+.example-track.example-track-0 {
+  background: #4a0019;
+  width: 100%;
+  margin-left: -20px;
+  border-radius: 0px 0px 25px 25px;
+}
+.example-track.example-track-1 {
+  background: #50032b;
+  width: 100%;
+  margin-left: -20px;
+  border-radius: 18px 18px 10px 10px;
+}
+/* slider vertical lié au slider dans bouteille*/
+.vertical-slider-image {
+  background-color: #fffdcc;
+  width: 2px;
+  height: 370px;
+  margin-top: 280px;
+  margin-left: 180px;
+  display: flex;
+}
+.vertical-slider-image .max-value {
+  margin-top: -60px;
+  margin-left: -10px;
+  display: flex;
+}
+.vertical-slider-image .min-value {
+  margin-top: 400px;
+  margin-left: -50px;
+}
+.value-container{
+  display: flex;
+  flex-direction: row;
+}
+/*boutons pour définir le dosage sur le slider */
+.example-thumb {
+  width: 30px;
+  height: 30px;
+  margin-left: 325px;
+  text-align: center;
+  background-color: #fffdcc;
+  border-radius: 50%;
+}
+
+/* description des 3 vins */
+.totalWinesContainer {
+  height: 40vh;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-top: 220px;
+  margin-left: 50px;
+}
+.totalWinesContainer p {
+  font-size: 1.7rem;
+  font-family: "EB Garamond";
+  padding-top: 10px;
+}
+
+
+/* infobulles */
+
+.tooltip-button {
+  background-color: transparent;
+  border: none;
+}
+
+.tooltip-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 1.3rem;
+  margin-top: 20px;
+  
+}
+.tooltip-content p {
+  margin-top: -10px;
+}
+
+/* bouton submit*/
+.button-style {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -70px;
+}
+.button-description{
+  width: 280px;
+  padding-left: 15px;
+  padding-bottom: 10px;
+  font-size: 1 rem;
+  text-align: center;
+}
+
+/* input nom de la recette */
+.input-container{
+  align-items: flex-end;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  
+  z-index: 15;
+}
+.input-container input{
+  height: 73px;
+  width: 350px;
+  background-color: #fffdcc;
+  border-radius: 10px;
+  font-size: 1.7rem;
+  padding: 10px;
+}
+.input-container input::placeholder{
+color: #202020;
+}
+
+@media screen and (min-aspect-ratio: 1/1) {
+  .wineBottle img {
+    margin-top: -110px;
+  }
+  .vertical-slider {
+    margin-top: 150px;
+ 
+  }
+  .vertical-slider-image {
+    margin-left: 350px;
+
+    margin-top: 180px;
+  
+    
+  }
+  .totalWinesContainer {
+    height: 45vh;
+    width: 300px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 150px;
+    margin-left: 120px;
+  }
+.wine-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-left: -400px;
+  z-index: 20;
+}
+.wine3-container{
+  align-items: center;
+  display: flex;
+  margin-right: 20px;
+  flex-direction: column;
+  justify-content: center;
+}
+.button-style {
+  margin-top: -85px;
+  margin-left: 500px
+}
+.button-description{
+  width: 210px;
+  margin-left: 950px;
+  margin-top: 0px;
+}
+.example-thumb {
+  width: 30px;
+  height: 30px;
+  margin-left:495px;
+  text-align: center;
+  background-color: #fffdcc;
+  border-radius: 50%;
+}
+.input-title{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  margin-left: 250px;
+}
+}

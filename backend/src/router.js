@@ -4,7 +4,7 @@ const router = express.Router();
 
 const { validateLogin } = require("./validators");
 
-const { verifyPassword } = require("./services/auth");
+const { verifyPassword, verifyToken, logout } = require("./services/auth");
 
 const { getUserByEmailMiddleWare } = require("./controllers/authControllers");
 
@@ -26,7 +26,7 @@ router.post(
   getWinesBySessionIdMiddleWare,
   getGrapesBySessionIdMiddleWare
 );
-
+router.get("/logout", verifyToken, logout);
 const itemControllers = require("./controllers/itemControllers");
 
 router.get("/items", itemControllers.browse);
