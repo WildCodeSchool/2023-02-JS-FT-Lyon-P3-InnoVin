@@ -1,10 +1,14 @@
 import { Box, Typography, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.svg";
 import { useUserContext } from "../contexts/UserContext";
 import GrapeCard from "../components/GrapeCard";
 
 export default function TastingProfile() {
   const { preferredWines } = useUserContext();
+  const navigate = useNavigate();
+  const handleClick = () => navigate("/tasting/recipe");
+
   return (
     <div>
       <Box flexDirection="row" display="flex" marginBottom="1rem">
@@ -56,24 +60,24 @@ export default function TastingProfile() {
             aroma={wine.aroma}
           />
         ))}
+        <Button
+          variant="contained"
+          size="large"
+          onClick={handleClick}
+          sx={{
+            p: 2,
+            margin: "0 auto",
+            display: "flex",
+            width: "30vw",
+            borderRadius: 2,
+            fontSize: "calc(0.6rem + 1vmin)",
+            color: "white",
+          }}
+        >
+          {" "}
+          Atelier de création{" "}
+        </Button>
       </Box>
-      <Button
-        variant="contained"
-        size="large"
-        sx={{
-          p: 2,
-          margin: "auto",
-          marginBottom: "3rem",
-          display: "flex",
-          width: "30vw",
-          borderRadius: 2,
-          fontSize: "calc(0.6rem + 1vmin)",
-          color: "white",
-        }}
-      >
-        {" "}
-        Atelier de création{" "}
-      </Button>
     </div>
   );
 }
