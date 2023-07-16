@@ -7,8 +7,18 @@ class RecipeHasWineManager extends AbstractManager {
 
   insert(recipehaswine) {
     return this.database.query(
-      `insert into ${this.table} (recipe_id, wine_id, dosage) values (?, ?, ?)`,
-      [recipehaswine.recipe_id, recipehaswine.wine_id, recipehaswine.dosage]
+      `insert into ${this.table} (recipe_id, wine_id, dosage) values (?, ?, ?), (?, ?, ?),(?, ?, ?)`,
+      [
+        recipehaswine.recipe_id,
+        recipehaswine.wine_id1,
+        recipehaswine.dosage1,
+        recipehaswine.recipe_id,
+        recipehaswine.wine_id2,
+        recipehaswine.dosage2,
+        recipehaswine.recipe_id,
+        recipehaswine.wine_id3,
+        recipehaswine.dosage3,
+      ]
     );
   }
 

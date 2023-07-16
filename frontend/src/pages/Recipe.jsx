@@ -27,15 +27,13 @@ export default function Recipe() {
   const userContext = useUserContext();
   const sessionContext = useSessionContext();
   const navigate = useNavigate();
-  // const { logout } = useUserContext();
+  const { logout } = useUserContext();
 
   const style = {
     button: {
       p: 2,
       width: 0.3,
       borderRadius: 2,
-      marginBottom: 5,
-      marginTop: 5,
     },
   };
   const [recipeName, setRecipeName] = useState("");
@@ -44,7 +42,11 @@ export default function Recipe() {
     setRecipeName(event.target.value);
     setIsRecipeName(event.target.value !== "");
   };
-
+  const handleLogout = () => {
+    logout();
+    toast.success("Déconnexion réussie !");
+    navigate("/login");
+  };
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!isRecipeName) {
@@ -63,7 +65,6 @@ export default function Recipe() {
       } else {
         try {
           await APIService.post(`/recipe`, recipeData);
-          toast.success("recette postée!");
 
           const response = await axios.get(`${apiBaseUrl}/recipes`);
           const recipes = response.data;
@@ -75,30 +76,24 @@ export default function Recipe() {
           console.log(response.data);
           console.log(lastRecipe);
           console.log(lastRecipeId);
-          const wineData = [
-            {
-              recipe_id: lastRecipeId,
-              wine_id: preferredWines[0].wineName,
-              dosage: totalWine1,
-            },
-            {
-              recipe_id: lastRecipeId,
-              wine_id: preferredWines[1].wineName,
-              dosage: totalWine2,
-            },
-            {
-              recipe_id: lastRecipeId,
-              wine_id: preferredWines[2].wineName,
-              dosage: totalWine3,
-            },
-          ];
-
-          await APIService.post(`/recipehaswine`, wineData);
+     
+          const singleWineData = {
+            recipe_id: lastRecipeId,
+            wine_id1: preferredWines[0].wineId,
+            dosage1: totalWine1,
+            wine_id2: preferredWines[1].wineId,
+            dosage2: totalWine2,
+            wine_id3: preferredWines[2].wineId,
+            dosage3: totalWine3,
+          };
+          console.log(singleWineData)
+          await APIService.post(`/recipehaswine`, singleWineData);
           toast.success("Votre recette a bien été enregistrée ! 👍", {
             position: toast.POSITION.TOP_CENTER,
             autoClose: 2000,
           });
           setTimeout(() => {
+            handleLogout(); // Appel à la fonction handleLogout pour afficher le message de réussite du logout
             navigate("/login");
           }, 3000);
         } catch (error) {
@@ -106,13 +101,6 @@ export default function Recipe() {
             "Une erreur s'est produite lors de l'enregistrement des vins de la recette !"
           );
           console.error(error);
-          // const handleLogout = () => {
-          // logout();
-          //  toast.success("Déconnexion réussie !");
-          //  navigate("/login");
-          //  };
-          //
-          // handleLogout();
         }
       }
     }
@@ -138,6 +126,7 @@ export default function Recipe() {
         </Typography>
       </Box>
       <Box>
+        <div className="title-style">
         <Typography
           variant="h4"
           sx={{
@@ -149,8 +138,9 @@ export default function Recipe() {
           }}
         >
           {" "}
-          Veuillez sélectionner les dosages{" "}
+          Veuillez sélectionner les dosages <br></br>et nommer votre recette {" "}
         </Typography>
+        </div>
       </Box>
       <div className="input-container">
         <input
@@ -232,8 +222,10 @@ export default function Recipe() {
               </div>
             </>
           )}
-        </div>
       </div>
+      </div>
+      <p  className="button-description">Cliquez sur le bouton pour enregistrer votre recette et terminer l'atelier.</p>     
+
       <div className="button-style">
         <Button
           type="submit"
