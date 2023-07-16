@@ -9,7 +9,6 @@ import {
   GridRowModes,
 } from "@mui/x-data-grid";
 import PropTypes from "prop-types";
-import { toast } from "react-toastify";
 import SearchBar from "./SearchBar";
 import { useAdminContext } from "../contexts/AdminContext";
 import CountryService from "../services/CountryService";
@@ -21,7 +20,7 @@ export default function CountryModal({
   setCountriesData,
   winesDataUpdate,
 }) {
-  const { query } = useAdminContext();
+  const { query, successToastTemplate, errorToastTemplate } = useAdminContext();
 
   const [rowModesModel, setRowModesModel] = useState({});
 
@@ -50,16 +49,7 @@ export default function CountryModal({
       // Met le state countrysData à jour après la suppression
       countriesDataUpdate();
       winesDataUpdate();
-      toast.success(`${deletedCountry[0].name} a été supprimé`, {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      successToastTemplate(`${deletedCountry[0].name} a été supprimé`);
     } catch (err) {
       console.error("Deletion failed :", err);
     }
@@ -135,44 +125,17 @@ export default function CountryModal({
         // Refetch des données pour update le display
         countriesDataUpdate();
         winesDataUpdate();
-        toast.success(`${newRow.name} a bien été enregistré`, {
-          position: "bottom-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        successToastTemplate(`${newRow.name} a bien été enregistré`);
         return newRow;
       }
       await CountryService.updateCountry(newRow);
       countriesDataUpdate();
       winesDataUpdate();
-      toast.success(`${newRow.name} a bien été mis à jour`, {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      successToastTemplate(`${newRow.name} a bien été mis à jour`);
       return newRow;
     } catch (err) {
       console.error("Update failed", err);
-      return toast.error(`${err}`.split(" ").slice(1).join(" "), {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      return errorToastTemplate(`${err}`.split(" ").slice(1).join(" "));
     }
   });
 

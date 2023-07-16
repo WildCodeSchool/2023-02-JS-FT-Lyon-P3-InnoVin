@@ -71,6 +71,12 @@ const wineSchema = yup.object({
     .integer()
     .typeError("Veuillez sélectionner une saveur dans la liste")
     .required("Veuillez sélectionner une saveur"),
+  type_id: yup
+    .number()
+    .positive()
+    .integer()
+    .typeError("Veuillez sélectionner un type dans la liste")
+    .required("Veuillez sélectionner un type"),
 });
 
 export default {

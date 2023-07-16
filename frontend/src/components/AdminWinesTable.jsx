@@ -8,7 +8,7 @@ import {
 import { Cancel, Delete, Edit, Save, Settings } from "@mui/icons-material";
 import { Box } from "@mui/system";
 import { Button, SpeedDial, SpeedDialAction } from "@mui/material";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { useAdminContext } from "../contexts/AdminContext";
 // --- Services ---
 import WineService from "../services/WineService";
@@ -45,6 +45,8 @@ export default function AdminWinesTable() {
     setRegionsData,
     countriesData,
     setCountriesData,
+    successToastTemplate,
+    errorToastTemplate,
   } = useAdminContext();
 
   const [rowModesModel, setRowModesModel] = useState({});
@@ -114,16 +116,7 @@ export default function AdminWinesTable() {
       await WineService.deleteWine(id);
       // Met le state winesData à jour après la suppression
       winesDataUpdate();
-      toast.success(`${deletedWine[0].name} a été supprimé`, {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      successToastTemplate(`${deletedWine[0].name} a été supprimé`);
     } catch (err) {
       console.error("Deletion failed :", err);
     }
@@ -205,65 +198,28 @@ export default function AdminWinesTable() {
 
   const processRowUpdate = useCallback(async (newRow) => {
     try {
+      // Avant tout chose, validateurs
+      await WineService.wineSchema.validate(newRow);
       if (checkGeographicCoherence(newRow)) {
-        // Avant tout chose, validateurs
-        await WineService.wineSchema.validate(newRow);
         // Si c'est un ajout, l'id est une string et on utilise cette particularité pour déclencher un insert au lieu d'un update
         if (typeof newRow.id === "string") {
           // Post
           await WineService.addWine(newRow);
           // Refetch des données pour update le display
           winesDataUpdate();
-          toast.success(`${newRow.name} a bien été enregistré`, {
-            position: "bottom-right",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
+          successToastTemplate(`${newRow.name} a bien été enregistré`);
           return newRow;
         }
         await WineService.updateWine(newRow);
-        toast.success(`${newRow.name} a bien été mis à jour`, {
-          position: "bottom-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        successToastTemplate(`${newRow.name} a bien été mis à jour`);
         return newRow;
       }
-      return toast.error(
-        "Le pays, la région et le domaine ne sont pas cohérents entre eux",
-        {
-          position: "bottom-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
+      return errorToastTemplate(
+        "Le pays, la région et le domaine ne sont pas cohérents entre eux"
       );
     } catch (err) {
       console.error("Update failed", err);
-      return toast.error(`${err}`.split(" ").slice(1).join(" "), {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      return errorToastTemplate(`${err}`.split(" ").slice(1).join(" "));
     }
   });
 

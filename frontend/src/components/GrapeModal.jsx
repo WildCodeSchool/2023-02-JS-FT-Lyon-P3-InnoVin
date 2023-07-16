@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from "react";
 import PropTypes from "prop-types";
-import { toast } from "react-toastify";
 import {
   DataGrid,
   GridActionsCellItem,
@@ -21,7 +20,7 @@ export default function GrapeModal({
   setGrapesData,
   winesDataUpdate,
 }) {
-  const { query } = useAdminContext();
+  const { query, successToastTemplate, errorToastTemplate } = useAdminContext();
 
   const [rowModesModel, setRowModesModel] = useState({});
 
@@ -48,16 +47,7 @@ export default function GrapeModal({
       // Met le state grapesData à jour après la suppression
       grapesDataUpdate();
       winesDataUpdate();
-      toast.success(`${deletedGrape[0].name} a été supprimé`, {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      successToastTemplate(`${deletedGrape[0].name} a été supprimé`);
     } catch (err) {
       console.error("Deletion failed :", err);
     }
@@ -134,44 +124,17 @@ export default function GrapeModal({
         // Refetch des données pour update le display
         grapesDataUpdate();
         winesDataUpdate();
-        toast.success(`${newRow.name} a bien été enregistré`, {
-          position: "bottom-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        successToastTemplate(`${newRow.name} a bien été enregistré`);
         return newRow;
       }
       await GrapeService.updateGrape(newRow);
       grapesDataUpdate();
       winesDataUpdate();
-      toast.success(`${newRow.name} a bien été mis à jour`, {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      successToastTemplate(`${newRow.name} a bien été mis à jour`);
       return newRow;
     } catch (err) {
       console.error("Update failed", err);
-      return toast.error(`${err}`.split(" ").slice(1).join(" "), {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      return errorToastTemplate(`${err}`.split(" ").slice(1).join(" "));
     }
   });
 
