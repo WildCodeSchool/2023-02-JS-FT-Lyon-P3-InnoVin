@@ -18,16 +18,19 @@ import { useSessionContext } from "../contexts/SessionContext";
 const apiBaseUrl = import.meta.env.VITE_BACKEND_URL;
 
 export default function Recipe() {
+  // Initialisation des valeurs des vins et calcul des dosages
   const [valueWine, setValueWine] = useState([50, 100]);
   const totalWine3 = valueWine[0] - 0;
   const totalWine2 = valueWine[1] - valueWine[0];
   const totalWine1 = 250 - valueWine[1];
 
+  // Récupération des informations des contexts liées à l'utilisateur et à la session
   const { preferredWines } = useUserContext();
   const userContext = useUserContext();
   const sessionContext = useSessionContext();
-  const navigate = useNavigate();
   const { logout } = useUserContext();
+
+  const navigate = useNavigate();
 
   const style = {
     button: {
@@ -36,48 +39,49 @@ export default function Recipe() {
       borderRadius: 2,
     },
   };
+
+  // Gestion du changement de nom de recette
   const [recipeName, setRecipeName] = useState("");
-  const [isRecipeName, setIsRecipeName] = useState(false);
   const handleRecipeNameChange = (event) => {
     setRecipeName(event.target.value);
-    setIsRecipeName(event.target.value !== "");
   };
+
+  // Fonction de déconnexion
   const handleLogout = () => {
     logout();
     toast.success("Déconnexion réussie !");
     navigate("/login");
   };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!isRecipeName) {
+    if (!recipeName) {
       toast.error("Veuillez entrer un nom pour la recette !");
     } else {
+      // Préparation des données de la recette à enregistrer
       const recipeData = {
         user_id: userContext.user.id,
         session_id: sessionContext.sessionId,
         name: recipeName,
       };
-
       if (!recipeData.user_id || !recipeData.session_id) {
         toast.error(
           "Les informations d'utilisateur ou de session sont manquantes !"
         );
       } else {
         try {
+          // Enregistrement des données de la recette dans la table "recipe"
           await APIService.post(`/recipe`, recipeData);
 
+          // Récupération des données de la recette enregistrée
           const response = await axios.get(`${apiBaseUrl}/recipes`);
+          // Récupération de l'ID de la dernière recette enregistrée
           const recipes = response.data;
           const lastRecipe = recipes[recipes.length - 1];
           const lastRecipeId = lastRecipe.id;
 
-          /* eslint-disable */
-
-          console.log(response.data);
-          console.log(lastRecipe);
-          console.log(lastRecipeId);
-     
-          const singleWineData = {
+          // Préparation des données des vins de la recette pour enregistrement
+          const wineData = {
             recipe_id: lastRecipeId,
             wine_id1: preferredWines[0].wineId,
             dosage1: totalWine1,
@@ -86,8 +90,9 @@ export default function Recipe() {
             wine_id3: preferredWines[2].wineId,
             dosage3: totalWine3,
           };
-          console.log(singleWineData)
-          await APIService.post(`/recipehaswine`, singleWineData);
+
+          // Enregistrement des vins de la recette dans la table "recipehaswine"
+          await APIService.post(`/recipehaswine`, wineData);
           toast.success("Votre recette a bien été enregistrée ! 👍", {
             position: toast.POSITION.TOP_CENTER,
             autoClose: 2000,
@@ -125,31 +130,34 @@ export default function Recipe() {
           Création{" "}
         </Typography>
       </Box>
-      <Box>
-        <div className="title-style">
-        <Typography
-          variant="h4"
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            color: "primary.contrastText",
-            fontSize: "calc(2rem + 1vmin)",
-          }}
-        >
-          {" "}
-          Veuillez sélectionner les dosages <br></br>et nommer votre recette {" "}
-        </Typography>
+      <div className="input-title">
+        <Box>
+          <div className="title-style">
+            <Typography
+              variant="h4"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                color: "primary.contrastText",
+                fontSize: "calc(2rem + 1vmin)",
+              }}
+            >
+              {" "}
+              Veuillez sélectionner les dosages <br />
+              et nommer votre recette{" "}
+            </Typography>
+          </div>
+        </Box>
+        <div className="input-container">
+          <input
+            type="text"
+            id="recipeName"
+            placeholder="Nom de la recette"
+            name="recipeName"
+            onChange={handleRecipeNameChange}
+          />
         </div>
-      </Box>
-      <div className="input-container">
-        <input
-          type="text"
-          id="recipeName"
-          placeholder="Nom de la recette"
-          name="recipeName"
-          onChange={handleRecipeNameChange}
-        />
       </div>
       <div className="pageContainer">
         <div className="wineBottle">
@@ -184,47 +192,54 @@ export default function Recipe() {
         <div className="totalWinesContainer">
           {preferredWines && preferredWines.length >= 3 && (
             <>
-              <div className="tooltip-content">
-                <ClickAwayListener>
-                  <Tooltip
-                    imageSrc={info}
-                    aroma={preferredWines[0].aroma}
-                    flavour={preferredWines[0].flavour}
-                  />
-                </ClickAwayListener>
-                <p>
-                  {preferredWines[0].grapeName} <br /> {totalWine1} mL
-                </p>
+              <div className="wine-container">
+                <div className="tooltip-content">
+                  <ClickAwayListener>
+                    <Tooltip
+                      imageSrc={info}
+                      aroma={preferredWines[0].aroma}
+                      flavour={preferredWines[0].flavour}
+                    />
+                  </ClickAwayListener>
+                  <p>
+                    {preferredWines[0].grapeName} <br /> {totalWine1} mL
+                  </p>
+                </div>
+                <div className="tooltip-content">
+                  <ClickAwayListener>
+                    <Tooltip
+                      imageSrc={info}
+                      aroma={preferredWines[1].aroma}
+                      flavour={preferredWines[1].flavour}
+                    />
+                  </ClickAwayListener>
+                  <p>
+                    {preferredWines[1].grapeName} <br /> {totalWine2} mL
+                  </p>
+                </div>
               </div>
-              <div className="tooltip-content">
-                <ClickAwayListener>
-                  <Tooltip
-                    imageSrc={info}
-                    aroma={preferredWines[1].aroma}
-                    flavour={preferredWines[1].flavour}
-                  />
-                </ClickAwayListener>
-                <p>
-                  {preferredWines[1].grapeName} <br /> {totalWine2} mL
-                </p>
-              </div>
-              <div className="tooltip-content">
-                <ClickAwayListener>
-                  <Tooltip
-                    imageSrc={info}
-                    aroma={preferredWines[2].aroma}
-                    flavour={preferredWines[2].flavour}
-                  />
-                </ClickAwayListener>
-                <p>
-                  {preferredWines[2].grapeName} <br /> {totalWine3} mL
-                </p>
+              <div className="wine3-container">
+                <div className="tooltip-content">
+                  <ClickAwayListener>
+                    <Tooltip
+                      imageSrc={info}
+                      aroma={preferredWines[2].aroma}
+                      flavour={preferredWines[2].flavour}
+                    />
+                  </ClickAwayListener>
+                  <p>
+                    {preferredWines[2].grapeName} <br /> {totalWine3} mL
+                  </p>
+                </div>
               </div>
             </>
           )}
+        </div>
       </div>
-      </div>
-      <p  className="button-description">Cliquez sur le bouton pour enregistrer votre recette et terminer l'atelier.</p>     
+      <p className="button-description">
+        Cliquez sur le bouton pour enregistrer votre recette et terminer
+        l'atelier.
+      </p>
 
       <div className="button-style">
         <Button

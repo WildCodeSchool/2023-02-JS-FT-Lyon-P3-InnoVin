@@ -31,3 +31,10 @@
   width: 40px;
   height: 40px;
 }
+@media screen and (min-aspect-ratio: 1/1) {
+  .tooltip {
+    margin-left: 50px;
+    background-color: #202020;
+  
+  }
+}

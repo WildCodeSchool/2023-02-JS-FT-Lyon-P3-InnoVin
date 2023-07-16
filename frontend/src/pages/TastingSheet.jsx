@@ -35,7 +35,7 @@ export default function TastingSheet() {
       [name]: selectedValue,
     }));
   };
-  /*
+
   function canBeSubmit() {
     if (
       value.color &&
@@ -51,7 +51,7 @@ export default function TastingSheet() {
     }
     return true;
   }
-*/
+
   const style = {
     button: {
       p: 2,
@@ -517,7 +517,7 @@ export default function TastingSheet() {
           size="large"
           sx={style.button}
           onClick={handleSubmit}
-          /* disabled={canBeSubmit()} */
+          disabled={canBeSubmit()}
         >
           <Typography variant="button" fontSize={24}>
             Valider{" "}
