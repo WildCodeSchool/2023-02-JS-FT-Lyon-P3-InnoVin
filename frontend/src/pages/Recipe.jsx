@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import ReactSlider from "react-slider";
 import { toast } from "react-toastify";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.svg";
 import Tooltip from "../components/Tooltip";
@@ -13,6 +14,8 @@ import winebottle from "../assets/winebottle.svg";
 import { useUserContext } from "../contexts/UserContext";
 import APIService from "../services/APIService";
 import { useSessionContext } from "../contexts/SessionContext";
+
+const apiBaseUrl = import.meta.env.VITE_BACKEND_URL;
 
 export default function Recipe() {
   const [valueWine, setValueWine] = useState([50, 100]);
@@ -24,7 +27,7 @@ export default function Recipe() {
   const userContext = useUserContext();
   const sessionContext = useSessionContext();
   const navigate = useNavigate();
-  const { logout } = useUserContext();
+  // const { logout } = useUserContext();
 
   const style = {
     button: {
@@ -62,33 +65,13 @@ export default function Recipe() {
           await APIService.post(`/recipe`, recipeData);
           toast.success("recette postée!");
 
-          const handleLogout = () => {
-            logout();
-            toast.success("Déconnexion réussie !");
-            navigate("/login");
-          };
-
-          handleLogout();
-        } catch (error) {
-          toast.error(
-            "Une erreur s'est produite lors de l'enregistrement des vins de la recette !"
-          );
-          console.error(error);
-        }
-      }
-    }
-  };
-  /* eslint-disable */
-
-  {
-    /*
           const response = await axios.get(`${apiBaseUrl}/recipes`);
           const recipes = response.data;
           const lastRecipe = recipes[recipes.length - 1];
           const lastRecipeId = lastRecipe.id;
 
-          setRecipeId(lastRecipeId);
-      
+          /* eslint-disable */
+
           console.log(response.data);
           console.log(lastRecipe);
           console.log(lastRecipeId);
@@ -104,7 +87,8 @@ export default function Recipe() {
               dosage: totalWine2,
             },
             {
-              recipe_id: lastRecipeId,              wine_id: preferredWines[2].wineName,
+              recipe_id: lastRecipeId,
+              wine_id: preferredWines[2].wineName,
               dosage: totalWine3,
             },
           ];
@@ -121,8 +105,18 @@ export default function Recipe() {
           toast.error(
             "Une erreur s'est produite lors de l'enregistrement des vins de la recette !"
           );
-          console.error(error); */
-  }
+          console.error(error);
+          // const handleLogout = () => {
+          // logout();
+          //  toast.success("Déconnexion réussie !");
+          //  navigate("/login");
+          //  };
+          //
+          // handleLogout();
+        }
+      }
+    }
+  };
 
   return (
     <>
