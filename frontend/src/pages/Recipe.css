@@ -110,7 +110,10 @@
 .tooltip-content {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   font-size: 1.3rem;
+  margin-top: 20px;
+  
 }
 .tooltip-content p {
   margin-top: -10px;

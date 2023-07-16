@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import "./Tooltip.css";
 import info from "../assets/info.svg";
+import styles from "./Tooltip.module.css";
 
 export default function Tooltip({ aroma, flavour }) {
   const [isTooltipOpen, setIsTooltipOpen] = useState(false);
@@ -11,16 +11,16 @@ export default function Tooltip({ aroma, flavour }) {
   };
 
   return (
-    <div className="tooltip-container">
+    <div className={styles.tooltipContainer}>
       <button
         type="button"
-        className="tooltip-button"
+        className={styles.tooltipButton}
         onClick={handleTooltipToggle}
       >
         <img src={info} alt="" />
       </button>
       {isTooltipOpen && (
-        <div className="tooltip">
+        <div className={styles.tooltip}>
           <span>Aromes : {aroma}</span>
           <span>Saveurs : {flavour}</span>
         </div>
