@@ -16,13 +16,13 @@ class SessionManager extends AbstractManager {
   // Override
   findAll() {
     return this.database.query(
-      `select id, DATE_FORMAT(date, "%d/%m/%Y") as date, TIME_FORMAT(time, "%H:%i") as time from  ${this.table}`
+      `select id , DATE_FORMAT(date, "%d/%m/%Y") as date, TIME_FORMAT(time, "%H:%i") as time from  ${this.table}`
     );
   }
 
   insert(session) {
     return this.database.query(
-      `insert into ${this.table} (date, time) values (?, ?)`,
+      `insert into ${this.table} (date, time) values (STR_TO_DATE(?, "%d/%m/%Y"), ?)`,
       [session.date, session.time]
     );
   }

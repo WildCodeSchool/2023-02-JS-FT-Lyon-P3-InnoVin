@@ -22,6 +22,7 @@ export function AdminContextProvider({ children }) {
   const [regionsData, setRegionsData] = useState([]);
   const [countriesData, setCountriesData] = useState([]);
   const [sessionsData, setSessionsData] = useState([]);
+  const [sessionsHaveWinesData, setSessionsHaveWinesData] = useState([]);
 
   const memo = useMemo(() => {
     return {
@@ -49,6 +50,8 @@ export function AdminContextProvider({ children }) {
       setCountriesData,
       sessionsData,
       setSessionsData,
+      sessionsHaveWinesData,
+      setSessionsHaveWinesData,
     };
   }, [
     nav,
@@ -63,6 +66,7 @@ export function AdminContextProvider({ children }) {
     regionsData,
     countriesData,
     sessionsData,
+    sessionsHaveWinesData,
   ]);
 
   return <AdminContext.Provider value={memo}>{children}</AdminContext.Provider>;
