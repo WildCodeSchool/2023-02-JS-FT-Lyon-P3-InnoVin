@@ -7,7 +7,7 @@ export default AdminContext;
 
 export function AdminContextProvider({ children }) {
   // Nav
-  const [nav, setNav] = useState("users");
+  const [nav, setNav] = useState("home");
   // Search
   const [query, setQuery] = useState("");
   // Users

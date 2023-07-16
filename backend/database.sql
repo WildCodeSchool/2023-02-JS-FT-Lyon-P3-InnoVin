@@ -94,7 +94,8 @@ CREATE TABLE IF NOT EXISTS `region` (
 
   CONSTRAINT `fk_region_country`
     FOREIGN KEY (`country_id`)
-    REFERENCES `country` (`id`))
+    REFERENCES `country` (`id`)
+    ON DELETE CASCADE)
 
 ENGINE = InnoDB;
 
@@ -111,7 +112,8 @@ CREATE TABLE IF NOT EXISTS `domain` (
 
  CONSTRAINT `fk_domain_region`
     FOREIGN KEY (`region_id`)
-    REFERENCES `region` (`id`))
+    REFERENCES `region` (`id`)
+    ON DELETE CASCADE)
 
 ENGINE = InnoDB;
 
@@ -219,11 +221,13 @@ CREATE TABLE IF NOT EXISTS `wine` (
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_wine_country`
     FOREIGN KEY (`country_id`)
-    REFERENCES `country` (`id`),
+    REFERENCES `country` (`id`)
+    ON DELETE CASCADE,
 
   CONSTRAINT `fk_wine_region`
     FOREIGN KEY (`region_id`)
-    REFERENCES `region` (`id`),
+    REFERENCES `region` (`id`)
+    ON DELETE CASCADE,
 
   CONSTRAINT `fk_wine_type`
     FOREIGN KEY (`type_id`)
@@ -231,11 +235,13 @@ CREATE TABLE IF NOT EXISTS `wine` (
 
   CONSTRAINT `fk_wine_domain`
     FOREIGN KEY (`domain_id`)
-    REFERENCES `domain` (`id`),
+    REFERENCES `domain` (`id`)
+    ON DELETE CASCADE,
  
   CONSTRAINT `fk_wine_grape_variety`
     FOREIGN KEY (`grape_variety_id`)
-    REFERENCES `grape_variety` (`id`),
+    REFERENCES `grape_variety` (`id`)
+    ON DELETE CASCADE,
 
   CONSTRAINT `fk_wine_flavour`
     FOREIGN KEY (`flavour_id`)

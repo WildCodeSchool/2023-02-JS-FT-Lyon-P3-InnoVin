@@ -5,9 +5,9 @@ import {
   GridRowEditStopReasons,
   GridRowModes,
 } from "@mui/x-data-grid";
-import { Cancel, Delete, Edit, Save } from "@mui/icons-material";
+import { Cancel, Delete, Edit, Save, Settings } from "@mui/icons-material";
 import { Box } from "@mui/system";
-import { Button } from "@mui/material";
+import { Button, SpeedDial, SpeedDialAction } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import { useAdminContext } from "../contexts/AdminContext";
 // --- Services ---
@@ -20,10 +20,15 @@ import DomainService from "../services/DomainService";
 import RegionService from "../services/RegionService";
 import CountryService from "../services/CountryService";
 import SearchBar from "./SearchBar";
+import CountryModal from "./CountryModal";
+import RegionModal from "./RegionModal";
+import DomainModal from "./DomainModal";
+import GrapeModal from "./GrapeModal";
 
 export default function AdminWinesTable() {
   const {
     query,
+    setQuery,
     winesData,
     setWinesData,
     grapesData,
@@ -43,6 +48,10 @@ export default function AdminWinesTable() {
   } = useAdminContext();
 
   const [rowModesModel, setRowModesModel] = useState({});
+  const [openModal, setOpenModal] = useState({
+    isOpen: false,
+    data: "",
+  });
 
   // --- Fetch des données au montage du composant ---
   useEffect(() => {
@@ -78,6 +87,22 @@ export default function AdminWinesTable() {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  // --- Ouverture de la modal ---
+  const handleOpenModal = (e) =>
+    setOpenModal({
+      isOpen: true,
+      data: e.target.textContent,
+    });
+
+  // --- Fermeture de la modal ---
+  const handleCloseModal = () => {
+    setOpenModal({
+      isOpen: false,
+      data: "",
+    });
+    setQuery("");
   };
 
   // --- Gestion de la suppression ---
@@ -174,7 +199,6 @@ export default function AdminWinesTable() {
         // Si c'est un ajout, l'id est une string et on utilise cette particularité pour déclencher un insert au lieu d'un update
         await WineService.addWine(newRow);
         winesDataUpdate();
-        // setWinesData(winesData.filter((wine) => wine.id !== newRow.id));
         toast.success(`${newRow.name} a bien été enregistré`, {
           position: "bottom-right",
           autoClose: 3000,
@@ -372,6 +396,9 @@ export default function AdminWinesTable() {
     wine.name.toLowerCase().includes(query.toLowerCase())
   );
 
+  // --- Défintion des actions pour le speed dial ---
+  const actions = ["Pays", "Région", "Domaine", "Cépage"];
+
   return (
     <>
       <Box
@@ -388,11 +415,69 @@ export default function AdminWinesTable() {
         <SearchBar />
         <Button
           variant="contained"
-          sx={{ width: 0.2, minWidth: 80 }}
+          sx={{ width: 0.2, minWidth: 80, marginLeft: "50px" }}
+          size="large"
           onClick={handleAddClick}
         >
           Ajouter
         </Button>
+        <SpeedDial
+          ariaLabel="settings"
+          icon={<Settings fontSize="large" />}
+          direction="down"
+          sx={{ marginTop: "233px" }}
+        >
+          {actions.map((action) => (
+            <SpeedDialAction
+              key={action}
+              icon={action}
+              sx={{
+                color: "white",
+                borderRadius: 5,
+                width: "100px",
+              }}
+              onClick={handleOpenModal}
+            />
+          ))}
+        </SpeedDial>
+        {openModal.data === "Pays" && (
+          <CountryModal
+            openModal={openModal}
+            handleCloseModal={handleCloseModal}
+            countriesData={countriesData}
+            setCountriesData={setCountriesData}
+            winesDataUpdate={winesDataUpdate}
+          />
+        )}
+        {openModal.data === "Région" && (
+          <RegionModal
+            openModal={openModal}
+            handleCloseModal={handleCloseModal}
+            regionsData={regionsData}
+            setRegionsData={setRegionsData}
+            winesDataUpdate={winesDataUpdate}
+            countrySelect={countrySelect}
+          />
+        )}
+        {openModal.data === "Domaine" && (
+          <DomainModal
+            openModal={openModal}
+            handleCloseModal={handleCloseModal}
+            domainsData={domainsData}
+            setDomainsData={setDomainsData}
+            winesDataUpdate={winesDataUpdate}
+            regionSelect={regionSelect}
+          />
+        )}
+        {openModal.data === "Cépage" && (
+          <GrapeModal
+            openModal={openModal}
+            handleCloseModal={handleCloseModal}
+            grapesData={grapesData}
+            setGrapesData={setGrapesData}
+            winesDataUpdate={winesDataUpdate}
+          />
+        )}
       </Box>
       <DataGrid
         rows={!query ? winesData : winesDataFiltered}

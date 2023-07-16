@@ -324,6 +324,7 @@ export default function InscriptionForm() {
                 )}{" "}
               </div>
               <select
+                size="1"
                 name="flavourId"
                 onChange={formik.handleChange}
                 value={formik.values.flavourId}
