@@ -290,11 +290,18 @@ export default function DomainModal({
           processRowUpdate={processRowUpdate}
           onProcessRowUpdateError={onProcessRowUpdateError}
           hideFooter
+          getRowClassName={() => `super-app-theme--row`}
           sx={{
             backgroundColor: "text.primary",
             color: "background.default",
             minWidth: "38%",
             maxWidth: "90%",
+            "& .super-app-theme--header": {
+              backgroundColor: "secondary.main",
+            },
+            "& .super-app-theme--row:nth-of-type(even)": {
+              backgroundColor: "secondary.light",
+            },
           }}
         />
       </Box>

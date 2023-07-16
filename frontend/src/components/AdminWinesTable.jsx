@@ -489,9 +489,16 @@ export default function AdminWinesTable() {
         processRowUpdate={processRowUpdate}
         onProcessRowUpdateError={onProcessRowUpdateError}
         hideFooter
+        getRowClassName={() => `super-app-theme--row`}
         sx={{
           backgroundColor: "text.primary",
           color: "background.default",
+          "& .super-app-theme--header": {
+            backgroundColor: "secondary.main",
+          },
+          "& .super-app-theme--row:nth-of-type(even)": {
+            backgroundColor: "secondary.light",
+          },
         }}
       />
       <ToastContainer />
