@@ -66,23 +66,26 @@ export default function DomainModal({
 
   // --- Gestion de l'ajout ---
   const handleAddClick = () => {
-    // Génère un id temporaire en string le temps d'insérer les nouvelles données
-    const id = `new${domainsData[domainsData.length - 1].id + 1}`;
-    // Crée un nouvel objet dans le state domainsData pour stocker les nouvelles données
-    setDomainsData((domains) => [
-      {
-        id,
-        name: "",
-        region_id: "",
-        isNew: true,
-      },
-      ...domains,
-    ]);
-    // Passe la nouvelle ligne en mode édition
-    setRowModesModel((oldModel) => ({
-      ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
-    }));
+    // Check si une nouvelle n'est pas déjà présente
+    if (!domainsData.some((domain) => typeof domain.id === "string")) {
+      // Génère un id temporaire en string le temps d'insérer les nouvelles données
+      const id = `new${domainsData[domainsData.length - 1].id + 1}`;
+      // Crée un nouvel objet dans le state domainsData pour stocker les nouvelles données
+      setDomainsData((domains) => [
+        {
+          id,
+          name: "",
+          region_id: "",
+          isNew: true,
+        },
+        ...domains,
+      ]);
+      // Passe la nouvelle ligne en mode édition
+      setRowModesModel((oldModel) => ({
+        ...oldModel,
+        [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
+      }));
+    }
   };
 
   // --- Gestion de l'édition ---

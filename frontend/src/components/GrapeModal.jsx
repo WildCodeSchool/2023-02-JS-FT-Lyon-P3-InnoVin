@@ -65,23 +65,26 @@ export default function GrapeModal({
 
   // --- Gestion de l'ajout ---
   const handleAddClick = () => {
-    // Génère un id temporaire en string le temps d'insérer les nouvelles données
-    const id = `new${grapesData[grapesData.length - 1].id + 1}`;
-    // Crée un nouvel objet dans le state grapesData pour stocker les nouvelles données
-    setGrapesData((grapes) => [
-      {
-        id,
-        name: "",
-        region_id: "",
-        isNew: true,
-      },
-      ...grapes,
-    ]);
-    // Passe la nouvelle ligne en mode édition
-    setRowModesModel((oldModel) => ({
-      ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
-    }));
+    // Check si une nouvelle n'est pas déjà présente
+    if (!grapesData.some((grape) => typeof grape.id === "string")) {
+      // Génère un id temporaire en string le temps d'insérer les nouvelles données
+      const id = `new${grapesData[grapesData.length - 1].id + 1}`;
+      // Crée un nouvel objet dans le state grapesData pour stocker les nouvelles données
+      setGrapesData((grapes) => [
+        {
+          id,
+          name: "",
+          region_id: "",
+          isNew: true,
+        },
+        ...grapes,
+      ]);
+      // Passe la nouvelle ligne en mode édition
+      setRowModesModel((oldModel) => ({
+        ...oldModel,
+        [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
+      }));
+    }
   };
 
   // --- Gestion de l'édition ---

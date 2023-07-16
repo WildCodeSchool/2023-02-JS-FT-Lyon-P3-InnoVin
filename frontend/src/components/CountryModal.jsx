@@ -67,22 +67,25 @@ export default function CountryModal({
 
   // --- Gestion de l'ajout ---
   const handleAddClick = () => {
-    // Génère un id temporaire en string le temps d'insérer les nouvelles données
-    const id = `new${countriesData[countriesData.length - 1].id + 1}`;
-    // Crée un nouvel objet dans le state countrysData pour stocker les nouvelles données
-    setCountriesData((countries) => [
-      {
-        id,
-        name: "",
-        isNew: true,
-      },
-      ...countries,
-    ]);
-    // Passe la nouvelle ligne en mode édition
-    setRowModesModel((oldModel) => ({
-      ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
-    }));
+    // Check si une nouvelle n'est pas déjà présente
+    if (!countriesData.some((country) => typeof country.id === "string")) {
+      // Génère un id temporaire en string le temps d'insérer les nouvelles données
+      const id = `new${countriesData[countriesData.length - 1].id + 1}`;
+      // Crée un nouvel objet dans le state countrysData pour stocker les nouvelles données
+      setCountriesData((countries) => [
+        {
+          id,
+          name: "",
+          isNew: true,
+        },
+        ...countries,
+      ]);
+      // Passe la nouvelle ligne en mode édition
+      setRowModesModel((oldModel) => ({
+        ...oldModel,
+        [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
+      }));
+    }
   };
 
   // --- Gestion de l'édition ---

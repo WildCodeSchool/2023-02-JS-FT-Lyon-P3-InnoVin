@@ -66,23 +66,26 @@ export default function RegionModal({
 
   // --- Gestion de l'ajout ---
   const handleAddClick = () => {
-    // Génère un id temporaire en string le temps d'insérer les nouvelles données
-    const id = `new${regionsData[regionsData.length - 1].id + 1}`;
-    // Crée un nouvel objet dans le state regionsData pour stocker les nouvelles données
-    setRegionsData((regions) => [
-      {
-        id,
-        name: "",
-        country_id: "",
-        isNew: true,
-      },
-      ...regions,
-    ]);
-    // Passe la nouvelle ligne en mode édition
-    setRowModesModel((oldModel) => ({
-      ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
-    }));
+    // Check si une nouvelle n'est pas déjà présente
+    if (!regionsData.some((region) => typeof region.id === "string")) {
+      // Génère un id temporaire en string le temps d'insérer les nouvelles données
+      const id = `new${regionsData[regionsData.length - 1].id + 1}`;
+      // Crée un nouvel objet dans le state regionsData pour stocker les nouvelles données
+      setRegionsData((regions) => [
+        {
+          id,
+          name: "",
+          country_id: "",
+          isNew: true,
+        },
+        ...regions,
+      ]);
+      // Passe la nouvelle ligne en mode édition
+      setRowModesModel((oldModel) => ({
+        ...oldModel,
+        [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
+      }));
+    }
   };
 
   // --- Gestion de l'édition ---
