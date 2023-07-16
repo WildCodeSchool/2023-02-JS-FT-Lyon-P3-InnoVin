@@ -7,7 +7,7 @@ import logo from "../assets/logo.svg";
 import users from "../assets/users.svg";
 import wine from "../assets/wine.svg";
 import session from "../assets/session.svg";
-import grape from "../assets/grape.svg";
+import recipe from "../assets/recipe.svg";
 
 export default function AdminNav() {
   const { nav, setNav, setQuery } = useAdminContext();
@@ -24,6 +24,10 @@ export default function AdminNav() {
 
   const navIcons = [
     {
+      img: logo,
+      alt: "home",
+    },
+    {
       img: users,
       alt: "users",
     },
@@ -32,12 +36,12 @@ export default function AdminNav() {
       alt: "wines",
     },
     {
-      img: grape,
-      alt: "grapes",
-    },
-    {
       img: session,
       alt: "sessions",
+    },
+    {
+      img: recipe,
+      alt: "recipes",
     },
   ];
 
@@ -45,9 +49,6 @@ export default function AdminNav() {
     <header className={styles.navbox}>
       <nav>
         <ul>
-          <li>
-            <img src={logo} alt="logo" />
-          </li>
           {navIcons.map((icon) => (
             <li
               key={icon.alt}

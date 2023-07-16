@@ -24,10 +24,11 @@ function App() {
           <Route path="tastingprofile" element={<TastingProfile />} />
           <Route path="recipe" element={<Recipe />} />
         </Route>
+        <Route path="/admin/home" element={<Admin />} />
         <Route path="/admin/users" element={<Admin />} />
         <Route path="/admin/wines" element={<Admin />} />
-        <Route path="/admin/grapes" element={<Admin />} />
         <Route path="/admin/sessions" element={<Admin />} />
+        <Route path="/admin/recipes" element={<Admin />} />
       </Routes>
       <ToastContainer />
     </div>
