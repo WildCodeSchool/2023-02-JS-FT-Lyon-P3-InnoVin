@@ -4,6 +4,7 @@ import { useAdminContext } from "../contexts/AdminContext";
 import AdminWinesTable from "../components/AdminWinesTable";
 import AdminUsersTable from "../components/AdminUsersTable";
 import AdminSessionsTable from "../components/AdminSessionsTable";
+import AdminRecipesTable from "../components/AdminRecipesTable";
 import AdminHome from "../components/AdminHome";
 
 export default function Admin() {
@@ -35,6 +36,7 @@ export default function Admin() {
         {nav === "users" && <AdminUsersTable />}
         {nav === "wines" && <AdminWinesTable />}
         {nav === "sessions" && <AdminSessionsTable />}
+        {nav === "recipes" && <AdminRecipesTable />}
       </Box>
     </div>
   );
