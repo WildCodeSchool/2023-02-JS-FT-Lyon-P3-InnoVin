@@ -148,6 +148,7 @@ router.delete("/flavours/:id", flavourControllers.destroy);
 const recipeControllers = require("./controllers/recipeControllers");
 
 router.get("/recipes", recipeControllers.browse);
+router.get("/recipes", recipeControllers.browseRecipe);
 router.get("/recipes/:id", recipeControllers.read);
 router.put("/recipe/:id", recipeControllers.edit);
 router.post("/recipe", recipeControllers.add);

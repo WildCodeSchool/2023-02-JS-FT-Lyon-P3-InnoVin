@@ -7,7 +7,7 @@ class RecipeManager extends AbstractManager {
   // Override
 
   // Override
-  findAll() {
+  findAllDatabase() {
     return this.database.query(
       `select
       concat(u.firstname, ' ', u.lastname) as user_name, s.date as session_date, r.id as recipe_id, r.name as recipe_name,

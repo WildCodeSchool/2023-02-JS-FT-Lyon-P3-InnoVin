@@ -72,7 +72,6 @@ export default function Recipe() {
         try {
           // Enregistrement des données de la recette dans la table "recipe"
           await APIService.post(`/recipe`, recipeData);
-
           // Récupération des données de la recette enregistrée
           const response = await axios.get(`${apiBaseUrl}/recipes`);
           // Récupération de l'ID de la dernière recette enregistrée
