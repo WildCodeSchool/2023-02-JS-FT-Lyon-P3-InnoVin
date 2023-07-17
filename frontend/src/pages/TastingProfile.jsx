@@ -7,7 +7,7 @@ import GrapeCard from "../components/GrapeCard";
 export default function TastingProfile() {
   const { preferredWines } = useUserContext();
   const navigate = useNavigate();
-  const handleClick = () => navigate("/tasting/recipe");
+  const handleClick = () => navigate("/workshop/recipe");
 
   return (
     <div>
