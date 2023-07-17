@@ -23,7 +23,7 @@ export function AdminContextProvider({ children }) {
   const [regionsData, setRegionsData] = useState([]);
   const [countriesData, setCountriesData] = useState([]);
   const [sessionsData, setSessionsData] = useState([]);
-
+  const [recipeData, setRecipeData] = useState([]);
   const successToastTemplate = (message) => {
     toast.success(message, {
       position: "bottom-right",
@@ -78,6 +78,8 @@ export function AdminContextProvider({ children }) {
       setSessionsData,
       successToastTemplate,
       errorToastTemplate,
+      recipeData,
+      setRecipeData,
     };
   }, [
     nav,
@@ -92,6 +94,7 @@ export function AdminContextProvider({ children }) {
     regionsData,
     countriesData,
     sessionsData,
+    recipeData,
   ]);
 
   return <AdminContext.Provider value={memo}>{children}</AdminContext.Provider>;
