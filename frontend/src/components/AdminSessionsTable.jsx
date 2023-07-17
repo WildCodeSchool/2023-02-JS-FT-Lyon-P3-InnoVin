@@ -8,7 +8,7 @@ import {
 import { Cancel, Delete, Edit, Save } from "@mui/icons-material";
 import { Box } from "@mui/system";
 import { Button } from "@mui/material";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { useAdminContext } from "../contexts/AdminContext";
 import SessionService from "../services/SessionService";
 import SessionHasWineService from "../services/SessionHasWineService";
@@ -23,6 +23,8 @@ export default function AdminSessionsTable() {
     winesData,
     setWinesData,
     setSessionsHaveWinesData,
+    successToastTemplate,
+    errorToastTemplate,
   } = useAdminContext();
   const [rowModesModel, setRowModesModel] = useState({});
   const [sessionsWithWinesData, setSessionsWithWinesData] = useState([]);
@@ -56,7 +58,6 @@ export default function AdminSessionsTable() {
     fetch();
   }, []);
 
-  // console.log(sessionsWithWinesData);
   const sessionsDataUpdate = async () => {
     try {
       const session = await SessionService.getSessions();
@@ -87,18 +88,8 @@ export default function AdminSessionsTable() {
       // Met le state sessionsData à jour après la suppression
       sessionsDataUpdate();
       sessionsHaveWinesDataUpdate();
-      toast.success(
-        `la session du ${deletedSession[0].date} à ${deletedSession[0].time} a été supprimée`,
-        {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
+      successToastTemplate(
+        `La session du ${deletedSession[0].date} à ${deletedSession[0].time} a été supprimée`
       );
     } catch (err) {
       console.error("Deletion failed :", err);
@@ -107,30 +98,32 @@ export default function AdminSessionsTable() {
 
   // --- Gestion de l'ajout ---
   const handleAddClick = () => {
-    // Génère un id temporaire en string le temps d'insérer les nouvelles données
-    const id = `new${sessionsData[sessionsData.length - 1].id + 1}`;
-    // Crée un nouvel objet dans le state sessionsData pour stocker les nouvelles données
-    setSessionsWithWinesData((sessions) => [
-      {
-        id,
-        date: "",
-        time: "",
-        wine1: "",
-        wine2: "",
-        wine3: "",
-        wine4: "",
-        isNew: true,
-      },
-      ...sessions,
-    ]);
+    // Check si une nouvelle n'est pas déjà présente
+    if (!sessionsData.some((session) => typeof session.id === "string")) {
+      // Génère un id temporaire en string le temps d'insérer les nouvelles données
+      const id = `new${sessionsData[sessionsData.length - 1].id + 1}`;
+      // Crée un nouvel objet dans le state sessionsData pour stocker les nouvelles données
+      setSessionsWithWinesData((sessions) => [
+        {
+          id,
+          date: "",
+          time: "",
+          wine1: "",
+          wine2: "",
+          wine3: "",
+          wine4: "",
+          isNew: true,
+        },
+        ...sessions,
+      ]);
 
-    // Passe la nouvelle ligne en mode édition
-    setRowModesModel((oldModel) => ({
-      ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: "date" },
-    }));
+      // Passe la nouvelle ligne en mode édition
+      setRowModesModel((oldModel) => ({
+        ...oldModel,
+        [id]: { mode: GridRowModes.Edit, fieldToFocus: "date" },
+      }));
+    }
   };
-
   // --- Gestion de l'édition ---
   const handleEditClick = (id) => () => {
     // Passe la ligne en mode édition
@@ -169,6 +162,7 @@ export default function AdminSessionsTable() {
 
   const processRowUpdate = useCallback(async (newRow) => {
     try {
+      await SessionService.sessionSchema.validate(newRow);
       if (typeof newRow.id === "string") {
         // Si c'est un ajout, l'id est une string et on utilise cette particularité pour déclencher un insert au lieu d'un update
         await SessionService.addSession(newRow);
@@ -179,18 +173,8 @@ export default function AdminSessionsTable() {
         const newRowWithId = { ...newRow, id: lastSessionId };
         await SessionHasWineService.addSessionWines(newRowWithId);
         sessionsHaveWinesDataUpdate();
-        toast.success(
-          `La session du ${newRow.date} à ${newRow.time} a bien été enregistrée`,
-          {
-            position: "bottom-center",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          }
+        successToastTemplate(
+          `La session du ${newRow.date} à ${newRow.time} a bien été enregistrée`
         );
         return newRow;
       }
@@ -201,22 +185,13 @@ export default function AdminSessionsTable() {
       sessionsHaveWinesDataUpdate();
       await SessionHasWineService.addSessionWines(newRow);
       sessionsHaveWinesDataUpdate();
-      toast.success(
-        `La séance du ${newRow.date} à ${newRow.time} a bien été mise à jour`,
-        {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
+      successToastTemplate(
+        `La séance du ${newRow.date} à ${newRow.time} a bien été mise à jour`
       );
       return newRow;
     } catch (err) {
-      return console.error("Update failed");
+      console.error("Update failed", err);
+      return errorToastTemplate(`${err}`.split(" ").slice(1).join(" "));
     }
   });
 
@@ -368,9 +343,16 @@ export default function AdminSessionsTable() {
         processRowUpdate={processRowUpdate}
         onProcessRowUpdateError={onProcessRowUpdateError}
         hideFooter
+        getRowClassName={() => `super-app-theme--row`}
         sx={{
           backgroundColor: "text.primary",
           color: "background.default",
+          "& .super-app-theme--header": {
+            backgroundColor: "secondary.main",
+          },
+          "& .super-app-theme--row:nth-of-type(even)": {
+            backgroundColor: "secondary.light",
+          },
         }}
       />
       <ToastContainer />
