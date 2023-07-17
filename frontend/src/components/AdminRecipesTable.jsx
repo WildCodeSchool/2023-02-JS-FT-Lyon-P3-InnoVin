@@ -15,18 +15,14 @@ export default function AdminUsersTable() {
     async function fetch() {
       try {
         const recipe = await RecipeService.getRecipes();
-        const recipesWithDate = recipe.data.map((recipeItem) => ({
-          ...recipeItem,
-          session_date: new Date(recipeItem.session_date).toLocaleDateString(),
-        }));
-        setRecipeData(recipesWithDate);
+        console.info(recipe);
+        setRecipeData(recipe.data);
       } catch (error) {
         console.error("Internal error");
       }
     }
     fetch();
   }, []);
-
   // --- Filtre pour la recherche ---
   const recipesDataFiltered = recipeData.filter((recipe) =>
     recipe.recipe_name.toLowerCase().includes(query.toLowerCase())
@@ -45,6 +41,8 @@ export default function AdminUsersTable() {
       headerClassName: "super-app-theme--header",
       headerName: "Date de la session",
       width: 200,
+      type: "date",
+      valueGetter: ({ value }) => value && new Date(value),
     },
     {
       field: "recipe_name",

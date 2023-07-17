@@ -23,6 +23,7 @@ export function AdminContextProvider({ children }) {
   const [regionsData, setRegionsData] = useState([]);
   const [countriesData, setCountriesData] = useState([]);
   const [sessionsData, setSessionsData] = useState([]);
+  const [sessionsHaveWinesData, setSessionsHaveWinesData] = useState([]);
   const [recipeData, setRecipeData] = useState([]);
   const successToastTemplate = (message) => {
     toast.success(message, {
@@ -76,6 +77,8 @@ export function AdminContextProvider({ children }) {
       setCountriesData,
       sessionsData,
       setSessionsData,
+      sessionsHaveWinesData,
+      setSessionsHaveWinesData,
       successToastTemplate,
       errorToastTemplate,
       recipeData,
@@ -94,6 +97,7 @@ export function AdminContextProvider({ children }) {
     regionsData,
     countriesData,
     sessionsData,
+    sessionsHaveWinesData,
     recipeData,
   ]);
 

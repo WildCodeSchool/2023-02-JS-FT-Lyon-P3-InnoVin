@@ -68,9 +68,11 @@ CREATE TABLE IF NOT EXISTS `user` (
 ENGINE = InnoDB;
 
 INSERT INTO user (aroma_id, flavour_id, type_id, firstname, lastname, birthdate, email, hashed_password, address, postcode, city, role) 
-VALUES (1, 1, 1, "Yann", "Richard", "1989-07-12", "yann.richard9@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$cXFnN2s1ZHU0aTAwMDAwMA$XFP3Vrp4/huxiy9p4p2EAw", "Rue de l'exemple", 69000, "Lyon", "Utilisateur"),
-(2, 2, 2, "Cédric", "Boriat", "1982-06-25", "cedric@exemple.com", "$argon2id$v=19$m=12,t=2,p=1$bXFkenRzdmVmM2EwMDAwMA$W8Njzcn6wAiAJEETUHmkSQ", "Rue de l'exemple", 48000, "Mende", "Admin");
-
+VALUES (1, 1, 1, "Yann", "Richard", "1989-07-12", "yann.richard9@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$cXFnN2s1ZHU0aTAwMDAwMA$XFP3Vrp4/huxiy9p4p2EAw", "17 Rue Delandine", 69007, "Lyon", "Utilisateur"),
+(2, 2, 2, "Cédric", "Boriat", "1982-06-25", "cedric@exemple.com", "$argon2id$v=19$m=12,t=2,p=1$bXFkenRzdmVmM2EwMDAwMA$W8Njzcn6wAiAJEETUHmkSQ", "25 Rue du désert", 48000, "Mende", "Admin"),
+(3, 2, 1, "Vanessa", "Giraud", "1988-02-03", "suede210810@gmail.com", "$argon2id$v=19$m=12,t=3,p=1$aDBtZXQxb2tkbTYwMDAwMA$7i4cynKobHifJdW+kEuQOQ", "15 Rue du stade", 13000, "Marseille", "Utilisateur"),
+(1, 2, 3, "Guillaume", "Lamourec", "1996-03-28", "exemple23@gmail.com", "$argon2id$v=19$m=12,t=3,p=1$NHdvZTI1emowZDgwMDAwMA$0egTfDLzGO4OQCnZ1XlYDA", "23 Rue des melons pas mûrs", 69100, "Villeurbanne", "Utilisateur"),
+(1, 3, 3, "Bella", "Garcia", "1980-07-28", "bella.garcia@example.com", "$argon2id$v=19$m=12,t=3,p=1$cmk0aWZkaXZkeDAwMDAwMA$jNNibMCnaY1ulKPqJvl9BA", "45 Rue de l'avenir", 71000, "Mâcon", "Utilisateur");
 -- -----------------------------------------------------
 -- Table `country`
 -- -----------------------------------------------------
@@ -337,10 +339,12 @@ CREATE TABLE IF NOT EXISTS `recipe` (
 
   CONSTRAINT `fk_recipe_session`
     FOREIGN KEY (`session_id`)
-    REFERENCES `session` (`id`))
+    REFERENCES `session` (`id`)
+    ON DELETE CASCADE)
 
 ENGINE = InnoDB;
 
+INSERT INTO recipe (user_id, session_id, name) VALUES (3, 1, "Vanessa's wine !"), (1, 2, "Yann's wine !"),  (4, 3, "Guillaume's wine !"),  (5, 4, "Bella's wine !");
 -- -----------------------------------------------------
 -- Table `user_has_session`
 -- -----------------------------------------------------
@@ -396,13 +400,16 @@ CREATE TABLE IF NOT EXISTS `recipe_has_wine` (
 
   CONSTRAINT `fk_recipe_has_wine_recipe`
     FOREIGN KEY (`recipe_id`)
-    REFERENCES `recipe` (`id`),
+    REFERENCES `recipe` (`id`)
+    ON DELETE CASCADE,
   
   CONSTRAINT `fk_recipe_has_wine_wine`
     FOREIGN KEY (`wine_id`)
-    REFERENCES `wine` (`id`))
+    REFERENCES `wine` (`id`)
+    ON DELETE CASCADE)
 
 ENGINE = InnoDB;
+      INSERT INTO recipe_has_wine (recipe_id, wine_id, dosage) values (1, 43, 150), (1, 20, 25),(1, 22, 75),(2, 22, 150), (2, 45, 25),(2, 46, 75), (3, 47, 100), (3, 12, 75),(3, 27, 75), (4, 50, 100), (4, 31, 75),(4, 27, 75) ;
 
 -- -----------------------------------------------------
 -- Table `user_has_wine`
@@ -428,14 +435,14 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `session_has_wine` (
-  `session_id` INT NOT NULL,
-  `wine_id` INT NOT NULL,
+  `session_id` INT,
+  `wine_id` INT,
   PRIMARY KEY (`session_id`, `wine_id`),
 
   CONSTRAINT `fk_session_has_wine_session`
     FOREIGN KEY (`session_id`)
     REFERENCES `session` (`id`)
-    ON DELETE CASCADE,
+    ON DELETE CASCADE, 
 
   CONSTRAINT `fk_session_has_wine_wine`
     FOREIGN KEY (`wine_id`)
