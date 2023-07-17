@@ -118,7 +118,7 @@ export default function TastingSheet() {
     userWines[userPick].isRated = true;
     userWines[userPick].tastingNote = rate;
 
-    navigate("/tasting");
+    navigate("/workshop");
   };
 
   return (
