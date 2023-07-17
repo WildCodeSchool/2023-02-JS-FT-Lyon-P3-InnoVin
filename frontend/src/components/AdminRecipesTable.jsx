@@ -79,10 +79,17 @@ export default function AdminUsersTable() {
         rows={!query ? recipeData : recipesDataFiltered}
         columns={columnsRecipes}
         getRowId={(row) => row.recipe_id}
+        getRowClassName={() => `super-app-theme--row`}
         hideFooter
         sx={{
           backgroundColor: "text.primary",
           color: "background.default",
+          "& .super-app-theme--header": {
+            backgroundColor: "secondary.main",
+          },
+          "& .super-app-theme--row:nth-of-type(even)": {
+            backgroundColor: "secondary.light",
+          },
         }}
       />
       <ToastContainer />
