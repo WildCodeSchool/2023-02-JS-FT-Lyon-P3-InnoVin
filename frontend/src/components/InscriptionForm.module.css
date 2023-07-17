@@ -10,9 +10,11 @@ form {
   align-items: center;
   font-style: normal;
   font-weight: 400;
-  font-size: 32px;
+  font-size: 2em;
   line-height: 43px;
   color: #d8b024;
+  font-family: "EB Garamond",
+
 }
 .labelErroContainer {
   display: flex;
@@ -24,6 +26,13 @@ form {
   align-items: flex-start;
   margin-block: 10px;
 }
+.inputContainer label {
+  font-family: "EB Garamond",
+
+}
+
+
+
 .inputContainer input {
   width: 604px;
   height: 73.58px;
@@ -38,23 +47,7 @@ form {
   line-height: 43px;
   color: black;
 }
-.inputContainer select {
-  width: 604px;
-  height: 73.58px;
-  background: #fffdcc;
-  border: 1px solid #5f5353;
-  border-radius: 10px;
-  padding-left: 5px;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 32px;
-  line-height: 43px;
-  color: black;
-}
 
-.inputContainer select option {
-  font-size: 20px;
-}
 
 /*User informations container*/
 
@@ -97,7 +90,9 @@ form {
   padding-inline: 10px;
 }
 /*Preferences container*/
-
+.preferContainer{
+  width: 600px;
+}
 .preferContainer h2 {
   margin-top: 30px;
   margin-bottom: 30px;
@@ -108,15 +103,22 @@ form {
   text-align: center;
   color: #d8b024;
 }
-.inputContainer select {
-  padding-inline: 10px;
+.selectContainer{
+  height: 30vh;
 }
+.aromaContainer{
+  margin-top: 0;
+}
+
 /*buttonswine*/
 .buttonswineContainer {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  width: 100%;
 }
+
+
 .redwine {
   background-size: cover;
   background-position: center;
@@ -258,6 +260,7 @@ form {
     justify-content: flex-start;
     align-items: center;
     height: 50vh;
+    width: 30vw;
   }
 
   .preferContainer h2 {
