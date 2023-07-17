@@ -7,7 +7,9 @@ export default UserContext;
 
 export function UserContextProvider({ children }) {
   // on utilise un hook personnalisé
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("user") || "{}")
+  );
   const [userWines, setUserWines] = useState([]);
   const [userPick, setUserPick] = useState(null);
   const [preferredWines, setPreferredWines] = useState();
@@ -19,6 +21,7 @@ export function UserContextProvider({ children }) {
 
   const login = (_user) => {
     setUser(_user);
+    localStorage.setItem("user", JSON.stringify(_user));
   };
 
   const memo = useMemo(() => {
