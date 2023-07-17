@@ -1,7 +1,14 @@
 import { useFormik } from "formik";
 import { differenceInYears, parse } from "date-fns";
 import { toast } from "react-toastify";
-import { Typography, Button } from "@mui/material";
+import {
+  Typography,
+  Button,
+  Box,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -83,6 +90,13 @@ export default function InscriptionForm() {
   };
   const style = {
     button: { p: 2, width: 0.9, borderRadius: 2 },
+    formlabels: {
+      textAlign: "left",
+      color: "secondary.main",
+      fontSize: "1em",
+      width: "75vw",
+      fontFamily: "EB Garamond",
+    },
   };
   useEffect(() => {
     axios
@@ -316,63 +330,94 @@ export default function InscriptionForm() {
                 </div>
               </div>
             </div>
-            <div className={styles.inputContainer}>
-              <div className={styles.labelErroContainer}>
-                <label htmlFor="flavor">Saveur</label>
-                {formik.touched.flavourId && formik.errors.flavourId && (
-                  <div className={styles.error}>{formik.errors.flavourId}</div>
-                )}{" "}
-              </div>
-              <select
-                size="1"
-                name="flavourId"
-                onChange={formik.handleChange}
-                value={formik.values.flavourId}
-                type="select"
-              >
-                <option value="">Sélectionner un arôme </option>
-                {flavours.map((flavour) => (
-                  <option key={flavour.id} value={flavour.id}>
-                    {flavour.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className={styles.inputContainer}>
-              <div className={styles.labelErroContainer}>
-                <label htmlFor="arôme">Arôme</label>
-                {formik.touched.aromaId && formik.errors.aromaId && (
-                  <div className={styles.error}>{formik.errors.aromaId}</div>
-                )}
-              </div>
-              <select
-                name="aromaId"
-                onChange={formik.handleChange}
-                value={formik.values.aromaId}
-                type="select"
-              >
-                <option value="">Sélectionner un arôme </option>
-                {aromas.map((aroma) => (
-                  <option key={aroma.id} value={aroma.id}>
-                    {aroma.name}
-                  </option>
-                ))}
-              </select>
-            </div>
           </div>
-        </div>
-        <div className={styles.submitButton}>
-          <Button
-            type="submit"
-            variant="contained"
-            size="large"
-            sx={style.button}
-            onClick={handleClick}
+          <Box
+            width="100%"
+            alignSelf="center"
+            display="flex"
+            flexDirection="column"
+            marginTop="2rem"
           >
-            <Typography variant="button" fontSize={24}>
-              Valider{" "}
-            </Typography>
-          </Button>
+            <InputLabel id="flavourId" name="flavourId" sx={style.formlabels}>
+              Veuillez sélectionner une saveur
+            </InputLabel>
+            <Select
+              id="flavourId"
+              label="flavourId"
+              name="flavourId"
+              sx={{
+                backgroundColor: "#FFFDCC",
+                fontSize: "1.5rem",
+                height: "6.5vh",
+                marginBottom: "1rem",
+                borderRadius: "10px",
+                color: "black",
+                width: "100%",
+                fontFamily: "EB Garamond",
+              }}
+              value={formik.values.flavourId}
+              onChange={formik.handleChange}
+            >
+              <MenuItem value="">
+                <em> </em>
+              </MenuItem>{" "}
+              {flavours?.map((flavour) => (
+                <MenuItem key={flavour.id} value={flavour.id}>
+                  {flavour.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </Box>
+          <Box
+            width="100%"
+            alignSelf="center"
+            display="flex"
+            flexDirection="column"
+            marginTop="2rem"
+          >
+            <InputLabel id="aromaId" name="aromaId" sx={style.formlabels}>
+              Veuillez sélectionner un arôme
+            </InputLabel>
+            <Select
+              id="aromaId"
+              label="aromaId"
+              name="aromaId"
+              sx={{
+                backgroundColor: "#FFFDCC",
+                fontSize: "1.5rem",
+                height: "6.5vh",
+                borderRadius: "10px",
+                marginBottom: "2rem",
+                color: "black",
+                width: "100%",
+                fontFamily: "EB Garamond",
+              }}
+              value={formik.values.aromaId}
+              onChange={formik.handleChange}
+            >
+              <MenuItem value="">
+                <em> </em>
+              </MenuItem>{" "}
+              {aromas?.map((aroma) => (
+                <MenuItem key={aroma.id} value={aroma.id}>
+                  {aroma.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </Box>
+          <div className={styles.submitButton}>
+            <Button
+              type="submit"
+              variant="contained"
+              size="large"
+              sx={style.button}
+              onClick={handleClick}
+            >
+              <Typography variant="button" fontSize={24}>
+                Valider{" "}
+              </Typography>
+            </Button>
+          </div>
         </div>
       </form>
     </div>

@@ -11,6 +11,17 @@ const browse = (req, res) => {
       res.sendStatus(500);
     });
 };
+const browseRecipe = (req, res) => {
+  models.recipe
+    .findAllDatabase()
+    .then(([rows]) => {
+      res.send(rows);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
 const read = (req, res) => {
   const id = parseInt(req.params.id, 10);
   models.recipe
@@ -76,6 +87,7 @@ const destroy = (req, res) => {
 };
 module.exports = {
   browse,
+  browseRecipe,
   read,
   edit,
   add,

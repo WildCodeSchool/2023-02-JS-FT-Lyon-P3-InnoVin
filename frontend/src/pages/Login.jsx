@@ -86,7 +86,7 @@ export default function Login() {
               }
             );
             setTimeout(() => {
-              navigate("/tasting");
+              navigate("/workshop");
             }, 3000);
           } else if (user.role === "Admin") {
             toast.success(
@@ -98,7 +98,7 @@ export default function Login() {
               }
             );
             setTimeout(() => {
-              navigate("/admin/users");
+              navigate("/admin/home");
             }, 3000);
           }
         })
