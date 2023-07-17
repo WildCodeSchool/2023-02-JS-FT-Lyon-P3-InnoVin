@@ -1,5 +1,6 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import PropTypes from "prop-types";
+import APIService from "../services/APIService";
 
 const UserContext = createContext();
 
@@ -14,9 +15,14 @@ export function UserContextProvider({ children }) {
   const [userPick, setUserPick] = useState(null);
   const [preferredWines, setPreferredWines] = useState();
 
-  const logout = () => {
-    setUser({});
-    localStorage.removeItem("user");
+  const logout = async () => {
+    try {
+      await APIService.get("/logout");
+      setUser({});
+      localStorage.removeItem("user");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const login = (_user) => {
