@@ -1,5 +1,6 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import PropTypes from "prop-types";
+import { toast } from "react-toastify";
 
 const AdminContext = createContext();
 
@@ -23,6 +24,32 @@ export function AdminContextProvider({ children }) {
   const [countriesData, setCountriesData] = useState([]);
   const [sessionsData, setSessionsData] = useState([]);
   const [sessionsHaveWinesData, setSessionsHaveWinesData] = useState([]);
+  const [recipeData, setRecipeData] = useState([]);
+  const successToastTemplate = (message) => {
+    toast.success(message, {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+
+  const errorToastTemplate = (message) => {
+    toast.error(message, {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
 
   const memo = useMemo(() => {
     return {
@@ -52,6 +79,10 @@ export function AdminContextProvider({ children }) {
       setSessionsData,
       sessionsHaveWinesData,
       setSessionsHaveWinesData,
+      successToastTemplate,
+      errorToastTemplate,
+      recipeData,
+      setRecipeData,
     };
   }, [
     nav,
@@ -67,6 +98,7 @@ export function AdminContextProvider({ children }) {
     countriesData,
     sessionsData,
     sessionsHaveWinesData,
+    recipeData,
   ]);
 
   return <AdminContext.Provider value={memo}>{children}</AdminContext.Provider>;

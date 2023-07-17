@@ -9,7 +9,6 @@ import {
   GridRowModes,
 } from "@mui/x-data-grid";
 import PropTypes from "prop-types";
-import { toast } from "react-toastify";
 import SearchBar from "./SearchBar";
 import { useAdminContext } from "../contexts/AdminContext";
 import CountryService from "../services/CountryService";
@@ -21,7 +20,7 @@ export default function CountryModal({
   setCountriesData,
   winesDataUpdate,
 }) {
-  const { query } = useAdminContext();
+  const { query, successToastTemplate, errorToastTemplate } = useAdminContext();
 
   const [rowModesModel, setRowModesModel] = useState({});
 
@@ -50,16 +49,7 @@ export default function CountryModal({
       // Met le state countrysData à jour après la suppression
       countriesDataUpdate();
       winesDataUpdate();
-      toast.success(`${deletedCountry[0].name} a été supprimé`, {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      successToastTemplate(`${deletedCountry[0].name} a été supprimé`);
     } catch (err) {
       console.error("Deletion failed :", err);
     }
@@ -67,22 +57,25 @@ export default function CountryModal({
 
   // --- Gestion de l'ajout ---
   const handleAddClick = () => {
-    // Génère un id temporaire en string le temps d'insérer les nouvelles données
-    const id = `new${countriesData[countriesData.length - 1].id + 1}`;
-    // Crée un nouvel objet dans le state countrysData pour stocker les nouvelles données
-    setCountriesData((countries) => [
-      {
-        id,
-        name: "",
-        isNew: true,
-      },
-      ...countries,
-    ]);
-    // Passe la nouvelle ligne en mode édition
-    setRowModesModel((oldModel) => ({
-      ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
-    }));
+    // Check si une nouvelle n'est pas déjà présente
+    if (!countriesData.some((country) => typeof country.id === "string")) {
+      // Génère un id temporaire en string le temps d'insérer les nouvelles données
+      const id = `new${countriesData[countriesData.length - 1].id + 1}`;
+      // Crée un nouvel objet dans le state countrysData pour stocker les nouvelles données
+      setCountriesData((countries) => [
+        {
+          id,
+          name: "",
+          isNew: true,
+        },
+        ...countries,
+      ]);
+      // Passe la nouvelle ligne en mode édition
+      setRowModesModel((oldModel) => ({
+        ...oldModel,
+        [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
+      }));
+    }
   };
 
   // --- Gestion de l'édition ---
@@ -123,39 +116,26 @@ export default function CountryModal({
 
   const processRowUpdate = useCallback(async (newRow) => {
     try {
+      // Avant tout chose, validateurs
+      await CountryService.countrySchema.validate(newRow);
+      // Si c'est un ajout, l'id est une string et on utilise cette particularité pour déclencher un insert au lieu d'un update
       if (typeof newRow.id === "string") {
-        // Si c'est un ajout, l'id est une string et on utilise cette particularité pour déclencher un insert au lieu d'un update
+        // Post
         await CountryService.addCountry(newRow);
+        // Refetch des données pour update le display
         countriesDataUpdate();
         winesDataUpdate();
-        toast.success(`${newRow.name} a bien été enregistré`, {
-          position: "bottom-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        successToastTemplate(`${newRow.name} a bien été enregistré`);
         return newRow;
       }
       await CountryService.updateCountry(newRow);
       countriesDataUpdate();
       winesDataUpdate();
-      toast.success(`${newRow.name} a bien été mis à jour`, {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      successToastTemplate(`${newRow.name} a bien été mis à jour`);
       return newRow;
     } catch (err) {
-      return console.error("Update failed");
+      console.error("Update failed", err);
+      return errorToastTemplate(`${err}`.split(" ").slice(1).join(" "));
     }
   });
 
@@ -281,10 +261,18 @@ export default function CountryModal({
           processRowUpdate={processRowUpdate}
           onProcessRowUpdateError={onProcessRowUpdateError}
           hideFooter
+          getRowClassName={() => `super-app-theme--row`}
           sx={{
             backgroundColor: "text.primary",
             color: "background.default",
             minWidth: "38%",
+            maxWidth: "90%",
+            "& .super-app-theme--header": {
+              backgroundColor: "secondary.main",
+            },
+            "& .super-app-theme--row:nth-of-type(even)": {
+              backgroundColor: "secondary.light",
+            },
           }}
         />
       </Box>

@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from "react";
 import PropTypes from "prop-types";
-import { toast } from "react-toastify";
 import {
   DataGrid,
   GridActionsCellItem,
@@ -21,7 +20,7 @@ export default function GrapeModal({
   setGrapesData,
   winesDataUpdate,
 }) {
-  const { query } = useAdminContext();
+  const { query, successToastTemplate, errorToastTemplate } = useAdminContext();
 
   const [rowModesModel, setRowModesModel] = useState({});
 
@@ -48,16 +47,7 @@ export default function GrapeModal({
       // Met le state grapesData à jour après la suppression
       grapesDataUpdate();
       winesDataUpdate();
-      toast.success(`${deletedGrape[0].name} a été supprimé`, {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      successToastTemplate(`${deletedGrape[0].name} a été supprimé`);
     } catch (err) {
       console.error("Deletion failed :", err);
     }
@@ -65,23 +55,26 @@ export default function GrapeModal({
 
   // --- Gestion de l'ajout ---
   const handleAddClick = () => {
-    // Génère un id temporaire en string le temps d'insérer les nouvelles données
-    const id = `new${grapesData[grapesData.length - 1].id + 1}`;
-    // Crée un nouvel objet dans le state grapesData pour stocker les nouvelles données
-    setGrapesData((grapes) => [
-      {
-        id,
-        name: "",
-        region_id: "",
-        isNew: true,
-      },
-      ...grapes,
-    ]);
-    // Passe la nouvelle ligne en mode édition
-    setRowModesModel((oldModel) => ({
-      ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
-    }));
+    // Check si une nouvelle n'est pas déjà présente
+    if (!grapesData.some((grape) => typeof grape.id === "string")) {
+      // Génère un id temporaire en string le temps d'insérer les nouvelles données
+      const id = `new${grapesData[grapesData.length - 1].id + 1}`;
+      // Crée un nouvel objet dans le state grapesData pour stocker les nouvelles données
+      setGrapesData((grapes) => [
+        {
+          id,
+          name: "",
+          region_id: "",
+          isNew: true,
+        },
+        ...grapes,
+      ]);
+      // Passe la nouvelle ligne en mode édition
+      setRowModesModel((oldModel) => ({
+        ...oldModel,
+        [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
+      }));
+    }
   };
 
   // --- Gestion de l'édition ---
@@ -122,39 +115,26 @@ export default function GrapeModal({
 
   const processRowUpdate = useCallback(async (newRow) => {
     try {
+      // Avant tout chose, validateurs
+      await GrapeService.grapeSchema.validate(newRow);
+      // Si c'est un ajout, l'id est une string et on utilise cette particularité pour déclencher un insert au lieu d'un update
       if (typeof newRow.id === "string") {
-        // Si c'est un ajout, l'id est une string et on utilise cette particularité pour déclencher un insert au lieu d'un update
+        // Post
         await GrapeService.addGrape(newRow);
+        // Refetch des données pour update le display
         grapesDataUpdate();
         winesDataUpdate();
-        toast.success(`${newRow.name} a bien été enregistré`, {
-          position: "bottom-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        successToastTemplate(`${newRow.name} a bien été enregistré`);
         return newRow;
       }
       await GrapeService.updateGrape(newRow);
       grapesDataUpdate();
       winesDataUpdate();
-      toast.success(`${newRow.name} a bien été mis à jour`, {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      successToastTemplate(`${newRow.name} a bien été mis à jour`);
       return newRow;
     } catch (err) {
-      return console.error("Update failed");
+      console.error("Update failed", err);
+      return errorToastTemplate(`${err}`.split(" ").slice(1).join(" "));
     }
   });
 
@@ -287,11 +267,18 @@ export default function GrapeModal({
           processRowUpdate={processRowUpdate}
           onProcessRowUpdateError={onProcessRowUpdateError}
           hideFooter
+          getRowClassName={() => `super-app-theme--row`}
           sx={{
             backgroundColor: "text.primary",
             color: "background.default",
             minWidth: "38%",
             maxWidth: "90%",
+            "& .super-app-theme--header": {
+              backgroundColor: "secondary.main",
+            },
+            "& .super-app-theme--row:nth-of-type(even)": {
+              backgroundColor: "secondary.light",
+            },
           }}
         />
       </Box>
