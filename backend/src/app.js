@@ -1,6 +1,7 @@
 // import some node modules for later
 const fs = require("node:fs");
 const path = require("node:path");
+const cookieParser = require("cookie-parser");
 
 // create express app
 
@@ -8,6 +9,7 @@ const express = require("express");
 
 const app = express();
 
+app.use(cookieParser());
 // use some application-level middlewares
 
 app.use(express.json());

@@ -63,7 +63,6 @@ const verifyPassword = async (req, res, next) => {
 const verifyToken = (req, res, next) => {
   try {
     const token = req.cookies.access_token;
-
     if (!token) return res.sendStatus(403);
 
     // on place le contenu du token (payloads dans la propriété payloads de la requête)

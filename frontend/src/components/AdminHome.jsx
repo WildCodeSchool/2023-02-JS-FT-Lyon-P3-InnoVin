@@ -1,5 +1,6 @@
-import { Typography } from "@mui/material";
+import { Typography, Button } from "@mui/material";
 import { Box, Stack } from "@mui/system";
+import { Logout } from "@mui/icons-material";
 import { Bar, Doughnut, Pie, PolarArea } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -14,6 +15,7 @@ import {
 } from "chart.js";
 import { useEffect } from "react";
 import { useAdminContext } from "../contexts/AdminContext";
+import { useUserContext } from "../contexts/UserContext";
 import TypeService from "../services/TypeService";
 import UserService from "../services/UserService";
 import FlavourService from "../services/FlavourService";
@@ -44,6 +46,8 @@ export default function AdminHome() {
     grapesData,
     setGrapesData,
   } = useAdminContext();
+
+  const { logout } = useUserContext();
 
   useEffect(() => {
     async function fetch() {
@@ -260,6 +264,7 @@ export default function AdminHome() {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
+        position: "relative",
       }}
     >
       <Typography variant="h4" sx={{ marginBlock: 5 }}>
@@ -301,6 +306,14 @@ export default function AdminHome() {
           <Pie data={winesPerTypeData} options={winesPerTypeOptions} />
         </Box>
       </Stack>
+      <Button
+        variant="contained"
+        endIcon={<Logout />}
+        sx={{ marginBlock: 5 }}
+        onClick={logout}
+      >
+        Déconnexion
+      </Button>
     </Box>
   );
 }
