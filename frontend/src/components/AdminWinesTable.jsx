@@ -8,7 +8,7 @@ import {
 import { Cancel, Delete, Edit, Save, Settings } from "@mui/icons-material";
 import { Box } from "@mui/system";
 import { Button, SpeedDial, SpeedDialAction } from "@mui/material";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { useAdminContext } from "../contexts/AdminContext";
 // --- Services ---
 import WineService from "../services/WineService";
@@ -45,6 +45,8 @@ export default function AdminWinesTable() {
     setRegionsData,
     countriesData,
     setCountriesData,
+    successToastTemplate,
+    errorToastTemplate,
   } = useAdminContext();
 
   const [rowModesModel, setRowModesModel] = useState({});
@@ -114,16 +116,7 @@ export default function AdminWinesTable() {
       await WineService.deleteWine(id);
       // Met le state winesData à jour après la suppression
       winesDataUpdate();
-      toast.success(`${deletedWine[0].name} a été supprimé`, {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      successToastTemplate(`${deletedWine[0].name} a été supprimé`);
     } catch (err) {
       console.error("Deletion failed :", err);
     }
@@ -131,30 +124,33 @@ export default function AdminWinesTable() {
 
   // --- Gestion de l'ajout ---
   const handleAddClick = () => {
-    // Génère un id temporaire en string le temps d'insérer les nouvelles données
-    const id = `new${winesData[winesData.length - 1].id + 1}`;
-    // Crée un nouvel objet dans le state winesData pour stocker les nouvelles données
-    setWinesData((wines) => [
-      {
-        id,
-        name: "",
-        country_id: "",
-        region_id: "",
-        domain_id: "",
-        type_id: "",
-        grape_variety_id: "",
-        vintage: "",
-        aroma_id: "",
-        flavour_id: "",
-        isNew: true,
-      },
-      ...wines,
-    ]);
-    // Passe la nouvelle ligne en mode édition
-    setRowModesModel((oldModel) => ({
-      ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
-    }));
+    // Check si une nouvelle n'est pas déjà présente
+    if (!winesData.some((wine) => typeof wine.id === "string")) {
+      // Génère un id temporaire en string le temps d'insérer les nouvelles données
+      const id = `new${winesData[winesData.length - 1].id + 1}`;
+      // Crée un nouvel objet dans le state winesData pour stocker les nouvelles données
+      setWinesData((wines) => [
+        {
+          id,
+          name: "",
+          country_id: "",
+          region_id: "",
+          domain_id: "",
+          type_id: "",
+          grape_variety_id: "",
+          vintage: "",
+          aroma_id: "",
+          flavour_id: "",
+          isNew: true,
+        },
+        ...wines,
+      ]);
+      // Passe la nouvelle ligne en mode édition
+      setRowModesModel((oldModel) => ({
+        ...oldModel,
+        [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
+      }));
+    }
   };
 
   // --- Gestion de l'édition ---
@@ -193,38 +189,37 @@ export default function AdminWinesTable() {
     }
   };
 
+  // Check si le région correspond bien au pays et que le domaine correspond bien à la région
+  const checkGeographicCoherence = (newRow) =>
+    regionsData.filter((region) => region.id === newRow.region_id)[0]
+      .country_id === newRow.country_id &&
+    domainsData.filter((domain) => domain.id === newRow.domain_id)[0]
+      .region_id === newRow.region_id;
+
   const processRowUpdate = useCallback(async (newRow) => {
     try {
-      if (typeof newRow.id === "string") {
+      // Avant tout chose, validateurs
+      await WineService.wineSchema.validate(newRow);
+      if (checkGeographicCoherence(newRow)) {
         // Si c'est un ajout, l'id est une string et on utilise cette particularité pour déclencher un insert au lieu d'un update
-        await WineService.addWine(newRow);
-        winesDataUpdate();
-        toast.success(`${newRow.name} a bien été enregistré`, {
-          position: "bottom-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        if (typeof newRow.id === "string") {
+          // Post
+          await WineService.addWine(newRow);
+          // Refetch des données pour update le display
+          winesDataUpdate();
+          successToastTemplate(`${newRow.name} a bien été enregistré`);
+          return newRow;
+        }
+        await WineService.updateWine(newRow);
+        successToastTemplate(`${newRow.name} a bien été mis à jour`);
         return newRow;
       }
-      await WineService.updateWine(newRow);
-      toast.success(`${newRow.name} a bien été mis à jour`, {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      return newRow;
+      return errorToastTemplate(
+        "Le pays, la région et le domaine ne sont pas cohérents entre eux"
+      );
     } catch (err) {
-      return console.error("Update failed");
+      console.error("Update failed", err);
+      return errorToastTemplate(`${err}`.split(" ").slice(1).join(" "));
     }
   });
 
@@ -489,9 +484,16 @@ export default function AdminWinesTable() {
         processRowUpdate={processRowUpdate}
         onProcessRowUpdateError={onProcessRowUpdateError}
         hideFooter
+        getRowClassName={() => `super-app-theme--row`}
         sx={{
           backgroundColor: "text.primary",
           color: "background.default",
+          "& .super-app-theme--header": {
+            backgroundColor: "secondary.main",
+          },
+          "& .super-app-theme--row:nth-of-type(even)": {
+            backgroundColor: "secondary.light",
+          },
         }}
       />
       <ToastContainer />

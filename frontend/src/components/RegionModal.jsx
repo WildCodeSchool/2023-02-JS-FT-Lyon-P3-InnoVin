@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from "react";
 import PropTypes from "prop-types";
-import { toast } from "react-toastify";
 import {
   DataGrid,
   GridActionsCellItem,
@@ -22,7 +21,7 @@ export default function RegionModal({
   winesDataUpdate,
   countrySelect,
 }) {
-  const { query } = useAdminContext();
+  const { query, successToastTemplate, errorToastTemplate } = useAdminContext();
 
   const [rowModesModel, setRowModesModel] = useState({});
 
@@ -49,16 +48,7 @@ export default function RegionModal({
       // Met le state regionsData à jour après la suppression
       regionsDataUpdate();
       winesDataUpdate();
-      toast.success(`${deletedRegion[0].name} a été supprimé`, {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      successToastTemplate(`${deletedRegion[0].name} a été supprimé`);
     } catch (err) {
       console.error("Deletion failed :", err);
     }
@@ -66,23 +56,26 @@ export default function RegionModal({
 
   // --- Gestion de l'ajout ---
   const handleAddClick = () => {
-    // Génère un id temporaire en string le temps d'insérer les nouvelles données
-    const id = `new${regionsData[regionsData.length - 1].id + 1}`;
-    // Crée un nouvel objet dans le state regionsData pour stocker les nouvelles données
-    setRegionsData((regions) => [
-      {
-        id,
-        name: "",
-        country_id: "",
-        isNew: true,
-      },
-      ...regions,
-    ]);
-    // Passe la nouvelle ligne en mode édition
-    setRowModesModel((oldModel) => ({
-      ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
-    }));
+    // Check si une nouvelle n'est pas déjà présente
+    if (!regionsData.some((region) => typeof region.id === "string")) {
+      // Génère un id temporaire en string le temps d'insérer les nouvelles données
+      const id = `new${regionsData[regionsData.length - 1].id + 1}`;
+      // Crée un nouvel objet dans le state regionsData pour stocker les nouvelles données
+      setRegionsData((regions) => [
+        {
+          id,
+          name: "",
+          country_id: "",
+          isNew: true,
+        },
+        ...regions,
+      ]);
+      // Passe la nouvelle ligne en mode édition
+      setRowModesModel((oldModel) => ({
+        ...oldModel,
+        [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
+      }));
+    }
   };
 
   // --- Gestion de l'édition ---
@@ -123,39 +116,26 @@ export default function RegionModal({
 
   const processRowUpdate = useCallback(async (newRow) => {
     try {
+      // Avant tout chose, validateurs
+      await RegionService.regionSchema.validate(newRow);
+      // Si c'est un ajout, l'id est une string et on utilise cette particularité pour déclencher un insert au lieu d'un update
       if (typeof newRow.id === "string") {
-        // Si c'est un ajout, l'id est une string et on utilise cette particularité pour déclencher un insert au lieu d'un update
+        // Post
         await RegionService.addRegion(newRow);
+        // Refetch des données pour update le display
         regionsDataUpdate();
         winesDataUpdate();
-        toast.success(`${newRow.name} a bien été enregistré`, {
-          position: "bottom-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        successToastTemplate(`${newRow.name} a bien été enregistré`);
         return newRow;
       }
       await RegionService.updateRegion(newRow);
       regionsDataUpdate();
       winesDataUpdate();
-      toast.success(`${newRow.name} a bien été mis à jour`, {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      successToastTemplate(`${newRow.name} a bien été mis à jour`);
       return newRow;
     } catch (err) {
-      return console.error("Update failed");
+      console.error("Update failed", err);
+      return errorToastTemplate(`${err}`.split(" ").slice(1).join(" "));
     }
   });
 
@@ -290,11 +270,18 @@ export default function RegionModal({
           processRowUpdate={processRowUpdate}
           onProcessRowUpdateError={onProcessRowUpdateError}
           hideFooter
+          getRowClassName={() => `super-app-theme--row`}
           sx={{
             backgroundColor: "text.primary",
             color: "background.default",
             minWidth: "38%",
             maxWidth: "90%",
+            "& .super-app-theme--header": {
+              backgroundColor: "secondary.main",
+            },
+            "& .super-app-theme--row:nth-of-type(even)": {
+              backgroundColor: "secondary.light",
+            },
           }}
         />
       </Box>
