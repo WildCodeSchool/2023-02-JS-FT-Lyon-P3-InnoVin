@@ -68,10 +68,10 @@ const add = (req, res) => {
 };
 
 const destroy = (req, res) => {
-  const id = parseInt(req.params.id, 10);
+  const sessionId = parseInt(req.params.id, 10);
 
-  models.session
-    .delete(id)
+  models.sessionHasWine
+    .delete(sessionId)
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);
