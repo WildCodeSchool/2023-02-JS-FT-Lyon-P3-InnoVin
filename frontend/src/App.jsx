@@ -1,4 +1,4 @@
-import { Route, Routes, Outlet } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import { ToastContainer } from "react-toastify";
 import Presentation from "./pages/Presentation";
@@ -10,25 +10,37 @@ import "react-toastify/dist/ReactToastify.css";
 import TastingSheet from "./pages/TastingSheet";
 import TastingProfile from "./pages/TastingProfile";
 import Recipe from "./pages/Recipe";
+import RequiredAuth from "./components/RequiredAuth";
 
 function App() {
   return (
     <div className="App">
       <Routes>
+        {/* --- Routes publiques --- */}
         <Route path="/" element={<Presentation />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Inscription />} />
-        <Route path="/tasting" element={<Outlet />}>
+        {/* --- Routes User --- */}
+        <Route
+          path="/workshop"
+          element={<RequiredAuth allowedRoles={["Admin", "Utilisateur"]} />}
+        >
           <Route index element={<Tasting />} />
           <Route path="tastingsheet" element={<TastingSheet />} />
           <Route path="tastingprofile" element={<TastingProfile />} />
           <Route path="recipe" element={<Recipe />} />
         </Route>
-        <Route path="/admin/home" element={<Admin />} />
-        <Route path="/admin/users" element={<Admin />} />
-        <Route path="/admin/wines" element={<Admin />} />
-        <Route path="/admin/sessions" element={<Admin />} />
-        <Route path="/admin/recipes" element={<Admin />} />
+        {/* --- Routes Admin --- */}
+        <Route
+          path="/admin"
+          element={<RequiredAuth allowedRoles={["Admin"]} />}
+        >
+          <Route path="home" element={<Admin />} />
+          <Route path="users" element={<Admin />} />
+          <Route path="wines" element={<Admin />} />
+          <Route path="sessions" element={<Admin />} />
+          <Route path="recipes" element={<Admin />} />
+        </Route>
       </Routes>
       <ToastContainer />
     </div>

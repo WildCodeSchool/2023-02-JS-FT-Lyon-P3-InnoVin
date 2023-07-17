@@ -54,10 +54,10 @@ export default function Tasting() {
 
   const handleClickWine = (event) => {
     setUserPick(event.target.value);
-    navigate("/tasting/tastingsheet");
+    navigate("/workshop/tastingsheet");
   };
   const handleClickProfile = () => {
-    navigate("/tasting/tastingprofile");
+    navigate("/workshop/tastingprofile");
   };
 
   return (
