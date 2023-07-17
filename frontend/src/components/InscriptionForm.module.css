@@ -260,6 +260,7 @@ form {
     justify-content: flex-start;
     align-items: center;
     height: 50vh;
+    width: 30vw;
   }
 
   .preferContainer h2 {
