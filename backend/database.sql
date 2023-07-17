@@ -337,7 +337,8 @@ CREATE TABLE IF NOT EXISTS `recipe` (
 
   CONSTRAINT `fk_recipe_session`
     FOREIGN KEY (`session_id`)
-    REFERENCES `session` (`id`))
+    REFERENCES `session` (`id`)
+    ON DELETE CASCADE)
 
 ENGINE = InnoDB;
 
@@ -396,11 +397,13 @@ CREATE TABLE IF NOT EXISTS `recipe_has_wine` (
 
   CONSTRAINT `fk_recipe_has_wine_recipe`
     FOREIGN KEY (`recipe_id`)
-    REFERENCES `recipe` (`id`),
+    REFERENCES `recipe` (`id`)
+    ON DELETE CASCADE,
   
   CONSTRAINT `fk_recipe_has_wine_wine`
     FOREIGN KEY (`wine_id`)
-    REFERENCES `wine` (`id`))
+    REFERENCES `wine` (`id`)
+    ON DELETE CASCADE)
 
 ENGINE = InnoDB;
 
@@ -428,14 +431,14 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS `session_has_wine` (
-  `session_id` INT NOT NULL,
-  `wine_id` INT NOT NULL,
+  `session_id` INT,
+  `wine_id` INT,
   PRIMARY KEY (`session_id`, `wine_id`),
 
   CONSTRAINT `fk_session_has_wine_session`
     FOREIGN KEY (`session_id`)
     REFERENCES `session` (`id`)
-    ON DELETE CASCADE,
+    ON DELETE CASCADE, 
 
   CONSTRAINT `fk_session_has_wine_wine`
     FOREIGN KEY (`wine_id`)

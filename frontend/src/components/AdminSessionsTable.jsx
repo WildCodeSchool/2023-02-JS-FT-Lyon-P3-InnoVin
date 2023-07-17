@@ -86,16 +86,20 @@ export default function AdminSessionsTable() {
       await SessionService.deleteSession(id);
       // Met le state sessionsData à jour après la suppression
       sessionsDataUpdate();
-      toast.success(`${deletedSession[0].name} a été supprimé`, {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      sessionsHaveWinesDataUpdate();
+      toast.success(
+        `la session du ${deletedSession[0].date} à ${deletedSession[0].time} a été supprimée`,
+        {
+          position: "bottom-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        }
+      );
     } catch (err) {
       console.error("Deletion failed :", err);
     }
@@ -172,10 +176,34 @@ export default function AdminSessionsTable() {
         const updatedSessions = await SessionService.getSessions();
         const lastSessionId =
           updatedSessions.data[updatedSessions.data.length - 1].id;
-        const newRowWithId = { ...newRow, session_id: lastSessionId };
+        const newRowWithId = { ...newRow, id: lastSessionId };
         await SessionHasWineService.addSessionWines(newRowWithId);
         sessionsHaveWinesDataUpdate();
-        toast.success(`La session du ${newRow.date} a bien été enregistrée`, {
+        toast.success(
+          `La session du ${newRow.date} à ${newRow.time} a bien été enregistrée`,
+          {
+            position: "bottom-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          }
+        );
+        return newRow;
+      }
+      const { id } = newRow;
+      await SessionService.updateSession(newRow);
+      sessionsDataUpdate();
+      await SessionHasWineService.deleteCurrentSessionWines(id);
+      sessionsHaveWinesDataUpdate();
+      await SessionHasWineService.addSessionWines(newRow);
+      sessionsHaveWinesDataUpdate();
+      toast.success(
+        `La séance du ${newRow.date} à ${newRow.time} a bien été mise à jour`,
+        {
           position: "bottom-center",
           autoClose: 3000,
           hideProgressBar: false,
@@ -184,20 +212,8 @@ export default function AdminSessionsTable() {
           draggable: true,
           progress: undefined,
           theme: "light",
-        });
-        return newRow;
-      }
-      await SessionService.updateSession(newRow);
-      toast.success(`${newRow.name} a bien été mis à jour`, {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+        }
+      );
       return newRow;
     } catch (err) {
       return console.error("Update failed");

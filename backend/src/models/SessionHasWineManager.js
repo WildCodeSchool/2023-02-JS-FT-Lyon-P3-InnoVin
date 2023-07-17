@@ -18,15 +18,23 @@ class SessionHasWineManager extends AbstractManager {
     return this.database.query(
       `insert into ${this.table} (session_id, wine_id) values (?, ?), (?, ?), (?, ?), (?, ?)`,
       [
-        sessionHasWine.session_id,
+        sessionHasWine.id,
         sessionHasWine.wine1,
-        sessionHasWine.session_id,
+        sessionHasWine.id,
         sessionHasWine.wine2,
-        sessionHasWine.session_id,
+        sessionHasWine.id,
         sessionHasWine.wine3,
-        sessionHasWine.session_id,
+        sessionHasWine.id,
         sessionHasWine.wine4,
       ]
+    );
+  }
+
+  // Override
+  delete(sessionId) {
+    return this.database.query(
+      `delete from ${this.table} where session_id = ?`,
+      [sessionId]
     );
   }
 }

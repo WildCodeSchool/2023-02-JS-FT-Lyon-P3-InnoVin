@@ -12,6 +12,10 @@ const addSession = (session) => {
   return APIService.post(`/sessions`, session);
 };
 
+const updateSession = (session) => {
+  return APIService.put(`/sessions/${session.id}`, session);
+};
+
 const deleteSession = (id) => {
   return APIService.delete(`/sessions/${id}`);
 };
@@ -21,4 +25,5 @@ export default {
   getSessionsById,
   deleteSession,
   addSession,
+  updateSession,
 };

@@ -8,7 +8,12 @@ const addSessionWines = (session) => {
   return APIService.post(`/sessionhaswines`, session);
 };
 
+const deleteCurrentSessionWines = (id) => {
+  return APIService.delete(`/sessionhaswines/${id}`);
+};
+
 export default {
   getWinesOfSessions,
   addSessionWines,
+  deleteCurrentSessionWines,
 };

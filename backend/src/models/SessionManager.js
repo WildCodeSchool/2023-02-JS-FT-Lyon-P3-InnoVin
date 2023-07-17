@@ -26,6 +26,13 @@ class SessionManager extends AbstractManager {
       [session.date, session.time]
     );
   }
+
+  update(session) {
+    return this.database.query(
+      `update ${this.table} set date = STR_TO_DATE(?, "%d/%m/%Y"), time = ? where id = ?`,
+      [session.date, session.time, session.id]
+    );
+  }
 }
 
 module.exports = SessionManager;
