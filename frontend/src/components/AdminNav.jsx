@@ -1,23 +1,32 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAdminContext } from "../contexts/AdminContext";
 import styles from "./AdminNav.module.css";
 /* --- pictures --- */
 import logo from "../assets/logo.svg";
 import users from "../assets/users.svg";
 import wine from "../assets/wine.svg";
 import session from "../assets/session.svg";
-import grape from "../assets/grape.svg";
+import recipe from "../assets/recipe.svg";
 
 export default function AdminNav() {
-  const [nav, setNav] = useState("users");
+  const { nav, setNav, setQuery } = useAdminContext();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate(`/admin/${nav}`);
+  }, [nav]);
 
   const handleClick = (e) => {
     setNav(e.target.id);
-    navigate(`/admin/${nav}`);
+    setQuery("");
   };
 
   const navIcons = [
+    {
+      img: logo,
+      alt: "home",
+    },
     {
       img: users,
       alt: "users",
@@ -27,12 +36,12 @@ export default function AdminNav() {
       alt: "wines",
     },
     {
-      img: grape,
-      alt: "grapes",
-    },
-    {
       img: session,
       alt: "sessions",
+    },
+    {
+      img: recipe,
+      alt: "recipes",
     },
   ];
 
@@ -40,9 +49,6 @@ export default function AdminNav() {
     <header className={styles.navbox}>
       <nav>
         <ul>
-          <li>
-            <img src={logo} alt="logo" />
-          </li>
           {navIcons.map((icon) => (
             <li
               key={icon.alt}

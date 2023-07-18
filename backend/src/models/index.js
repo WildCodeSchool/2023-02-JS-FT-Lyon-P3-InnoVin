@@ -1,5 +1,4 @@
 require("dotenv").config();
-
 const mysql = require("mysql2/promise");
 
 // create a connection pool to the database
@@ -38,6 +37,70 @@ const UserManager = require("./UserManager");
 
 models.user = new UserManager();
 models.user.setDatabase(pool);
+
+const SessionManager = require("./SessionManager");
+
+models.session = new SessionManager();
+models.session.setDatabase(pool);
+
+const SessionHasWineManager = require("./SessionHasWineManager");
+
+models.sessionHasWine = new SessionHasWineManager();
+models.sessionHasWine.setDatabase(pool);
+
+const TastingNoteManager = require("./TastingNoteManager");
+
+models.tasting_note = new TastingNoteManager();
+models.tasting_note.setDatabase(pool);
+const WineManager = require("./WineManager");
+
+models.wine = new WineManager();
+models.wine.setDatabase(pool);
+
+const GrapeManager = require("./GrapeManager");
+
+models.grape = new GrapeManager();
+models.grape.setDatabase(pool);
+
+const DomainManager = require("./DomainManager");
+
+models.domain = new DomainManager();
+models.domain.setDatabase(pool);
+
+const RegionManager = require("./RegionManager");
+
+models.region = new RegionManager();
+models.region.setDatabase(pool);
+
+const CountryManager = require("./CountryManager");
+
+models.country = new CountryManager();
+models.country.setDatabase(pool);
+
+const TypeManager = require("./TypeManager");
+
+models.type = new TypeManager();
+models.type.setDatabase(pool);
+
+const AromaManager = require("./AromaManager");
+
+models.aroma = new AromaManager();
+models.aroma.setDatabase(pool);
+
+const FlavourManager = require("./FlavourManager");
+
+models.flavour = new FlavourManager();
+models.flavour.setDatabase(pool);
+
+const RecipeManager = require("./RecipeManager");
+
+models.recipe = new RecipeManager();
+models.recipe.setDatabase(pool);
+
+const RecipeHasWineManager = require("./RecipeHasWineManager");
+
+models.recipehaswine = new RecipeHasWineManager();
+models.recipehaswine.setDatabase(pool);
 
 // bonus: use a proxy to personalize error message,
 // when asking for a non existing model

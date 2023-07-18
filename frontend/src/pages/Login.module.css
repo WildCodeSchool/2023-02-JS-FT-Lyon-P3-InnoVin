@@ -1,18 +1,33 @@
 .formcontainer {
-    display: flex; 
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  width: 75vw;
+  max-width: 900px;
 }
 
 img {
-    width: 22vw;
-    height: 11vh;
+  width: 22vw;
+  height: 11vh;
 }
 
-@media screen and (min-width: 1477px) {
-    .formcontainer {
-      margin-top: 5rem;
-      display: flex;
-      gap: 40px;
-      font-size:2.5em;}
-    }
+.select {
+  background-color: #fffdcc;
+  font-size: 1.5rem;
+  height: 5vh;
+  margin-bottom: 5rem;
+  color: black;
+  width: 100%;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+@media screen and (min-width: 900px) {
+  .formcontainer {
+    margin-top: 5rem;
+    max-width: 900px;
+    display: flex;
+    gap: 10px;
+    font-size: 2.5em;
+  }
+}

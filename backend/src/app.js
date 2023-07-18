@@ -1,7 +1,7 @@
 // import some node modules for later
-
 const fs = require("node:fs");
 const path = require("node:path");
+const cookieParser = require("cookie-parser");
 
 // create express app
 
@@ -9,6 +9,7 @@ const express = require("express");
 
 const app = express();
 
+app.use(cookieParser());
 // use some application-level middlewares
 
 app.use(express.json());
@@ -28,7 +29,6 @@ app.use(
 const router = require("./router");
 
 app.use(router);
-
 // serve the `backend/public` folder for public resources
 
 app.use(express.static(path.join(__dirname, "../public")));

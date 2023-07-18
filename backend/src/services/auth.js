@@ -14,13 +14,12 @@ const hashingOptions = {
 };
 
 const hashPassword = (req, res, next) => {
-  const { password } = req.body;
   argon2
-    .hash(password, hashingOptions)
+    .hash(req.body.password, hashingOptions)
     .then((hashedPassword) => {
       req.body.hashedPassword = hashedPassword;
-      // delete refusé par ESLint. Trouver solution de contournement.
-      // delete password
+      delete req.body.password;
+
       next();
     })
     .catch((err) => {
@@ -30,13 +29,10 @@ const hashPassword = (req, res, next) => {
     });
 };
 
-const verifyPassword = async (req, res) => {
+const verifyPassword = async (req, res, next) => {
   argon2
 
-    .verify(
-      "$argon2id$v=19$m=16,t=2,p=1$cXFnN2s1ZHU0aTAwMDAwMA$XFP3Vrp4/huxiy9p4p2EAw",
-      req.body.password
-    )
+    .verify(req.user.hashed_password, req.body.password)
 
     .then((isVerified) => {
       if (isVerified) {
@@ -46,14 +42,13 @@ const verifyPassword = async (req, res) => {
         });
         delete req.body.password;
         delete req.user.hashedPassword;
-        // res.send({ token, user: req.user });
 
-        res
-          .cookie("access_token", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-          })
-          .send(req.user);
+        res.cookie("access_token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+        });
+
+        next();
       } else {
         res.sendStatus(401);
       }
@@ -67,27 +62,26 @@ const verifyPassword = async (req, res) => {
 
 const verifyToken = (req, res, next) => {
   try {
-    const header = req.get("Authorization");
+    const token = req.cookies.access_token;
+    if (!token) return res.sendStatus(403);
 
-    if (header == null) {
-      throw new Error("Authorization header is missing");
-    }
-    const [type, token] = header.split(" ");
-
-    if (type !== "Bearer") {
-      throw new Error("Authorization header has not the 'Bearer' type");
-    }
-    req.payload = jwt.verify(token, process.env.JWT_SECRET);
-    next();
+    // on place le contenu du token (payloads dans la propriété payloads de la requête)
+    // afin de pouvoir retrouver les infos de l'utilisateurs connecté dans la prochaine fonction.
+    req.payloads = jwt.verify(token, JWT_SECRET);
+    return next();
   } catch (err) {
     console.error(err);
-
-    res.sendStatus(401);
+    return res.sendStatus(403);
   }
+};
+
+const logout = (req, res) => {
+  res.clearCookie("access_token").sendStatus(200);
 };
 
 module.exports = {
   hashPassword,
   verifyPassword,
   verifyToken,
+  logout,
 };

@@ -2,13 +2,18 @@ const AbstractManager = require("./AbstractManager");
 
 class UserManager extends AbstractManager {
   constructor() {
-    super({ table: "User" });
+    super({ table: "user" });
   }
 
   // Override
   find(id) {
     return this.database.query(
-      `select id, firstname, lastname, email, birthdate, address, postcode, city, role, aroma_id, flavour_id from  ${this.table} where id = ?`,
+      `select u.id, u.firstname, u.lastname, u.email, u.birthdate, u.address, u.city, u.role, a.name as aroma, f.name as flavour, t.name as type
+        from  ${this.table} as u
+        inner join aroma as a on a.id = u.aroma_id
+        inner join flavour as f on f.id = u.flavour_id
+        inner join type as t on t.id = u.type_id
+        where id = ?`,
       [id]
     );
   }
@@ -16,13 +21,17 @@ class UserManager extends AbstractManager {
   // Override
   findAll() {
     return this.database.query(
-      `select id, firstname, lastname, email, birthdate, address, postcode,  city, role, aroma_id, flavour_id, type_id  from  ${this.table}`
+      `select u.id, u.firstname, u.lastname, u.email, u.birthdate, u.address, u.postcode, u.city, u.role, a.name as aroma, f.name as flavour, t.name as type
+        from  ${this.table} as u
+        inner join aroma as a on a.id = u.aroma_id
+        inner join flavour as f on f.id = u.flavour_id
+        inner join type as t on t.id = u.type_id`
     );
   }
 
   insert(user) {
     return this.database.query(
-      `insert into ${this.table} (firstname, lastname, email, birthdate, address, postcode, city, hashed_password, aroma_id, flavour_id, type_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `insert into ${this.table} (firstname, lastname, email, birthdate, address, postcode, city, hashed_password, aroma_id, flavour_id, type_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         user.firstname,
         user.lastname,
@@ -31,10 +40,10 @@ class UserManager extends AbstractManager {
         user.address,
         user.postcode,
         user.city,
-        user.hashed_password,
-        user.aroma_id,
-        user.flavour_id,
-        user.type_id,
+        user.hashedPassword,
+        user.aromaId,
+        user.flavourId,
+        user.typeId,
       ]
     );
   }
