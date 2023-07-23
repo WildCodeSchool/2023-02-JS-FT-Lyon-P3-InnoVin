@@ -60,25 +60,25 @@ export default function TastingProfile() {
             aroma={wine.aroma}
           />
         ))}
-        <Box>
-          <Button
-            variant="contained"
-            size="large"
-            onClick={handleClick}
-            sx={{
-              p: 2,
-              margin: "0 auto",
-              display: "flex",
-              width: "30vw",
-              borderRadius: 2,
-              fontSize: "calc(0.6rem + 1vmin)",
-              color: "white",
-            }}
-          >
-            {" "}
-            Atelier de création{" "}
-          </Button>
-        </Box>
+      </Box>
+      <Box>
+        <Button
+          variant="contained"
+          size="large"
+          onClick={handleClick}
+          sx={{
+            p: 2,
+            margin: "0 auto",
+            display: "flex",
+            width: "30vw",
+            borderRadius: 2,
+            fontSize: "calc(0.6rem + 1vmin)",
+            color: "white",
+          }}
+        >
+          {" "}
+          Atelier de création{" "}
+        </Button>
       </Box>
     </div>
   );

@@ -50,7 +50,9 @@ export default function AdminSessionsTable() {
             sessionsWithWines[i][key] = winesForEachSession[j - 1].wine_id;
           }
         }
-        if (sessionsWithWines) setSessionsWithWinesData(sessionsWithWines);
+        /* if (sessionsWithWines) */ setSessionsWithWinesData(
+          sessionsWithWines
+        );
       } catch (error) {
         console.error("Internal error");
       }
@@ -58,22 +60,23 @@ export default function AdminSessionsTable() {
     fetch();
   }, []);
 
-  const sessionsDataUpdate = async () => {
-    try {
-      const session = await SessionService.getSessions();
-      setSessionsData(session.data.reverse());
-    } catch (error) {
-      console.error(error);
+  const sessionsWithWinesDataUpdate = async () => {
+    const session = await SessionService.getSessions();
+    setSessionsData(session.data.reverse());
+    const winesOfSessions = await SessionHasWineService.getWinesOfSessions();
+    setSessionsHaveWinesData(winesOfSessions.data);
+    const sessionsWithWines = [];
+    for (let i = 0; i < session.data.length; i += 1) {
+      sessionsWithWines.push({ ...session.data[i] });
+      const winesForEachSession = winesOfSessions.data.filter(
+        (element) => element.session_id === session.data[i].id
+      );
+      for (let j = 1; j < 5; j += 1) {
+        const key = `wine${j}`;
+        sessionsWithWines[i][key] = winesForEachSession[j - 1].wine_id;
+      }
     }
-  };
-
-  const sessionsHaveWinesDataUpdate = async () => {
-    try {
-      const winesOfSessions = await SessionHasWineService.getWinesOfSessions();
-      setSessionsHaveWinesData(winesOfSessions.data);
-    } catch (error) {
-      console.error(error);
-    }
+    setSessionsWithWinesData(sessionsWithWines);
   };
 
   // --- Gestion de la suppression ---
@@ -85,11 +88,10 @@ export default function AdminSessionsTable() {
       );
       // Supprime la session de la BDD
       await SessionService.deleteSession(id);
-      // Met le state sessionsData à jour après la suppression
-      sessionsDataUpdate();
-      sessionsHaveWinesDataUpdate();
+      // Mets les states sessionsData et sessionHaveWinesData à jour après la suppression et génère à nouveau le tableau SessionWithWines afin qu'il soit actualisé
+      sessionsWithWinesDataUpdate();
       successToastTemplate(
-        `La session du ${deletedSession[0].date} à ${deletedSession[0].time} a été supprimée`
+        `La session du ${deletedSession[0].date} à ${deletedSession[0].time} a été supprimée.`
       );
     } catch (err) {
       console.error("Deletion failed :", err);
@@ -138,7 +140,9 @@ export default function AdminSessionsTable() {
   const handleCancelClick = (id) => () => {
     // Si on cancel un ajout, ça le vire du state car il n'a pas encore été entré dans la DB
     if (typeof id === "string") {
-      setSessionsData(sessionsData.filter((session) => session.id !== id));
+      setSessionsWithWinesData(
+        sessionsWithWinesData.filter((session) => session.id !== id)
+      );
       return;
     }
     // Sinon, remet la ligne en mode "view" et ignore les éventuelles modifs
@@ -161,34 +165,111 @@ export default function AdminSessionsTable() {
   };
 
   const processRowUpdate = useCallback(async (newRow) => {
+    const arrayOfWines = [
+      newRow.wine1,
+      newRow.wine2,
+      newRow.wine3,
+      newRow.wine4,
+    ];
+
+    const checkNoDuplicateWine =
+      arrayOfWines.filter((wine, index) => arrayOfWines.indexOf(wine) !== index)
+        .length === 0;
+
+    let currentDay = new Date().getDate();
+    let currentMonth = new Date().getMonth() + 1;
+    const currentYear = new Date().getFullYear();
+
+    if (currentDay < 10) {
+      currentDay = `0${currentDay}`;
+    }
+
+    if (currentMonth < 10) {
+      currentMonth = `0${currentMonth}`;
+    }
+
+    const currentDate = `${currentYear}/${currentMonth}/${currentDay}`;
+
+    let selectedDay = newRow.date.getDate();
+    let selectedMonth = newRow.date.getMonth() + 1;
+    const selectedYear = newRow.date.getFullYear();
+
+    if (selectedDay < 10) {
+      selectedDay = `0${selectedDay}`;
+    }
+
+    if (selectedMonth < 10) {
+      selectedMonth = `0${selectedMonth}`;
+    }
+
+    const selectedDate = `${selectedDay}/${selectedMonth}/${selectedYear}`;
+
+    const newRowWithFormattedDate = { ...newRow, date: selectedDate };
+
+    const reversedSelectedDate = `${newRowWithFormattedDate.date.substring(
+      6,
+      10
+    )}/${newRowWithFormattedDate.date.substring(
+      3,
+      5
+    )}/${newRowWithFormattedDate.date.substring(0, 2)}`;
+    const arrayOfDates = [currentDate, reversedSelectedDate];
+
+    const checkNoPriorDate = arrayOfDates.sort()[0] === currentDate;
+
+    const checkNoDuplicateSession = sessionsData.find(
+      (session) =>
+        session.date === newRowWithFormattedDate.date &&
+        session.time === newRowWithFormattedDate.time
+    );
     try {
-      await SessionService.sessionSchema.validate(newRow);
-      if (typeof newRow.id === "string") {
-        // Si c'est un ajout, l'id est une string et on utilise cette particularité pour déclencher un insert au lieu d'un update
-        await SessionService.addSession(newRow);
-        sessionsDataUpdate();
-        const updatedSessions = await SessionService.getSessions();
-        const lastSessionId =
-          updatedSessions.data[updatedSessions.data.length - 1].id;
-        const newRowWithId = { ...newRow, id: lastSessionId };
-        await SessionHasWineService.addSessionWines(newRowWithId);
-        sessionsHaveWinesDataUpdate();
-        successToastTemplate(
-          `La session du ${newRow.date} à ${newRow.time} a bien été enregistrée`
+      await SessionService.sessionSchema.validate(newRowWithFormattedDate);
+      if (!checkNoDuplicateWine) {
+        return errorToastTemplate(
+          "Une même session ne peut comprendre deux ou plusieurs vins identiques."
         );
-        return newRow;
       }
-      const { id } = newRow;
-      await SessionService.updateSession(newRow);
-      sessionsDataUpdate();
-      await SessionHasWineService.deleteCurrentSessionWines(id);
-      sessionsHaveWinesDataUpdate();
-      await SessionHasWineService.addSessionWines(newRow);
-      sessionsHaveWinesDataUpdate();
-      successToastTemplate(
-        `La séance du ${newRow.date} à ${newRow.time} a bien été mise à jour`
-      );
-      return newRow;
+      if (!checkNoPriorDate) {
+        return errorToastTemplate(
+          "Une session ne peut être programmée pour une date antérieure à la date d'aujourd'hui."
+        );
+      }
+      if (checkNoDuplicateSession !== undefined) {
+        return errorToastTemplate(
+          "Il ne peut y avoir deux sessions à la même date et à la même heure."
+        );
+      }
+      {
+        if (typeof newRowWithFormattedDate.id === "string") {
+          // Si c'est un ajout, l'id est une string et on utilise cette particularité pour déclencher un insert au lieu d'un update
+          await SessionService.addSession(newRowWithFormattedDate);
+          /* sessionsDataUpdate(); */ sessionsWithWinesDataUpdate();
+          const updatedSessions = await SessionService.getSessions();
+          const lastSessionId =
+            updatedSessions.data[updatedSessions.data.length - 1].id;
+          const newRowWithId = {
+            ...newRowWithFormattedDate,
+            id: lastSessionId,
+          };
+          await SessionHasWineService.addSessionWines(newRowWithId);
+          /* sessionsHaveWinesDataUpdate(); */ sessionsWithWinesDataUpdate();
+          successToastTemplate(
+            `La session du ${newRowWithFormattedDate.date} à ${newRow.time} a bien été enregistrée.`
+          );
+          return newRow;
+        }
+        const { id } = newRowWithFormattedDate;
+        await SessionService.updateSession(newRowWithFormattedDate);
+        /* sessionsDataUpdate(); */ sessionsWithWinesDataUpdate();
+        await SessionHasWineService.deleteCurrentSessionWines(id);
+        /*  sessionsHaveWinesDataUpdate(); */ sessionsWithWinesDataUpdate();
+        await SessionHasWineService.addSessionWines(newRowWithFormattedDate);
+        /*   sessionsHaveWinesDataUpdate(); */ sessionsWithWinesDataUpdate();
+        successToastTemplate(
+          `La séance du ${newRowWithFormattedDate.date} à ${newRow.time} a bien été mise à jour.`
+        );
+        return newRowWithFormattedDate;
+      }
     } catch (err) {
       console.error("Update failed", err);
       return errorToastTemplate(`${err}`.split(" ").slice(1).join(" "));
@@ -205,18 +286,28 @@ export default function AdminSessionsTable() {
     label: wine.name,
   }));
 
+  const timeSelect = ["10:00", "14:00", "16:00"];
+
   const columnsSessions = [
     {
       field: "date",
       headerClassName: "super-app-theme--header",
       headerName: "Date",
+      type: "date",
       width: 150,
       editable: true,
+      valueGetter: (params) => {
+        const [day, month, year] = params.value.split("/");
+
+        return new Date(+year, +month - 1, +day);
+      },
     },
     {
       field: "time",
       headerClassName: "super-app-theme--header",
       headerName: "Horaires",
+      type: "singleSelect",
+      valueOptions: timeSelect,
       width: 150,
       editable: true,
     },

@@ -16,7 +16,7 @@ class SessionManager extends AbstractManager {
   // Override
   findAll() {
     return this.database.query(
-      `select id , DATE_FORMAT(date, "%d/%m/%Y") as date, TIME_FORMAT(time, "%H:%i") as time from  ${this.table}`
+      `select id ,DATE_FORMAT(date, "%d/%m/%Y") as date, TIME_FORMAT(time, "%H:%i") as time from  ${this.table}`
     );
   }
 

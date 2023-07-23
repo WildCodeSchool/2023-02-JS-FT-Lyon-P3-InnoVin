@@ -69,7 +69,7 @@ ENGINE = InnoDB;
 
 INSERT INTO user (aroma_id, flavour_id, type_id, firstname, lastname, birthdate, email, hashed_password, address, postcode, city, role) 
 VALUES (1, 1, 1, "Yann", "Richard", "1989-07-12", "yann.richard9@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$cXFnN2s1ZHU0aTAwMDAwMA$XFP3Vrp4/huxiy9p4p2EAw", "17 Rue Delandine", 69007, "Lyon", "Utilisateur"),
-(2, 2, 2, "Cédric", "Boriat", "1982-06-25", "cedric@exemple.com", "$argon2id$v=19$m=12,t=2,p=1$bXFkenRzdmVmM2EwMDAwMA$W8Njzcn6wAiAJEETUHmkSQ", "25 Rue du désert", 48000, "Mende", "Admin"),
+(2, 2, 2, "Cédric", "Boriat", "1982-06-25", "cedric@exemple.com", "$argon2id$v=19$m=16,t=2,p=1$dnB2ZzdhZXlxcHMwMDAwMA$yKZ21MGC7j/HKzj/vaarNQ", "25 Rue du désert", 48000, "Mende", "Admin"),
 (3, 2, 1, "Vanessa", "Giraud", "1988-02-03", "suede210810@gmail.com", "$argon2id$v=19$m=12,t=3,p=1$aDBtZXQxb2tkbTYwMDAwMA$7i4cynKobHifJdW+kEuQOQ", "15 Rue du stade", 13000, "Marseille", "Utilisateur"),
 (1, 2, 3, "Guillaume", "Lamourec", "1996-03-28", "exemple23@gmail.com", "$argon2id$v=19$m=12,t=3,p=1$NHdvZTI1emowZDgwMDAwMA$0egTfDLzGO4OQCnZ1XlYDA", "23 Rue des melons pas mûrs", 69100, "Villeurbanne", "Utilisateur"),
 (1, 3, 3, "Bella", "Garcia", "1980-07-28", "bella.garcia@example.com", "$argon2id$v=19$m=12,t=3,p=1$cmk0aWZkaXZkeDAwMDAwMA$jNNibMCnaY1ulKPqJvl9BA", "45 Rue de l'avenir", 71000, "Mâcon", "Utilisateur");
@@ -285,13 +285,13 @@ INSERT INTO wine (country_id, region_id, type_id, domain_id, grape_variety_id, f
 	(1, 6, 1, 27, 9, 1, 7, 'Sancerre La Bourgeoise', 2018),
 	(1, 5, 2, 28, 10, 2, 1, 'Châteauneuf-du-Pape', 2010),
 	(1, 5, 2, 29, 10, 2, 5, 'La Reine des Bois Lirac', 2016),
-	(1, 5, 2, 30, 10, 2, 7, 'Châteauneuf-du-Pape', 2015),
+	(1, 5, 2, 30, 10, 2, 7, 'Châteauneuf-du-Pape Prestige', 2015),
 	(1, 7, 1, 31, 11, 1, 1, 'Clos Ste Hune Riesling', 2014),
 	(1, 7, 1, 32, 11, 1, 7, 'Rangen de Thann Clos Saint Urbain', 2016),
 	(1, 7, 1, 33, 11, 1, 7, 'Riesling Schlossberg Grand Cru', 2015),
-	(1, 3, 1, 34, 12, 1, 1, 'Bourgogne Aligoté', 2018),
-	(1, 3, 1, 35, 12, 1, 7, 'Bourgogne Aligoté', 2019),
-	(1, 3, 1, 20, 12, 1, 1, 'Bourgogne Aligoté', 2017),
+	(1, 3, 1, 34, 12, 1, 1, 'Bourgogne Aligoté les Moutots', 2018),
+	(1, 3, 1, 35, 12, 1, 7, 'Bourgogne Aligoté Champ Forey', 2019),
+	(1, 3, 1, 20, 12, 1, 1, 'Bourgogne Aligoté Vieilles Vignes', 2017),
   (2, 8, 1, 36, 13, 1, 1, 'La Côte AOC Chasselas', 2019),
   (2, 8, 1, 37, 13, 1, 7, 'Dézaley Grand Cru AOC Chasselas', 2018),
   (2, 8, 1, 38, 13, 1, 7, 'Epesses AOC Chasselas', 2020),

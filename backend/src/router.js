@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 
-const { validateLogin } = require("./validators");
+const { validateLogin } = require("./services/validators");
 
 const { verifyPassword, verifyToken, logout } = require("./services/auth");
 
