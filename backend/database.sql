@@ -70,9 +70,9 @@ ENGINE = InnoDB;
 INSERT INTO user (aroma_id, flavour_id, type_id, firstname, lastname, birthdate, email, hashed_password, address, postcode, city, role) 
 VALUES (1, 1, 1, "Yann", "Richard", "1989-07-12", "yann.richard9@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$cXFnN2s1ZHU0aTAwMDAwMA$XFP3Vrp4/huxiy9p4p2EAw", "17 Rue Delandine", 69007, "Lyon", "Utilisateur"),
 (2, 2, 2, "Cédric", "Boriat", "1982-06-25", "cedric@exemple.com", "$argon2id$v=19$m=12,t=2,p=1$bXFkenRzdmVmM2EwMDAwMA$W8Njzcn6wAiAJEETUHmkSQ", "25 Rue du désert", 48000, "Mende", "Admin"),
-(3, 2, 1, "Vanessa", "Giraud", "1988-02-03", "suede210810@gmail.com", "$argon2id$v=19$m=12,t=3,p=1$aDBtZXQxb2tkbTYwMDAwMA$7i4cynKobHifJdW+kEuQOQ", "15 Rue du stade", 13000, "Marseille", "Utilisateur"),
-(1, 2, 3, "Guillaume", "Lamourec", "1996-03-28", "exemple23@gmail.com", "$argon2id$v=19$m=12,t=3,p=1$NHdvZTI1emowZDgwMDAwMA$0egTfDLzGO4OQCnZ1XlYDA", "23 Rue des melons pas mûrs", 69100, "Villeurbanne", "Utilisateur"),
-(1, 3, 3, "Bella", "Garcia", "1980-07-28", "bella.garcia@example.com", "$argon2id$v=19$m=12,t=3,p=1$cmk0aWZkaXZkeDAwMDAwMA$jNNibMCnaY1ulKPqJvl9BA", "45 Rue de l'avenir", 71000, "Mâcon", "Utilisateur");
+(3, 2, 1, "Vanessa", "Giraud", "1988-02-03", "suede210810@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$Znp2ZGZuZ2M5cWMwMDAwMA$R/rLqXpCX0pm7BleQSNrwQ", "15 Rue du stade", 13000, "Marseille", "Utilisateur"),
+(1, 2, 3, "Guillaume", "Lamourec", "1996-03-28", "guillaume.lamourec@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$eHBtcjA2MnNrbWYwMDAwMA$t0R3Tbwv7f7S44VDWDTSSg", "23 Rue des melons pas mûrs", 69100, "Villeurbanne", "Utilisateur"),
+(1, 3, 3, "Bella", "Garcia", "1980-07-28", "bella.garcia@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$MXk5dnU1bDl6bHIwMDAwMA$2qiEXDngdnlXuJnFRLeFvw", "45 Rue de l'avenir", 71000, "Mâcon", "Utilisateur");
 -- -----------------------------------------------------
 -- Table `country`
 -- -----------------------------------------------------
