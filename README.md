@@ -98,6 +98,9 @@ For deployment, you have to go to `secrets` → app `actions` on the github repo
 - CAPROVER_PASSWORD : password caprover
 - CAPROVER_SERVER : link of domain
 
+### User manual
+You can find the user manual [here](https://docs.google.com/document/d/1DCd8XOz6ZJCDXSdnaJvaYA7iLfw7h0cQIXp6JCM-DmE/edit?usp=sharing)
+
 ## 🖼️ Screenshots
 
 ![Home page - portrait](/frontend/src/assets/screenshots/inovin4.png)
