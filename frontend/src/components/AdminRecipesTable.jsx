@@ -15,10 +15,11 @@ export default function AdminUsersTable() {
     async function fetch() {
       try {
         const recipe = await RecipeService.getRecipes();
-        console.info(recipe);
         setRecipeData(recipe.data);
       } catch (error) {
-        console.error("Internal error");
+        console.error(
+          "Erreur lors de la récupération des données de la recette.."
+        );
       }
     }
     fetch();
