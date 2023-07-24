@@ -102,10 +102,14 @@ export default function Recipe() {
           navigate("/login");
         }, 3000);
       } catch (error) {
-        toast.error(
-          "Une erreur s'est produite lors de l'enregistrement des vins de la recette !"
-        );
-        console.error(error);
+        if (error.response.status === 403) {
+          navigate("/login");
+        } else {
+          toast.error(
+            "Une erreur s'est produite lors de l'enregistrement des vins de la recette !"
+          );
+          console.error(error);
+        }
       } finally {
         // Fermer la modale de confirmation après l'enregistrement (réussi ou en cas d'erreur)
         setShowConfirmationModal(false);
