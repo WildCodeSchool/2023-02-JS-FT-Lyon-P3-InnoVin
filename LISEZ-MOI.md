@@ -99,6 +99,9 @@ Pour déployer le projet, vous devez aller dans `secrets` → app `actions` sur 
 - CAPROVER_PASSWORD : mot de passe de CapRover
 - CAPROVER_SERVER : lien vers le domaine
 
+### Manuel d'utilisation
+Vous pouvez trouver le manuel d'utilisation [ici](https://docs.google.com/document/d/1DCd8XOz6ZJCDXSdnaJvaYA7iLfw7h0cQIXp6JCM-DmE/edit?usp=sharing)
+
 ## 🖼️ Captures d'écran
 
 ![Home page - portrait](/frontend/src/assets/screenshots/inovin4.png)
