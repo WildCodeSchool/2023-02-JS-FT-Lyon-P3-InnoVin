@@ -1,6 +1,6 @@
 # Inovin 🍷
 
-Welcome to "Inovin", the last group project we had to do for our 5-months training as web developers. Our team of 3, including [Vanessa](https://github.com/VanessaGrd), [Yann](https://github.com/LocoBajo) and [Guillaume](https://github.com/Wraethh) have developped this app within 4 weeks to answer the need of a real client.
+Welcome to "Inovin", the last group project we had to do for our 5-months training as web developers. Our team of 3, including [Vanessa](https://github.com/VanessaGrd), [Yann](https://github.com/LocoBajo) and [Guillaume](https://github.com/Wraethh) have developped this app within 6 weeks to answer the need of a real client.
 
 ## 📝 Description
 

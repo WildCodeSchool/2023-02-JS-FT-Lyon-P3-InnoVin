@@ -1,7 +1,7 @@
 # Inovin 🍷
 
 Bienvenue sur le projet "Inovin", le dernier projet de groupe que nous devions réaliser pour notre formation de développeur web de 5 mois.
-Notre équipe de 3 personnes, composée de [Vanessa](https://github.com/VanessaGrd), [Yann](https://github.com/LocoBajo) et [Guillaume](https://github.com/Wraethh), a developpé cette application en 4 semaines pour répondre au besoin d'un véritable client.
+Notre équipe de 3 personnes, composée de [Vanessa](https://github.com/VanessaGrd), [Yann](https://github.com/LocoBajo) et [Guillaume](https://github.com/Wraethh), a developpé cette application en 6 semaines pour répondre au besoin d'un véritable client.
 
 ## 📝 Description
 
