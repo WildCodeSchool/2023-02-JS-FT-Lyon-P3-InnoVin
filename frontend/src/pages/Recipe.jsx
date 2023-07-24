@@ -52,6 +52,8 @@ export default function Recipe() {
     event.preventDefault();
     if (!recipeName) {
       toast.error("Veuillez entrer un nom pour la recette !");
+    } else if (recipeName.length > 80) {
+      toast.error("Le nom de la recette ne doit pas dépasser 80 caractères.");
     } else {
       setShowConfirmationModal(true);
     }
@@ -102,14 +104,10 @@ export default function Recipe() {
           navigate("/login");
         }, 3000);
       } catch (error) {
-        if (error.response.status === 403) {
-          navigate("/login");
-        } else {
-          toast.error(
-            "Une erreur s'est produite lors de l'enregistrement des vins de la recette !"
-          );
-          console.error(error);
-        }
+        toast.error(
+          "Une erreur s'est produite lors de l'enregistrement des vins de la recette !"
+        );
+        console.error(error);
       } finally {
         // Fermer la modale de confirmation après l'enregistrement (réussi ou en cas d'erreur)
         setShowConfirmationModal(false);
