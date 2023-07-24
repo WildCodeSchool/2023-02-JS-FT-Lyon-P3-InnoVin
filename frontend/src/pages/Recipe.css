@@ -34,7 +34,6 @@
   margin-top: 250px;
   background: rgb(89,17,45);
   background: linear-gradient(90deg, rgba(89,17,45,1) 0%, rgba(152,20,72,1) 27%, rgba(215,70,128,1) 84%);
-  animation: liquid 8s ease-in-out infinite;
 }
 
 .vertical-slider .example-track {
