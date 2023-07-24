@@ -259,7 +259,7 @@ export default function Recipe() {
         </Button>
         {showConfirmationModal && (
           <div className="modale-container">
-            <p>Voulez-vous vraiment enregistrer cette recette ?</p>
+            <p>Voulez-vous enregistrer cette recette et terminer l'atelier ?</p>
             <Button onClick={handleSaveRecipe}>Oui</Button>
             <Button type="button" onClick={handleCancelSave}>
               Non
