@@ -28,11 +28,12 @@
 .vertical-slider {
   height: 428px;
   width: 158px;
-  border-radius: 30px 30px 20px 20px;
+ border-radius: 30px 30px 20px 20px;
   z-index: 0;
   margin-left: 73px;
   margin-top: 250px;
-  background-color: #981448;
+  background: rgb(89,17,45);
+  background: linear-gradient(90deg, rgba(89,17,45,1) 0%, rgba(152,20,72,1) 27%, rgba(215,70,128,1) 84%);
 }
 
 .vertical-slider .example-track {
@@ -40,13 +41,15 @@
   width: 10px;
 }
 .example-track.example-track-0 {
-  background: #4a0019;
+  background: rgb(43,2,15);
+  background: linear-gradient(90deg, rgba(43,2,15,1) 0%, rgba(74,0,25,1) 27%, rgba(108,1,37,1) 84%);
   width: 100%;
   margin-left: -20px;
   border-radius: 0px 0px 25px 25px;
 }
 .example-track.example-track-1 {
-  background: #50032b;
+  background: rgb(47,2,26);
+  background: linear-gradient(90deg, rgba(47,2,26,1) 0%, rgba(80,3,43,1) 27%, rgba(147,12,82,1) 84%);
   width: 100%;
   margin-left: -20px;
   border-radius: 18px 18px 10px 10px;
@@ -155,6 +158,44 @@
 color: #202020;
 }
 
+.modale-container{
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #fffdcc ;
+    position: fixed;
+    background-color: #202020;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    z-index: 4;
+
+
+}
+
+.modale-container p {
+  font-size: 2rem;
+  font-family: "EB Garamond";
+
+}
+
+.modale-container button {
+  font-family: "EB Garamond";
+  background-color: #C42727;
+  color: #fffdcc;
+  width: 200px;
+  height: 50px;
+  border-radius: 10px;
+  margin-top: 20px;
+
+}
 @media screen and (min-aspect-ratio: 1/1) {
   .wineBottle img {
     margin-top: -110px;

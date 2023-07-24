@@ -30,15 +30,10 @@ export default function Recipe() {
   const sessionContext = useSessionContext();
   const { logout } = useUserContext();
 
-  const navigate = useNavigate();
+  // Définition du state pour la modale de confirmation
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
-  const style = {
-    button: {
-      p: 2,
-      width: 0.3,
-      borderRadius: 2,
-    },
-  };
+  const navigate = useNavigate();
 
   // Gestion du changement de nom de recette
   const [recipeName, setRecipeName] = useState("");
@@ -58,58 +53,69 @@ export default function Recipe() {
     if (!recipeName) {
       toast.error("Veuillez entrer un nom pour la recette !");
     } else {
-      // Préparation des données de la recette à enregistrer
-      const recipeData = {
-        user_id: userContext.user.id,
-        session_id: sessionContext.sessionId,
-        name: recipeName,
-      };
-      if (!recipeData.user_id || !recipeData.session_id) {
-        toast.error(
-          "Les informations d'utilisateur ou de session sont manquantes !"
-        );
-      } else {
-        try {
-          // Enregistrement des données de la recette dans la table "recipe"
-          await APIService.post(`/recipe`, recipeData);
-          // Récupération des données de la recette enregistrée
-          const response = await axios.get(`${apiBaseUrl}/recipes`);
-          // Récupération de l'ID de la dernière recette enregistrée
-          const recipes = response.data;
-          const lastRecipe = recipes[recipes.length - 1];
-          const lastRecipeId = lastRecipe.id;
-
-          // Préparation des données des vins de la recette pour enregistrement
-          const wineData = {
-            recipe_id: lastRecipeId,
-            wine_id1: preferredWines[0].wineId,
-            dosage1: totalWine1,
-            wine_id2: preferredWines[1].wineId,
-            dosage2: totalWine2,
-            wine_id3: preferredWines[2].wineId,
-            dosage3: totalWine3,
-          };
-
-          // Enregistrement des vins de la recette dans la table "recipehaswine"
-          await APIService.post(`/recipehaswine`, wineData);
-          toast.success("Votre recette a bien été enregistrée ! 👍", {
-            position: toast.POSITION.TOP_CENTER,
-            autoClose: 2000,
-          });
-          setTimeout(() => {
-            handleLogout(); // Appel à la fonction handleLogout pour afficher le message de réussite du logout
-            navigate("/login");
-          }, 3000);
-        } catch (error) {
-          toast.error(
-            "Une erreur s'est produite lors de l'enregistrement des vins de la recette !"
-          );
-          console.error(error);
-        }
-      }
+      setShowConfirmationModal(true);
     }
   };
 
+  // Fonction pour enregistrer la recette après la confirmation
+  const handleSaveRecipe = async () => {
+    // Préparation des données de la recette à enregistrer
+    const recipeData = {
+      user_id: userContext.user.id,
+      session_id: sessionContext.sessionId,
+      name: recipeName,
+    };
+    if (!recipeData.user_id || !recipeData.session_id) {
+      toast.error(
+        "Les informations d'utilisateur ou de session sont manquantes !"
+      );
+    } else {
+      try {
+        // Enregistrement des données de la recette dans la table "recipe"
+        await APIService.post(`/recipe`, recipeData);
+        // Récupération des données de la recette enregistrée
+        const response = await axios.get(`${apiBaseUrl}/recipes`);
+        // Récupération de l'ID de la dernière recette enregistrée
+        const recipes = response.data;
+        const lastRecipe = recipes[recipes.length - 1];
+        const lastRecipeId = lastRecipe.id;
+
+        // Préparation des données des vins de la recette pour enregistrement
+        const wineData = {
+          recipe_id: lastRecipeId,
+          wine_id1: preferredWines[0].wineId,
+          dosage1: totalWine1,
+          wine_id2: preferredWines[1].wineId,
+          dosage2: totalWine2,
+          wine_id3: preferredWines[2].wineId,
+          dosage3: totalWine3,
+        };
+
+        // Enregistrement des vins de la recette dans la table "recipehaswine"
+        await APIService.post(`/recipehaswine`, wineData);
+        toast.success("Votre recette a bien été enregistrée ! 👍", {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 2000,
+        });
+        setTimeout(() => {
+          handleLogout(); // Appel à la fonction handleLogout pour afficher le message de réussite du logout
+          navigate("/login");
+        }, 3000);
+      } catch (error) {
+        toast.error(
+          "Une erreur s'est produite lors de l'enregistrement des vins de la recette !"
+        );
+        console.error(error);
+      } finally {
+        // Fermer la modale de confirmation après l'enregistrement (réussi ou en cas d'erreur)
+        setShowConfirmationModal(false);
+      }
+    }
+  };
+  const handleCancelSave = () => {
+    // Cacher la modale de confirmation
+    setShowConfirmationModal(false);
+  };
   return (
     <>
       <Box flexDirection="row" display="flex" marginBottom="2rem">
@@ -245,13 +251,21 @@ export default function Recipe() {
           type="submit"
           variant="contained"
           size="large"
-          sx={style.button}
           onClick={handleSubmit}
         >
           <Typography variant="button" fontSize={24}>
-            Valider{" "}
+            Enregistrer{" "}
           </Typography>
         </Button>
+        {showConfirmationModal && (
+          <div className="modale-container">
+            <p>Voulez-vous enregistrer cette recette et terminer l'atelier ?</p>
+            <Button onClick={handleSaveRecipe}>Oui</Button>
+            <Button type="button" onClick={handleCancelSave}>
+              Non
+            </Button>
+          </div>
+        )}
       </div>
     </>
   );
