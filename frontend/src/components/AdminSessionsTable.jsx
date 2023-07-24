@@ -50,9 +50,7 @@ export default function AdminSessionsTable() {
             sessionsWithWines[i][key] = winesForEachSession[j - 1].wine_id;
           }
         }
-        /* if (sessionsWithWines) */ setSessionsWithWinesData(
-          sessionsWithWines
-        );
+        setSessionsWithWinesData(sessionsWithWines);
       } catch (error) {
         console.error("Internal error");
       }
@@ -243,7 +241,7 @@ export default function AdminSessionsTable() {
         if (typeof newRowWithFormattedDate.id === "string") {
           // Si c'est un ajout, l'id est une string et on utilise cette particularité pour déclencher un insert au lieu d'un update
           await SessionService.addSession(newRowWithFormattedDate);
-          /* sessionsDataUpdate(); */ sessionsWithWinesDataUpdate();
+          sessionsWithWinesDataUpdate();
           const updatedSessions = await SessionService.getSessions();
           const lastSessionId =
             updatedSessions.data[updatedSessions.data.length - 1].id;
@@ -252,7 +250,7 @@ export default function AdminSessionsTable() {
             id: lastSessionId,
           };
           await SessionHasWineService.addSessionWines(newRowWithId);
-          /* sessionsHaveWinesDataUpdate(); */ sessionsWithWinesDataUpdate();
+          sessionsWithWinesDataUpdate();
           successToastTemplate(
             `La session du ${newRowWithFormattedDate.date} à ${newRow.time} a bien été enregistrée.`
           );
@@ -260,11 +258,11 @@ export default function AdminSessionsTable() {
         }
         const { id } = newRowWithFormattedDate;
         await SessionService.updateSession(newRowWithFormattedDate);
-        /* sessionsDataUpdate(); */ sessionsWithWinesDataUpdate();
+        sessionsWithWinesDataUpdate();
         await SessionHasWineService.deleteCurrentSessionWines(id);
-        /*  sessionsHaveWinesDataUpdate(); */ sessionsWithWinesDataUpdate();
+        sessionsWithWinesDataUpdate();
         await SessionHasWineService.addSessionWines(newRowWithFormattedDate);
-        /*   sessionsHaveWinesDataUpdate(); */ sessionsWithWinesDataUpdate();
+        sessionsWithWinesDataUpdate();
         successToastTemplate(
           `La séance du ${newRowWithFormattedDate.date} à ${newRow.time} a bien été mise à jour.`
         );
