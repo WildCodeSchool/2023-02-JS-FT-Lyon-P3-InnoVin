@@ -100,7 +100,8 @@ export default function Recipe() {
           autoClose: 2000,
         });
         setTimeout(() => {
-          handleLogout(); // Appel à la fonction handleLogout pour afficher le message de réussite du logout
+          handleLogout();
+          // Appel à la fonction handleLogout pour afficher le message de réussite du logout
           navigate("/login");
         }, 3000);
       } catch (error) {
