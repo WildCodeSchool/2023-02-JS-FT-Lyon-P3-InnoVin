@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
 import { Box } from "@mui/system";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { Delete } from "@mui/icons-material";
 import { useAdminContext } from "../contexts/AdminContext";
 import SearchBar from "./SearchBar";
@@ -9,7 +9,8 @@ import SearchBar from "./SearchBar";
 import UserService from "../services/UserService";
 
 export default function AdminUsersTable() {
-  const { query, usersData, setUsersData } = useAdminContext();
+  const { query, usersData, setUsersData, successToastTemplate } =
+    useAdminContext();
 
   // --- Fetch des données à display au montage du composant ---
   useEffect(() => {
@@ -50,18 +51,8 @@ export default function AdminUsersTable() {
       await UserService.deleteUser(id);
       // Met le state usersData à jour après la suppression
       usersDataUpdate();
-      toast.success(
-        `${deletedUser[0].firstname} ${deletedUser[0].lastname} a été supprimé`,
-        {
-          position: "bottom-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
+      successToastTemplate(
+        `${deletedUser[0].firstname} ${deletedUser[0].lastname} a été supprimé`
       );
     } catch (err) {
       console.error("Deletion failed :", err);

@@ -48,6 +48,7 @@ export default function AdminHome() {
   } = useAdminContext();
 
   const { logout } = useUserContext();
+  const { successToastTemplate, errorToastTemplate } = useAdminContext();
 
   useEffect(() => {
     async function fetch() {
@@ -68,6 +69,15 @@ export default function AdminHome() {
     }
     fetch();
   }, []);
+
+  const handleClickLogout = async () => {
+    try {
+      await logout();
+      successToastTemplate("À bientôt !");
+    } catch {
+      errorToastTemplate("Veuillez réessayer plus tard");
+    }
+  };
 
   // --- Data pour afficher les types de vins par utilisateurs ---
   const usersPerTypeData = {
@@ -310,7 +320,7 @@ export default function AdminHome() {
         variant="contained"
         endIcon={<Logout />}
         sx={{ marginBlock: 5 }}
-        onClick={logout}
+        onClick={handleClickLogout}
       >
         Déconnexion
       </Button>
