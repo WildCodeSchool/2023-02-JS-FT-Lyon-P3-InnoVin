@@ -1,5 +1,6 @@
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
+const models = require("../models");
 
 const { JWT_SECRET, JWT_TIMING } = process.env;
 
@@ -79,9 +80,19 @@ const logout = (req, res) => {
   res.clearCookie("access_token").sendStatus(200);
 };
 
+const verifyIfUserRegistered = (req, res, next) => {
+  models.user.findUserByEmail(req.body.email).then(([rows]) => {
+    if (rows[0] == null) {
+      next();
+    } else {
+      res.sendStatus(400);
+    }
+  });
+};
 module.exports = {
   hashPassword,
   verifyPassword,
   verifyToken,
   logout,
+  verifyIfUserRegistered,
 };
