@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import {
   DataGrid,
@@ -12,6 +12,7 @@ import { Cancel, Delete, Edit, Save } from "@mui/icons-material";
 import DomainService from "../services/DomainService";
 import { useAdminContext } from "../contexts/AdminContext";
 import SearchBar from "./SearchBar";
+import DeleteConfirmModal from "./DeleteConfirmModal";
 
 export default function DomainModal({
   openModal,
@@ -23,6 +24,8 @@ export default function DomainModal({
 }) {
   const { query, successToastTemplate, errorToastTemplate } = useAdminContext();
 
+  const idToDelete = useRef();
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [rowModesModel, setRowModesModel] = useState({});
 
   const domainsDataUpdate = async () => {
@@ -34,23 +37,36 @@ export default function DomainModal({
     }
   };
 
+  // Filtre pour la recherche de domaine
   const filteredDomainsData = domainsData.filter((domain) =>
     domain.name.toLowerCase().includes(query.toLowerCase())
   );
 
+  // Va chercher le pays supprimé
+  const deletedDomain = domainsData.filter(
+    (domain) => domain.id === idToDelete.current
+  );
+
+  // Gère l'ouverture de la modal de confirmation du delete
+  const handleDeleteModal = (id) => {
+    idToDelete.current = id;
+    setConfirmDelete(!confirmDelete);
+  };
+
   // --- Gestion de la suppression ---
-  const handleDeleteClick = (id) => async () => {
+  const handleDeleteClick = async () => {
     try {
-      // Va chercher le vin supprimé pour le toast
-      const deletedDomain = domainsData.filter((domain) => domain.id === id);
       // Supprime le vin de la BDD
-      await DomainService.deleteDomain(id);
+      await DomainService.deleteDomain(idToDelete.current);
       // Met le state domainsData à jour après la suppression
       domainsDataUpdate();
       winesDataUpdate();
       successToastTemplate(`${deletedDomain[0].name} a été supprimé`);
+      setConfirmDelete(!confirmDelete);
+      idToDelete.current = "";
     } catch (err) {
       console.error("Deletion failed :", err);
+      errorToastTemplate("Une erreur s'est produite");
     }
   };
 
@@ -144,148 +160,156 @@ export default function DomainModal({
   };
 
   return (
-    <Modal open={openModal.isOpen}>
-      <Box
-        sx={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          bgcolor: "RGBA(32,32,32,0.95)",
-          borderRadius: 1,
-          width: "90vw",
-          height: "90vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          paddingBottom: "50px",
-        }}
-      >
-        <IconButton
-          aria-label="settings"
-          color="primary"
-          onClick={handleCloseModal}
-          sx={{ position: "absolute", top: 0, right: 0 }}
-        >
-          <Cancel fontSize="large" />
-        </IconButton>
-        <Typography variant="h2" color="secondary.main" sx={{ mt: 5 }}>
-          Domaines
-        </Typography>
+    <>
+      <DeleteConfirmModal
+        confirmDelete={confirmDelete}
+        handleDeleteClick={handleDeleteClick}
+        handleDeleteModal={handleDeleteModal}
+        deletedElement={deletedDomain}
+      />
+      <Modal open={openModal.isOpen}>
         <Box
           sx={{
-            width: 1,
-            maxWidth: "900px",
-            height: 0.1,
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            bgcolor: "RGBA(32,32,32,0.95)",
+            borderRadius: 1,
+            width: "90vw",
+            height: "90vh",
             display: "flex",
-            justifyContent: "space-evenly",
+            flexDirection: "column",
+            justifyContent: "center",
             alignItems: "center",
-            marginBlock: "5vh",
+            paddingBottom: "50px",
           }}
         >
-          <SearchBar />
-          <Button
-            variant="contained"
-            sx={{ width: 0.2, minWidth: 80 }}
-            size="large"
-            onClick={handleAddClick}
+          <IconButton
+            aria-label="settings"
+            color="primary"
+            onClick={handleCloseModal}
+            sx={{ position: "absolute", top: 0, right: 0 }}
           >
-            Ajouter
-          </Button>
-        </Box>
-        <DataGrid
-          rows={!query ? domainsData : filteredDomainsData}
-          columns={[
-            {
-              field: "name",
-              headerClassName: "super-app-theme--header",
-              headerName: "Domaine",
-              width: 250,
-              editable: true,
-            },
-            {
-              field: "region_id",
-              headerClassName: "super-app-theme--header",
-              headerName: "Région",
-              type: "singleSelect",
-              valueOptions: regionSelect,
-              width: 250,
-              editable: true,
-            },
-            {
-              field: "actions",
-              headerClassName: "super-app-theme--header",
-              headerName: "Actions",
-              type: "actions",
-              width: 150,
-              getActions: ({ id }) => {
-                const isInEditMode =
-                  rowModesModel[id]?.mode === GridRowModes.Edit;
+            <Cancel fontSize="large" />
+          </IconButton>
+          <Typography variant="h2" color="secondary.main" sx={{ mt: 5 }}>
+            Domaines
+          </Typography>
+          <Box
+            sx={{
+              width: 1,
+              maxWidth: "900px",
+              height: 0.1,
+              display: "flex",
+              justifyContent: "space-evenly",
+              alignItems: "center",
+              marginBlock: "5vh",
+            }}
+          >
+            <SearchBar />
+            <Button
+              variant="contained"
+              sx={{ width: 0.2, minWidth: 80 }}
+              size="large"
+              onClick={handleAddClick}
+            >
+              Ajouter
+            </Button>
+          </Box>
+          <DataGrid
+            rows={!query ? domainsData : filteredDomainsData}
+            columns={[
+              {
+                field: "name",
+                headerClassName: "super-app-theme--header",
+                headerName: "Domaine",
+                width: 250,
+                editable: true,
+              },
+              {
+                field: "region_id",
+                headerClassName: "super-app-theme--header",
+                headerName: "Région",
+                type: "singleSelect",
+                valueOptions: regionSelect,
+                width: 250,
+                editable: true,
+              },
+              {
+                field: "actions",
+                headerClassName: "super-app-theme--header",
+                headerName: "Actions",
+                type: "actions",
+                width: 150,
+                getActions: ({ id }) => {
+                  const isInEditMode =
+                    rowModesModel[id]?.mode === GridRowModes.Edit;
 
-                if (isInEditMode) {
+                  if (isInEditMode) {
+                    return [
+                      <GridActionsCellItem
+                        icon={<Save />}
+                        label="Save"
+                        onClick={handleSaveClick(id)}
+                        sx={{
+                          color: "secondary.main",
+                        }}
+                      />,
+                      <GridActionsCellItem
+                        icon={<Cancel />}
+                        label="Cancel"
+                        onClick={handleCancelClick(id)}
+                        sx={{
+                          color: "primary.main",
+                        }}
+                      />,
+                    ];
+                  }
+
                   return [
                     <GridActionsCellItem
-                      icon={<Save />}
-                      label="Save"
-                      onClick={handleSaveClick(id)}
-                      sx={{
-                        color: "secondary.main",
-                      }}
+                      icon={<Edit />}
+                      label="Edit"
+                      onClick={handleEditClick(id)}
+                      color="inherit"
                     />,
                     <GridActionsCellItem
-                      icon={<Cancel />}
-                      label="Cancel"
-                      onClick={handleCancelClick(id)}
+                      icon={<Delete />}
+                      label="Delete"
                       sx={{
                         color: "primary.main",
                       }}
+                      onClick={() => handleDeleteModal(id)}
                     />,
                   ];
-                }
-
-                return [
-                  <GridActionsCellItem
-                    icon={<Edit />}
-                    label="Edit"
-                    onClick={handleEditClick(id)}
-                    color="inherit"
-                  />,
-                  <GridActionsCellItem
-                    icon={<Delete />}
-                    label="Delete"
-                    sx={{
-                      color: "primary.main",
-                    }}
-                    onClick={handleDeleteClick(id)}
-                  />,
-                ];
+                },
               },
-            },
-          ]}
-          editMode="row"
-          rowModesModel={rowModesModel}
-          onRowModesModelChange={handleRowModesModelChange}
-          onRowEditStop={handleRowEditStop}
-          processRowUpdate={processRowUpdate}
-          onProcessRowUpdateError={onProcessRowUpdateError}
-          hideFooter
-          getRowClassName={() => `super-app-theme--row`}
-          sx={{
-            backgroundColor: "text.primary",
-            color: "background.default",
-            minWidth: "38%",
-            maxWidth: "90%",
-            "& .super-app-theme--header": {
-              backgroundColor: "secondary.main",
-            },
-            "& .super-app-theme--row:nth-of-type(even)": {
-              backgroundColor: "secondary.light",
-            },
-          }}
-        />
-      </Box>
-    </Modal>
+            ]}
+            editMode="row"
+            rowModesModel={rowModesModel}
+            onRowModesModelChange={handleRowModesModelChange}
+            onRowEditStop={handleRowEditStop}
+            processRowUpdate={processRowUpdate}
+            onProcessRowUpdateError={onProcessRowUpdateError}
+            hideFooter
+            getRowClassName={() => `super-app-theme--row`}
+            sx={{
+              backgroundColor: "text.primary",
+              color: "background.default",
+              minWidth: "38%",
+              maxWidth: "90%",
+              "& .super-app-theme--header": {
+                backgroundColor: "secondary.main",
+              },
+              "& .super-app-theme--row:nth-of-type(even)": {
+                backgroundColor: "secondary.light",
+              },
+            }}
+          />
+        </Box>
+      </Modal>
+    </>
   );
 }
 

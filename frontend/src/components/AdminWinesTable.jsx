@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   DataGrid,
   GridActionsCellItem,
@@ -24,6 +24,7 @@ import CountryModal from "./CountryModal";
 import RegionModal from "./RegionModal";
 import DomainModal from "./DomainModal";
 import GrapeModal from "./GrapeModal";
+import DeleteConfirmModal from "./DeleteConfirmModal";
 
 export default function AdminWinesTable() {
   const {
@@ -49,6 +50,8 @@ export default function AdminWinesTable() {
     errorToastTemplate,
   } = useAdminContext();
 
+  const idToDelete = useRef();
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [rowModesModel, setRowModesModel] = useState({});
   const [openModal, setOpenModal] = useState({
     isOpen: false,
@@ -107,18 +110,30 @@ export default function AdminWinesTable() {
     setQuery("");
   };
 
+  // Va chercher le vin supprimé
+  const deletedWine = winesData.filter(
+    (wine) => wine.id === idToDelete.current
+  );
+
+  // Gère l'ouverture de la modal de confirmation du delete
+  const handleDeleteModal = (id) => {
+    idToDelete.current = id;
+    setConfirmDelete(!confirmDelete);
+  };
+
   // --- Gestion de la suppression ---
-  const handleDeleteClick = (id) => async () => {
+  const handleDeleteClick = async () => {
     try {
-      // Va chercher le vin supprimé pour le toast
-      const deletedWine = winesData.filter((wine) => wine.id === id);
       // Supprime le vin de la BDD
-      await WineService.deleteWine(id);
+      await WineService.deleteWine(idToDelete.current);
       // Met le state winesData à jour après la suppression
       winesDataUpdate();
       successToastTemplate(`${deletedWine[0].name} a été supprimé`);
+      setConfirmDelete(!confirmDelete);
+      idToDelete.current = "";
     } catch (err) {
       console.error("Deletion failed :", err);
+      errorToastTemplate("Une erreur s'est produite");
     }
   };
 
@@ -379,7 +394,7 @@ export default function AdminWinesTable() {
             sx={{
               color: "primary.main",
             }}
-            onClick={handleDeleteClick(id)}
+            onClick={() => handleDeleteModal(id)}
           />,
         ];
       },
@@ -396,6 +411,12 @@ export default function AdminWinesTable() {
 
   return (
     <>
+      <DeleteConfirmModal
+        confirmDelete={confirmDelete}
+        handleDeleteClick={handleDeleteClick}
+        handleDeleteModal={handleDeleteModal}
+        deletedElement={deletedWine}
+      />
       <Box
         sx={{
           width: 1,
