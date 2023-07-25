@@ -58,7 +58,7 @@ export default function GrapeModal({
     // Check si une nouvelle n'est pas déjà présente
     if (!grapesData.some((grape) => typeof grape.id === "string")) {
       // Génère un id temporaire en string le temps d'insérer les nouvelles données
-      const id = `new${grapesData[grapesData.length - 1].id + 1}`;
+      const id = `new`;
       // Crée un nouvel objet dans le state grapesData pour stocker les nouvelles données
       setGrapesData((grapes) => [
         {

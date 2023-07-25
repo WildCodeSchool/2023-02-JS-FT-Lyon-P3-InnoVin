@@ -127,7 +127,7 @@ export default function AdminWinesTable() {
     // Check si une nouvelle n'est pas déjà présente
     if (!winesData.some((wine) => typeof wine.id === "string")) {
       // Génère un id temporaire en string le temps d'insérer les nouvelles données
-      const id = `new${winesData[winesData.length - 1].id + 1}`;
+      const id = `new`;
       // Crée un nouvel objet dans le state winesData pour stocker les nouvelles données
       setWinesData((wines) => [
         {

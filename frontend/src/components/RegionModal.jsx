@@ -59,7 +59,7 @@ export default function RegionModal({
     // Check si une nouvelle n'est pas déjà présente
     if (!regionsData.some((region) => typeof region.id === "string")) {
       // Génère un id temporaire en string le temps d'insérer les nouvelles données
-      const id = `new${regionsData[regionsData.length - 1].id + 1}`;
+      const id = `new`;
       // Crée un nouvel objet dans le state regionsData pour stocker les nouvelles données
       setRegionsData((regions) => [
         {

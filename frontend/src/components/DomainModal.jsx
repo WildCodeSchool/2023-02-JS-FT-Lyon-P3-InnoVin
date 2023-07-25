@@ -59,7 +59,7 @@ export default function DomainModal({
     // Check si une nouvelle n'est pas déjà présente
     if (!domainsData.some((domain) => typeof domain.id === "string")) {
       // Génère un id temporaire en string le temps d'insérer les nouvelles données
-      const id = `new${domainsData[domainsData.length - 1].id + 1}`;
+      const id = `new`;
       // Crée un nouvel objet dans le state domainsData pour stocker les nouvelles données
       setDomainsData((domains) => [
         {

@@ -60,7 +60,7 @@ export default function CountryModal({
     // Check si une nouvelle n'est pas déjà présente
     if (!countriesData.some((country) => typeof country.id === "string")) {
       // Génère un id temporaire en string le temps d'insérer les nouvelles données
-      const id = `new${countriesData[countriesData.length - 1].id + 1}`;
+      const id = `new`;
       // Crée un nouvel objet dans le state countrysData pour stocker les nouvelles données
       setCountriesData((countries) => [
         {
