@@ -11,15 +11,24 @@ export function UserContextProvider({ children }) {
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("user") || "{}")
   );
-  const [userWines, setUserWines] = useState([]);
+  const [userWines, setUserWines] = useState(
+    JSON.parse(localStorage.getItem("userWines") || "[]")
+  );
   const [userPick, setUserPick] = useState(null);
-  const [preferredWines, setPreferredWines] = useState();
+  const [preferredWines, setPreferredWines] = useState(
+    JSON.parse(localStorage.getItem("preferredWines") || "[]")
+  );
 
   const logout = async () => {
     try {
       await APIService.get("/logout");
       setUser({});
       localStorage.removeItem("user");
+      setUserWines([]);
+      localStorage.removeItem("userWines");
+      setPreferredWines([]);
+      localStorage.removeItem("preferredWines");
+      localStorage.removeItem("sessionId");
     } catch (error) {
       console.error(error);
     }

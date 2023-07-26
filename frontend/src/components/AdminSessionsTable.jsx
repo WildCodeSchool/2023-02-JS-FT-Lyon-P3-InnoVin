@@ -41,16 +41,20 @@ export default function AdminSessionsTable() {
         setWinesData(wine.data.reverse());
         const sessionsWithWines = [];
         for (let i = 0; i < session.data.length; i += 1) {
-          sessionsWithWines.push({ ...session.data[i] });
+          sessionsWithWines.push({
+            ...session.data[i],
+          });
           const winesForEachSession = winesOfSessions.data.filter(
             (element) => element.session_id === session.data[i].id
           );
           for (let j = 1; j < 5; j += 1) {
             const key = `wine${j}`;
-            sessionsWithWines[i][key] = winesForEachSession[j - 1].wine_id;
+            if (winesForEachSession[j - 1] !== undefined) {
+              sessionsWithWines[i][key] = winesForEachSession[j - 1].wine_id;
+            } else sessionsWithWines[i][key] = "";
           }
+          setSessionsWithWinesData(sessionsWithWines);
         }
-        setSessionsWithWinesData(sessionsWithWines);
       } catch (error) {
         console.error("Internal error");
       }
@@ -78,6 +82,7 @@ export default function AdminSessionsTable() {
   };
 
   // --- Gestion de la suppression ---
+
   const handleDeleteClick = (id) => async () => {
     try {
       // Va chercher la session supprimée pour le toast
@@ -101,7 +106,10 @@ export default function AdminSessionsTable() {
     // Check si une nouvelle n'est pas déjà présente
     if (!sessionsData.some((session) => typeof session.id === "string")) {
       // Génère un id temporaire en string le temps d'insérer les nouvelles données
-      const id = `new${sessionsData[sessionsData.length - 1].id + 1}`;
+      // let id = null;
+      // if (sessionsData.length > 0) {
+      const id = `new`;
+      // } else id = "newrow";
       // Crée un nouvel objet dans le state sessionsData pour stocker les nouvelles données
       setSessionsWithWinesData((sessions) => [
         {
@@ -218,7 +226,8 @@ export default function AdminSessionsTable() {
     const checkNoDuplicateSession = sessionsData.find(
       (session) =>
         session.date === newRowWithFormattedDate.date &&
-        session.time === newRowWithFormattedDate.time
+        session.time === newRowWithFormattedDate.time &&
+        session.id !== newRowWithFormattedDate.id
     );
     try {
       await SessionService.sessionSchema.validate(newRowWithFormattedDate);
@@ -336,6 +345,7 @@ export default function AdminSessionsTable() {
       width: 250,
       editable: true,
     },
+
     {
       field: "wine4",
       headerClassName: "super-app-theme--header",
@@ -388,7 +398,7 @@ export default function AdminSessionsTable() {
             sx={{
               color: "primary.main",
             }}
-            onClick={handleDeleteClick(id)}
+            onClick={() => handleDeleteClick(id)}
           />,
         ];
       },

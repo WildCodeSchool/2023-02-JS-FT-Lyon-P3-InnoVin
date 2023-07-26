@@ -62,6 +62,6 @@ root.render(
           </UserContextProvider>
         </AdminContextProvider>
       </ThemeProvider>
-    </BrowserRouter>{" "}
+    </BrowserRouter>
   </React.StrictMode>
 );

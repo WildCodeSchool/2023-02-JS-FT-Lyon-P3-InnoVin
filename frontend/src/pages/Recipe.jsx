@@ -44,6 +44,8 @@ export default function Recipe() {
   // Fonction de déconnexion
   const handleLogout = () => {
     logout();
+    sessionContext.setSessionId(null);
+    localStorage.removeItem("sessionId");
     toast.success("Déconnexion réussie !");
     navigate("/login");
   };
@@ -65,6 +67,7 @@ export default function Recipe() {
       session_id: sessionContext.sessionId,
       name: recipeName,
     };
+
     if (!recipeData.user_id || !recipeData.session_id) {
       toast.error(
         "Les informations d'utilisateur ou de session sont manquantes !"
