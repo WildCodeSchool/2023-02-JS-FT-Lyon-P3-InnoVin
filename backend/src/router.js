@@ -62,6 +62,8 @@ router.put("/sessions/:id", sessionControllers.edit);
 router.post("/sessions", sessionControllers.add);
 router.delete("/sessions/:id", sessionControllers.destroy);
 
+router.use(verifyToken);
+
 // Session has Wines
 const sessionHasWineControllers = require("./controllers/sessionHasWineControllers");
 

@@ -1,12 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import App from "./App";
 import { UserContextProvider } from "./contexts/UserContext";
 import { SessionContextProvider } from "./contexts/SessionContext";
 import { AdminContextProvider } from "./contexts/AdminContext";
+import CustomRouter from "./components/CustomRouter";
+import customHistory from "./services/history";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -51,7 +52,7 @@ const theme = createTheme({
 
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <CustomRouter history={customHistory}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <AdminContextProvider>
@@ -62,6 +63,6 @@ root.render(
           </UserContextProvider>
         </AdminContextProvider>
       </ThemeProvider>
-    </BrowserRouter>
+    </CustomRouter>
   </React.StrictMode>
 );
