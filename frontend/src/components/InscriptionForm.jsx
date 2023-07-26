@@ -26,6 +26,7 @@ export default function InscriptionForm() {
   const [aromas, setAromas] = useState([]);
   const [flavours, setFlavours] = useState([]);
 
+  // Définition des valeurs initiales du formulaires avec Formik
   const formik = useFormik({
     initialValues: {
       firstname: "",
@@ -41,8 +42,10 @@ export default function InscriptionForm() {
       aromaId: "",
       typeId: "",
     },
+    // Appel au schéma de validation des champs du formulaire
     validationSchema,
 
+    // Fonction pour la gestion des erreurs du formulaire
     validate(values) {
       const errors = {};
 
@@ -58,17 +61,20 @@ export default function InscriptionForm() {
       }
       return errors;
     },
-
+    // Fonction pour la soumission du formulaire avec Formik
     onSubmit: async () => {
       try {
+        // Enregistrement des informations du users
         await APIService.post(`/users`, formik.values);
         navigate("/login");
       } catch (error) {
+        // Gestion de l'erreur si mail duplicate
         if (error.response.status === 400) {
           toast.error("Email déjà utilisé !", {
             position: toast.POSITION.TOP_CENTER,
           });
         } else {
+          // Gestion de l'erreur si erreur pour autre raison
           toast.error("L'inscription n'a pas pu aboutir", {
             position: toast.POSITION.TOP_CENTER,
           });
@@ -76,7 +82,7 @@ export default function InscriptionForm() {
       }
     },
   });
-
+  // Fonction pour déclencher la fonction de soumission du formulaire si le validationSchema est correct
   const handleClick = () => {
     if (!formik.isValid) {
       toast.error("Champ manquant", {
@@ -91,6 +97,8 @@ export default function InscriptionForm() {
       });
     }
   };
+
+  // style du bouton de soumission avec MUI
   const style = {
     button: { p: 2, width: 0.9, borderRadius: 2 },
     formlabels: {
@@ -101,6 +109,8 @@ export default function InscriptionForm() {
       fontFamily: "EB Garamond",
     },
   };
+
+  // Récupération des arômes de la bdd pour select
   useEffect(() => {
     axios
       .get(`${apiBaseUrl}/aromas`)
@@ -109,7 +119,7 @@ export default function InscriptionForm() {
       })
       .catch((err) => console.error(err));
   }, []);
-
+  // Récupération des faveurs de la bdd pour sélect
   useEffect(() => {
     axios
       .get(`${apiBaseUrl}/flavours`)
