@@ -54,6 +54,8 @@ export default function Recipe() {
     event.preventDefault();
     if (!recipeName) {
       toast.error("Veuillez entrer un nom pour la recette !");
+    } else if (recipeName.length > 80) {
+      toast.error("Le nom de la recette ne doit pas dépasser 80 caractères.");
     } else {
       setShowConfirmationModal(true);
     }
@@ -101,7 +103,8 @@ export default function Recipe() {
           autoClose: 2000,
         });
         setTimeout(() => {
-          handleLogout(); // Appel à la fonction handleLogout pour afficher le message de réussite du logout
+          handleLogout();
+          // Appel à la fonction handleLogout pour afficher le message de réussite du logout
           navigate("/login");
         }, 3000);
       } catch (error) {

@@ -144,7 +144,7 @@
   justify-content: center;
   margin-top: 20px;
   
-  z-index: 15;
+  z-index: 2;
 }
 .input-container input{
   height: 73px;
@@ -224,8 +224,8 @@ color: #202020;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  margin-left: -400px;
-  z-index: 20;
+  margin-left: -500px;
+  z-index: 3;
 }
 .wine3-container{
   align-items: center;

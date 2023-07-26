@@ -59,18 +59,21 @@ export default function InscriptionForm() {
       return errors;
     },
 
-    onSubmit: () => {
-      APIService.post(`/users`, formik.values)
-        .then(() => {
-          navigate("/login");
-        })
-        .catch((error) => {
-          if (error.response?.status === 401) {
-            toast.error("Problème lors de l'inscription", {
-              position: toast.POSITION.TOP_CENTER,
-            });
-          }
-        });
+    onSubmit: async () => {
+      try {
+        await APIService.post(`/users`, formik.values);
+        navigate("/login");
+      } catch (error) {
+        if (error.response.status === 400) {
+          toast.error("Email déjà utilisé !", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        } else {
+          toast.error("L'inscription n'a pas pu aboutir", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      }
     },
   });
 

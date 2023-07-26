@@ -334,7 +334,7 @@ export default function TastingSheet() {
                       <ControlLabel value="Epices" label="Epices" />
                       <ControlLabel
                         value="Empyreumatique"
-                        label="Empyreutmatique"
+                        label="Empyreumatique"
                       />
                     </div>
 
