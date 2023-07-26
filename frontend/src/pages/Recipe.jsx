@@ -44,6 +44,8 @@ export default function Recipe() {
   // Fonction de déconnexion
   const handleLogout = () => {
     logout();
+    sessionContext.setSessionId(null);
+    localStorage.removeItem("sessionId");
     toast.success("Déconnexion réussie !");
     navigate("/login");
   };
@@ -52,6 +54,8 @@ export default function Recipe() {
     event.preventDefault();
     if (!recipeName) {
       toast.error("Veuillez entrer un nom pour la recette !");
+    } else if (recipeName.length > 80) {
+      toast.error("Le nom de la recette ne doit pas dépasser 80 caractères.");
     } else {
       setShowConfirmationModal(true);
     }
@@ -65,6 +69,7 @@ export default function Recipe() {
       session_id: sessionContext.sessionId,
       name: recipeName,
     };
+
     if (!recipeData.user_id || !recipeData.session_id) {
       toast.error(
         "Les informations d'utilisateur ou de session sont manquantes !"
@@ -98,7 +103,8 @@ export default function Recipe() {
           autoClose: 2000,
         });
         setTimeout(() => {
-          handleLogout(); // Appel à la fonction handleLogout pour afficher le message de réussite du logout
+          handleLogout();
+          // Appel à la fonction handleLogout pour afficher le message de réussite du logout
           navigate("/login");
         }, 3000);
       } catch (error) {

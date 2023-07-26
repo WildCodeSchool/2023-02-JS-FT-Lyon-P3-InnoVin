@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 
-const { validateLogin } = require("./services/validators");
+const { validateLogin, validateWine } = require("./services/validators");
 
 const { verifyPassword, verifyToken, logout } = require("./services/auth");
 
@@ -39,10 +39,17 @@ router.delete("/items/:id", itemControllers.destroy);
 const userControllers = require("./controllers/userControllers");
 const { validateUser } = require("./services/validators");
 const { hashPassword } = require("./services/auth");
+const { verifyIfUserRegistered } = require("./services/auth");
 
 router.get("/users", userControllers.browse);
 router.get("/users/:id", userControllers.read);
-router.post("/users", validateUser, hashPassword, userControllers.add);
+router.post(
+  "/users",
+  verifyIfUserRegistered,
+  validateUser,
+  hashPassword,
+  userControllers.add
+);
 router.put("/users/:id", userControllers.edit);
 router.delete("/users/:id", userControllers.destroy);
 
@@ -54,6 +61,8 @@ router.get("/sessions/:id", sessionControllers.read);
 router.put("/sessions/:id", sessionControllers.edit);
 router.post("/sessions", sessionControllers.add);
 router.delete("/sessions/:id", sessionControllers.destroy);
+
+router.use(verifyToken);
 
 // Session has Wines
 const sessionHasWineControllers = require("./controllers/sessionHasWineControllers");
@@ -69,8 +78,8 @@ const wineControllers = require("./controllers/wineControllers");
 
 router.get("/wines", wineControllers.browse);
 router.get("/wines/:id", wineControllers.read);
-router.put("/wines/:id", wineControllers.edit);
-router.post("/wines", wineControllers.add);
+router.put("/wines/:id", validateWine, wineControllers.edit);
+router.post("/wines", validateWine, wineControllers.add);
 router.delete("/wines/:id", wineControllers.destroy);
 
 const tastingnoteControllers = require("./controllers/tastingnoteControllers");

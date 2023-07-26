@@ -1,15 +1,25 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
 import { Box } from "@mui/system";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { Delete } from "@mui/icons-material";
 import { useAdminContext } from "../contexts/AdminContext";
 import SearchBar from "./SearchBar";
 // --- Services ---
 import UserService from "../services/UserService";
+import DeleteConfirmModal from "./DeleteConfirmModal";
 
 export default function AdminUsersTable() {
-  const { query, usersData, setUsersData } = useAdminContext();
+  const {
+    query,
+    usersData,
+    setUsersData,
+    successToastTemplate,
+    errorToastTemplate,
+  } = useAdminContext();
+
+  const idToDelete = useRef();
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   // --- Fetch des données à display au montage du composant ---
   useEffect(() => {
@@ -41,30 +51,32 @@ export default function AdminUsersTable() {
       user.lastname.toLowerCase().includes(query.toLowerCase())
   );
 
+  // Va chercher l'utilisateur à supprimé
+  const deletedUser = usersData.filter(
+    (user) => user.id === idToDelete.current
+  );
+
+  // Gère l'ouverture de la modal de confirmation du delete
+  const handleDeleteModal = (id) => {
+    idToDelete.current = id;
+    setConfirmDelete(!confirmDelete);
+  };
+
   // --- Gestion de la suppression ---
-  const handleDeleteClick = (id) => async () => {
+  const handleDeleteClick = async () => {
     try {
-      // Va chercher le user supprimé pour le toast
-      const deletedUser = usersData.filter((user) => user.id === id);
       // Supprime le user de la BDD
-      await UserService.deleteUser(id);
+      await UserService.deleteUser(idToDelete.current);
       // Met le state usersData à jour après la suppression
       usersDataUpdate();
-      toast.success(
-        `${deletedUser[0].firstname} ${deletedUser[0].lastname} a été supprimé`,
-        {
-          position: "bottom-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        }
+      successToastTemplate(
+        `${deletedUser[0].firstname} ${deletedUser[0].lastname} a été supprimé`
       );
+      setConfirmDelete(!confirmDelete);
+      idToDelete.current = "";
     } catch (err) {
       console.error("Deletion failed :", err);
+      errorToastTemplate("Une erreur s'est produite");
     }
   };
 
@@ -153,7 +165,7 @@ export default function AdminUsersTable() {
             sx={{
               color: "primary.main",
             }}
-            onClick={handleDeleteClick(id)}
+            onClick={() => handleDeleteModal(id)}
           />,
         ];
       },
@@ -162,6 +174,12 @@ export default function AdminUsersTable() {
 
   return (
     <>
+      <DeleteConfirmModal
+        confirmDelete={confirmDelete}
+        handleDeleteClick={handleDeleteClick}
+        handleDeleteModal={handleDeleteModal}
+        deletedElement={deletedUser}
+      />
       <Box
         sx={{
           width: 1,

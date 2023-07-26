@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   Typography,
   Box,
@@ -20,9 +20,21 @@ import APIService from "../services/APIService";
 import "react-toastify/dist/ReactToastify.css";
 import logo from "../assets/logo.svg";
 import styles from "./Login.module.css";
+import { useAdminContext } from "../contexts/AdminContext";
 
 export default function Login() {
   const [sessions, setSessions] = useState();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { errorToastTemplate } = useAdminContext();
+
+  useEffect(() => {
+    if (searchParams.has("expired")) {
+      errorToastTemplate("Session expirée, veuillez vous reconnecter.");
+      setSearchParams(() => {
+        return undefined;
+      });
+    }
+  }, []);
 
   const style = {
     formlabels: {
@@ -74,6 +86,7 @@ export default function Login() {
         .then(({ data: [user, session] }) => {
           login(user);
           setSessionId(session.sessionId);
+          localStorage.setItem("sessionId", JSON.stringify(session.sessionId));
           setSessionWines(session.wines);
           setSessionGrapes(session.grapes);
           if (user.role === "Utilisateur") {

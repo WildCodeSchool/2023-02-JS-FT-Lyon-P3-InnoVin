@@ -41,8 +41,8 @@
   width: 10px;
 }
 .example-track.example-track-0 {
-  background: rgb(43,2,15);
-  background: linear-gradient(90deg, rgba(43,2,15,1) 0%, rgba(74,0,25,1) 27%, rgba(108,1,37,1) 84%);
+ background: rgb(77,16,38);
+background: linear-gradient(90deg, rgba(77,16,38,1) 0%, rgba(179,40,90,1) 17%, rgba(219,67,122,1) 88%);
   width: 100%;
   margin-left: -20px;
   border-radius: 0px 0px 25px 25px;
@@ -144,7 +144,7 @@
   justify-content: center;
   margin-top: 20px;
   
-  z-index: 15;
+  z-index: 2;
 }
 .input-container input{
   height: 73px;
@@ -224,8 +224,8 @@ color: #202020;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  margin-left: -400px;
-  z-index: 20;
+  margin-left: -500px;
+  z-index: 3;
 }
 .wine3-container{
   align-items: center;

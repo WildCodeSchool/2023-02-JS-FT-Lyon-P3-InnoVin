@@ -17,6 +17,8 @@ export default function TastingSheet() {
   const [rate, setRate] = useState(5);
   const navigate = useNavigate();
   const { userPick, userWines } = useUserContext();
+
+  // Définition des valeurs initiales de la tastingSheet
   const [value, setValue] = useState({
     color: "",
     intensity: "",
@@ -28,6 +30,7 @@ export default function TastingSheet() {
     persistence: "",
   });
 
+  // Gestion du changement d'état des radiobuttons
   const handleChange = (event) => {
     const { name, value: selectedValue } = event.target;
     setValue((prevState) => ({
@@ -35,7 +38,7 @@ export default function TastingSheet() {
       [name]: selectedValue,
     }));
   };
-
+  // Fonction de soumission de la fiche que si un radiobutton est check pour chaque catégorie
   function canBeSubmit() {
     if (
       value.color &&
@@ -51,7 +54,7 @@ export default function TastingSheet() {
     }
     return true;
   }
-
+  // Style du bouton de soumission de la fiche
   const style = {
     button: {
       p: 2,
@@ -61,7 +64,7 @@ export default function TastingSheet() {
       marginTop: 5,
     },
   };
-
+  // Définition des markers du slider de la note
   const marks = [
     {
       value: 0,
@@ -110,13 +113,14 @@ export default function TastingSheet() {
       ),
     },
   ];
-
+  // Gestion de changement de la note
   const handleRate = (e, newRate) => {
     setRate(newRate);
   };
   const handleSubmit = () => {
     userWines[userPick].isRated = true;
     userWines[userPick].tastingNote = rate;
+    localStorage.setItem("userWines", JSON.stringify(userWines));
 
     navigate("/workshop");
   };
@@ -333,7 +337,7 @@ export default function TastingSheet() {
                       <ControlLabel value="Epices" label="Epices" />
                       <ControlLabel
                         value="Empyreumatique"
-                        label="Empyreutmatique"
+                        label="Empyreumatique"
                       />
                     </div>
 

@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `firstname` VARCHAR(45) NOT NULL,
   `lastname` VARCHAR(45) NOT NULL,
   `birthdate` DATE NOT NULL,
-  `email` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(45) UNIQUE NOT NULL,
   `hashed_password` VARCHAR(255) NOT NULL,
   `address` VARCHAR(80) NULL,
   `postcode` INT NULL, 
@@ -321,7 +321,7 @@ CREATE TABLE IF NOT EXISTS `session` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-INSERT INTO session (date, time) VALUES ("2023-07-28", "10:00"), ("2023-08-10", "14:00"), ("2023-08-15", "16:00"), ("2023-08-20", "14:00"), ("2023-08-24", "09:00");
+INSERT INTO session (date, time) VALUES ("2023-07-28", "10:00"), ("2023-08-10", "14:00"), ("2023-08-15", "16:00"), ("2023-08-20", "14:00"), ("2023-08-24", "10:00");
 
 -- -----------------------------------------------------
 -- Table `recipe`
@@ -335,7 +335,8 @@ CREATE TABLE IF NOT EXISTS `recipe` (
 
   CONSTRAINT `fk_recipe_user`
     FOREIGN KEY (`user_id`)
-    REFERENCES `user` (`id`),
+    REFERENCES `user` (`id`)
+    ON DELETE CASCADE,
 
   CONSTRAINT `fk_recipe_session`
     FOREIGN KEY (`session_id`)
