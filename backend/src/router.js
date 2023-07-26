@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 
-const { validateLogin } = require("./services/validators");
+const { validateLogin, validateWine } = require("./services/validators");
 
 const { verifyPassword, verifyToken, logout } = require("./services/auth");
 
@@ -76,8 +76,8 @@ const wineControllers = require("./controllers/wineControllers");
 
 router.get("/wines", wineControllers.browse);
 router.get("/wines/:id", wineControllers.read);
-router.put("/wines/:id", wineControllers.edit);
-router.post("/wines", wineControllers.add);
+router.put("/wines/:id", validateWine, wineControllers.edit);
+router.post("/wines", validateWine, wineControllers.add);
 router.delete("/wines/:id", wineControllers.destroy);
 
 const tastingnoteControllers = require("./controllers/tastingnoteControllers");

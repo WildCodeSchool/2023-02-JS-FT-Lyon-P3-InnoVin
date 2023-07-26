@@ -335,7 +335,8 @@ CREATE TABLE IF NOT EXISTS `recipe` (
 
   CONSTRAINT `fk_recipe_user`
     FOREIGN KEY (`user_id`)
-    REFERENCES `user` (`id`),
+    REFERENCES `user` (`id`)
+    ON DELETE CASCADE,
 
   CONSTRAINT `fk_recipe_session`
     FOREIGN KEY (`session_id`)
