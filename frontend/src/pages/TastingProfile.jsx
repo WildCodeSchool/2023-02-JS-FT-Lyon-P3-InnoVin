@@ -8,6 +8,7 @@ export default function TastingProfile() {
   const { preferredWines } = useUserContext();
   const navigate = useNavigate();
   const handleClick = () => navigate("/workshop/recipe");
+  localStorage.setItem("preferredWines", JSON.stringify(preferredWines));
 
   return (
     <div>
@@ -48,18 +49,19 @@ export default function TastingProfile() {
         justifyContent="space-evenly"
         margin="auto"
       >
-        {preferredWines.map((wine) => (
-          <GrapeCard
-            key={wine.wineId}
-            tastingNote={wine.tastingNote}
-            vintage={wine.vintage}
-            wineName={wine.wineName}
-            grapeName={wine.grapeName}
-            grapePicture={wine.grapePicture}
-            flavour={wine.flavour}
-            aroma={wine.aroma}
-          />
-        ))}
+        {preferredWines &&
+          preferredWines.map((wine) => (
+            <GrapeCard
+              key={wine.wineId}
+              tastingNote={wine.tastingNote}
+              vintage={wine.vintage}
+              wineName={wine.wineName}
+              grapeName={wine.grapeName}
+              grapePicture={wine.grapePicture}
+              flavour={wine.flavour}
+              aroma={wine.aroma}
+            />
+          ))}
       </Box>
       <Box>
         <Button

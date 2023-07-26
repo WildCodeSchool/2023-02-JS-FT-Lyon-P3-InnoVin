@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import {
   DataGrid,
   GridActionsCellItem,
@@ -14,6 +14,7 @@ import SessionService from "../services/SessionService";
 import SessionHasWineService from "../services/SessionHasWineService";
 import WineService from "../services/WineService";
 import SearchBar from "./SearchBar";
+import DeleteConfirmModal from "./DeleteConfirmModal";
 
 export default function AdminSessionsTable() {
   const {
@@ -26,6 +27,8 @@ export default function AdminSessionsTable() {
     successToastTemplate,
     errorToastTemplate,
   } = useAdminContext();
+  const idToDelete = useRef();
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [rowModesModel, setRowModesModel] = useState({});
   const [sessionsWithWinesData, setSessionsWithWinesData] = useState([]);
 
@@ -41,16 +44,20 @@ export default function AdminSessionsTable() {
         setWinesData(wine.data.reverse());
         const sessionsWithWines = [];
         for (let i = 0; i < session.data.length; i += 1) {
-          sessionsWithWines.push({ ...session.data[i] });
+          sessionsWithWines.push({
+            ...session.data[i],
+          });
           const winesForEachSession = winesOfSessions.data.filter(
             (element) => element.session_id === session.data[i].id
           );
           for (let j = 1; j < 5; j += 1) {
             const key = `wine${j}`;
-            sessionsWithWines[i][key] = winesForEachSession[j - 1].wine_id;
+            if (winesForEachSession[j - 1] !== undefined) {
+              sessionsWithWines[i][key] = winesForEachSession[j - 1].wine_id;
+            } else sessionsWithWines[i][key] = "";
           }
+          setSessionsWithWinesData(sessionsWithWines);
         }
-        setSessionsWithWinesData(sessionsWithWines);
       } catch (error) {
         console.error("Internal error");
       }
@@ -77,22 +84,32 @@ export default function AdminSessionsTable() {
     setSessionsWithWinesData(sessionsWithWines);
   };
 
+  // Va chercher la session supprimée
+  const deletedSession = sessionsData.filter(
+    (session) => session.id === idToDelete.current
+  );
+
+  // Gère l'ouverture de la modal de confirmation du delete
+  const handleDeleteModal = (id) => {
+    idToDelete.current = id;
+    setConfirmDelete(!confirmDelete);
+  };
   // --- Gestion de la suppression ---
-  const handleDeleteClick = (id) => async () => {
+
+  const handleDeleteClick = async () => {
     try {
-      // Va chercher la session supprimée pour le toast
-      const deletedSession = sessionsData.filter(
-        (session) => session.id === id
-      );
       // Supprime la session de la BDD
-      await SessionService.deleteSession(id);
+      await SessionService.deleteSession(idToDelete.current);
       // Mets les states sessionsData et sessionHaveWinesData à jour après la suppression et génère à nouveau le tableau SessionWithWines afin qu'il soit actualisé
       sessionsWithWinesDataUpdate();
       successToastTemplate(
         `La session du ${deletedSession[0].date} à ${deletedSession[0].time} a été supprimée.`
       );
+      setConfirmDelete(!confirmDelete);
+      idToDelete.current = "";
     } catch (err) {
       console.error("Deletion failed :", err);
+      errorToastTemplate("Une erreur s'est produite");
     }
   };
 
@@ -101,7 +118,7 @@ export default function AdminSessionsTable() {
     // Check si une nouvelle n'est pas déjà présente
     if (!sessionsData.some((session) => typeof session.id === "string")) {
       // Génère un id temporaire en string le temps d'insérer les nouvelles données
-      const id = `new${sessionsData[sessionsData.length - 1].id + 1}`;
+      const id = `new`;
       // Crée un nouvel objet dans le state sessionsData pour stocker les nouvelles données
       setSessionsWithWinesData((sessions) => [
         {
@@ -218,7 +235,8 @@ export default function AdminSessionsTable() {
     const checkNoDuplicateSession = sessionsData.find(
       (session) =>
         session.date === newRowWithFormattedDate.date &&
-        session.time === newRowWithFormattedDate.time
+        session.time === newRowWithFormattedDate.time &&
+        session.id !== newRowWithFormattedDate.id
     );
     try {
       await SessionService.sessionSchema.validate(newRowWithFormattedDate);
@@ -336,6 +354,7 @@ export default function AdminSessionsTable() {
       width: 250,
       editable: true,
     },
+
     {
       field: "wine4",
       headerClassName: "super-app-theme--header",
@@ -388,7 +407,7 @@ export default function AdminSessionsTable() {
             sx={{
               color: "primary.main",
             }}
-            onClick={handleDeleteClick(id)}
+            onClick={() => handleDeleteModal(id)}
           />,
         ];
       },
@@ -402,6 +421,12 @@ export default function AdminSessionsTable() {
 
   return (
     <>
+      <DeleteConfirmModal
+        confirmDelete={confirmDelete}
+        handleDeleteClick={handleDeleteClick}
+        handleDeleteModal={handleDeleteModal}
+        deletedElement={deletedSession}
+      />
       <Box
         sx={{
           width: 1,

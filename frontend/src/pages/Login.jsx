@@ -86,6 +86,7 @@ export default function Login() {
         .then(({ data: [user, session] }) => {
           login(user);
           setSessionId(session.sessionId);
+          localStorage.setItem("sessionId", JSON.stringify(session.sessionId));
           setSessionWines(session.wines);
           setSessionGrapes(session.grapes);
           if (user.role === "Utilisateur") {

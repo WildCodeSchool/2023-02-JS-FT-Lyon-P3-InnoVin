@@ -26,7 +26,9 @@ export default function Tasting() {
     },
   };
 
-  const { setUserPick, userWines, setPreferredWines } = useUserContext();
+  const { setUserPick, userWines, preferredWines, setPreferredWines } =
+    useUserContext();
+
   const { sessionWines, sessionGrapes } = useSessionContext();
   const navigate = useNavigate();
   const uncompleteTasting = userWines.some(
@@ -42,6 +44,7 @@ export default function Tasting() {
         tastingNote: null,
       });
     }
+    localStorage.setItem("userWines", JSON.stringify(userWines));
   }
 
   useEffect(() => {
@@ -50,6 +53,7 @@ export default function Tasting() {
         userWines.sort((a, b) => b.tastingNote - a.tastingNote).slice(0, 3)
       );
     }
+    localStorage.setItem("preferredWines", JSON.stringify(preferredWines));
   }, []);
 
   const handleClickWine = (event) => {
