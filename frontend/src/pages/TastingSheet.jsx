@@ -120,6 +120,7 @@ export default function TastingSheet() {
   const handleSubmit = () => {
     userWines[userPick].isRated = true;
     userWines[userPick].tastingNote = rate;
+    localStorage.setItem("userWines", JSON.stringify(userWines));
 
     navigate("/workshop");
   };
