@@ -39,10 +39,17 @@ router.delete("/items/:id", itemControllers.destroy);
 const userControllers = require("./controllers/userControllers");
 const { validateUser } = require("./services/validators");
 const { hashPassword } = require("./services/auth");
+const { verifyIfUserRegistered } = require("./services/auth");
 
 router.get("/users", userControllers.browse);
 router.get("/users/:id", userControllers.read);
-router.post("/users", validateUser, hashPassword, userControllers.add);
+router.post(
+  "/users",
+  verifyIfUserRegistered,
+  validateUser,
+  hashPassword,
+  userControllers.add
+);
 router.put("/users/:id", userControllers.edit);
 router.delete("/users/:id", userControllers.destroy);
 
