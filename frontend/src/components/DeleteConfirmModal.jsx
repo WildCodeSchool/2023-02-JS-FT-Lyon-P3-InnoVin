@@ -11,13 +11,16 @@ export default function DeleteConfirmModal({
   if (deletedElement[0])
     return (
       <Dialog open={confirmDelete} sx={{ maxWidth: "60vw", margin: "0 auto" }}>
-        <DialogTitle
-          sx={{ textAlign: "center" }}
-        >{`Voulez-vous vraiment supprimer ${
-          deletedElement[0].name
-            ? deletedElement[0].name
-            : `${deletedElement[0].firstname} ${deletedElement[0].lastname}`
-        } ?`}</DialogTitle>
+        <DialogTitle sx={{ textAlign: "center" }}>
+          {deletedElement[0].date
+            ? `Voulez-vous vraiment supprimer la session du ${deletedElement[0].date}
+      à ${deletedElement[0].time} ?`
+            : `Voulez-vous vraiment supprimer ${
+                deletedElement[0].name
+                  ? deletedElement[0].name
+                  : `${deletedElement[0].firstname} ${deletedElement[0].lastname}`
+              } ?`}
+        </DialogTitle>
         <Typography sx={{ textAlign: "center", paddingInline: "10%" }}>
           Cela supprimera également toutes les données qui y sont associées
         </Typography>
