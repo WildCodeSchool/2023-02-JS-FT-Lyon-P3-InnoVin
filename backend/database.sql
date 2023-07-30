@@ -1,6 +1,5 @@
 SET  FOREIGN_KEY_CHECKS=0;
 
-
 -- -----------------------------------------------------
 -- Table `aroma`
 -- -----------------------------------------------------
@@ -69,10 +68,12 @@ ENGINE = InnoDB;
 
 INSERT INTO user (aroma_id, flavour_id, type_id, firstname, lastname, birthdate, email, hashed_password, address, postcode, city, role) 
 VALUES (1, 1, 1, "Yann", "Richard", "1989-07-12", "yann.richard9@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$cXFnN2s1ZHU0aTAwMDAwMA$XFP3Vrp4/huxiy9p4p2EAw", "17 Rue Delandine", 69007, "Lyon", "Utilisateur"),
-(2, 2, 2, "Cédric", "Boriat", "1982-06-25", "cedric@exemple.com", "$argon2id$v=19$m=16,t=2,p=1$dnB2ZzdhZXlxcHMwMDAwMA$yKZ21MGC7j/HKzj/vaarNQ", "25 Rue du désert", 48000, "Mende", "Admin"),
+(2, 2, 2, "Cédric", "Boriat", "1982-06-25", "cedric.boriat@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$dnB2ZzdhZXlxcHMwMDAwMA$yKZ21MGC7j/HKzj/vaarNQ", "25 Rue du désert", 48000, "Mende", "Admin"),
 (3, 2, 1, "Vanessa", "Giraud", "1988-02-03", "suede210810@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$Znp2ZGZuZ2M5cWMwMDAwMA$R/rLqXpCX0pm7BleQSNrwQ", "15 Rue du stade", 13000, "Marseille", "Utilisateur"),
 (1, 2, 3, "Guillaume", "Lamourec", "1996-03-28", "guillaume.lamourec@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$eHBtcjA2MnNrbWYwMDAwMA$t0R3Tbwv7f7S44VDWDTSSg", "23 Rue des melons pas mûrs", 69100, "Villeurbanne", "Utilisateur"),
-(1, 3, 3, "Bella", "Garcia", "1980-07-28", "bella.garcia@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$MXk5dnU1bDl6bHIwMDAwMA$2qiEXDngdnlXuJnFRLeFvw", "45 Rue de l'avenir", 71000, "Mâcon", "Utilisateur");
+(1, 3, 3, "Bella", "Garcia", "1980-07-28", "bella.garcia@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$MXk5dnU1bDl6bHIwMDAwMA$2qiEXDngdnlXuJnFRLeFvw", "45 Rue de l'avenir", 71000, "Mâcon", "Utilisateur"),
+(2, 3, 1, "Julie", "Martin", "1980-11-09", "julie.martin@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$MXk5dnU1bDl6bHIwMDAwMA$2qiEXDngdnlXuJnFRLeFvw", "7 Rue du lavoir", 56000, "Lorient", "Utilisateur"),
+(1, 2, 3, "Christophe", "Bastacozzi", "1975-04-21", "chris.bastacozzi@gmail.com", "$argon2id$v=19$m=16,t=2,p=1$MXk5dnU1bDl6bHIwMDAwMA$2qiEXDngdnlXuJnFRLeFvw", "23 Avenue du temps", 71000, "Mâcon", "Utilisateur");
 -- -----------------------------------------------------
 -- Table `country`
 -- -----------------------------------------------------
@@ -321,7 +322,7 @@ CREATE TABLE IF NOT EXISTS `session` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-INSERT INTO session (date, time) VALUES ("2023-07-28", "10:00"), ("2023-08-10", "14:00"), ("2023-08-15", "16:00"), ("2023-08-20", "14:00"), ("2023-08-24", "10:00");
+INSERT INTO session (date, time) VALUES ("2023-07-27", "10:00"), ("2023-08-10", "14:00"), ("2023-08-15", "16:00"), ("2023-08-20", "14:00"), ("2023-08-24", "10:00");
 
 -- -----------------------------------------------------
 -- Table `recipe`
@@ -345,7 +346,20 @@ CREATE TABLE IF NOT EXISTS `recipe` (
 
 ENGINE = InnoDB;
 
-INSERT INTO recipe (user_id, session_id, name) VALUES (3, 1, "Vanessa's wine !"), (1, 2, "Yann's wine !"),  (4, 3, "Guillaume's wine !"),  (5, 4, "Bella's wine !");
+INSERT INTO recipe (user_id, session_id, name) VALUES 
+(3, 1, "Vanessa's wine !"),  
+(4, 3, "Guillaume's wine !"),  
+(5, 4, "Bella's wine !"), 
+(6, 1, "Julie's wine !"),
+(6, 2, "Julie's wine !"), 
+(6, 3, "Julie's wine !"), 
+(6, 4, "Julie's wine !"), 
+(6, 5, "Julie's wine !"), 
+(7, 1, "Christophe's wine !"),
+(7, 2, "Christophe's wine !"),
+(7, 3, "Christophe's wine !"),
+(7, 4, "Christophe's wine !"),
+(7, 5, "Christophe's wine !");
 -- -----------------------------------------------------
 -- Table `user_has_session`
 -- -----------------------------------------------------
@@ -410,7 +424,20 @@ CREATE TABLE IF NOT EXISTS `recipe_has_wine` (
     ON DELETE CASCADE)
 
 ENGINE = InnoDB;
-      INSERT INTO recipe_has_wine (recipe_id, wine_id, dosage) values (1, 43, 150), (1, 20, 25),(1, 22, 75),(2, 22, 150), (2, 45, 25),(2, 46, 75), (3, 47, 100), (3, 12, 75),(3, 27, 75), (4, 50, 100), (4, 31, 75),(4, 27, 75) ;
+      INSERT INTO recipe_has_wine (recipe_id, wine_id, dosage) values 
+      (1, 43, 150), (1, 20, 25),(1, 22, 75),
+      (2, 22, 150), (2, 45, 25),(2, 46, 75), 
+      (3, 47, 100), (3, 12, 75),(3, 27, 75), 
+      (4, 50, 100), (4, 31, 75),(4, 27, 75), 
+      (5, 23, 150), (5, 14, 50),(5, 47, 50),
+      (6, 17, 200), (6, 45, 25),(6, 33, 25),
+      (7, 7, 220), (7, 10, 15),(7, 28, 15),
+      (8, 5, 50), (8, 14, 100),(8, 36, 100),
+      (9, 1, 150), (9, 7, 37),(9, 23, 63),
+      (10, 42, 160), (10, 13, 40),(10, 2, 50),
+      (11, 9, 140), (11, 19, 60),(11, 39, 50),
+      (12, 34, 120), (12, 21, 100),(12, 4, 30),
+      (13, 5, 150), (13, 28, 50),(13, 32, 50);
 
 -- -----------------------------------------------------
 -- Table `user_has_wine`
@@ -474,6 +501,3 @@ ENGINE = InnoDB;
  (5, 50);
 
 SET FOREIGN_KEY_CHECKS=1;
-
-
-
